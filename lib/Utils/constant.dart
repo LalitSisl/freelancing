@@ -250,7 +250,7 @@ class SWANWidget {
       fontWeight: FWeight.semiBold);
 
   static disableKeyboard() {
-    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    WidgetsBinding.instance?.focusManager.primaryFocus?.unfocus();
   }
 
   static Row pieChartLabels(color, text, width) => Row(
@@ -355,6 +355,7 @@ class SWANWidget {
             ),*/
             labelStyle: SWANWidget.fieldLabelTextStyle,
             counterText: ""),
+        onChanged: (value) {},
         //enabled: true,
         inputFormatters: inputFormatters,
         maxLines: null,
@@ -363,6 +364,7 @@ class SWANWidget {
         maxLength: maxLength,
         validator: validator,
       );
+
   static TextFormField enabledTextFormField1(_controller, label, inputType,
           inputFormatters, validator, maxLength) =>
       TextFormField(

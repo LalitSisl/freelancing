@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:freelancing/Profile/profile.dart';
+import 'package:freelancing/Authentication/register.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class Otp extends StatefulWidget {
   String number;
   Otp({Key? key, required this.number}) : super(key: key);
@@ -16,7 +17,6 @@ class _OtpState extends State<Otp> {
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
-
   // snackBar Widget
   snackBar(String? message) {
     return ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +56,7 @@ class _OtpState extends State<Otp> {
           ),
           const SizedBox(height: 40),
           const Text(
-            'Phone Number Verification',
+            'OTP Verification',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             textAlign: TextAlign.center,
           ),
@@ -146,7 +146,10 @@ class _OtpState extends State<Otp> {
             alignment: Alignment.bottomRight,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(const Profile());
+                //_modalBottomSheet();
+                if (formKey.currentState!.validate()) {
+                  Get.to(const Register());
+                }
               },
               child: const Text('Verify OTP'),
             ),
