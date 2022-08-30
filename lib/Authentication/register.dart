@@ -66,31 +66,39 @@ class _RegisterState extends State<Register> {
                 const SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('This feature coming soon')),
-                    );
-                  },
-                  child: ListTile(
-                    leading: Image.asset('assets/images/teamuser.png'),
-                    title: Text(
-                      'Vendor',
-                      style: GoogleFonts.aBeeZee(
-                          fontSize: 22, color: ColorPalette.bgGrey),
-                    ),
-                    subtitle: const Text(
-                      'If you are a vendor Business Owner with a team of people.',
-                      style: TextStyle(color: ColorPalette.bgGrey),
-                    ),
-                    trailing: Radio(
-                      value: '1',
-                      groupValue: _selectUser,
-                      onChanged: (value) {
-                        setState(() {
-                          //_selectUser = value!;
-                        });
-                      },
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 13),
+                  child: GestureDetector(
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('This feature coming soon')),
+                      );
+                    },
+                    child: ListTile(
+                      leading: Image.asset('assets/images/teamuser.png'),
+                      title: Text(
+                        'Vendor',
+                        style: GoogleFonts.aBeeZee(
+                            fontSize: 22, color: ColorPalette.bgGrey),
+                      ),
+                      subtitle: const Text(
+                        'If you are a vendor Business Owner with a team of people.',
+                        style: TextStyle(color: ColorPalette.bgGrey),
+                      ),
+                      trailing: const Icon(
+                        Icons.radio_button_off_outlined,
+                        size: 21,
+                      ),
+                      // trailing: Radio(
+                      //   value: '1',
+                      //   groupValue: _selectUser,
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       //_selectUser = value!;
+                      //     });
+                      //   },
+                      // ),
                     ),
                   ),
                 ),

@@ -144,8 +144,6 @@ class _ProfileState extends State<Profile> {
       'Flutter',
       'Developer',
       'Web Developer',
-      'Computer Network',
-      'Flutter',
     ];
 
     final List<String>? results = await showDialog(
@@ -216,6 +214,20 @@ class _ProfileState extends State<Profile> {
                   SWANWidget.enabledTextFormField(
                       lastName,
                       'Last Name',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
+                      (value) {
+                    if (value.isEmpty) {
+                      return 'The field is mandatory';
+                    }
+                    return null;
+                  }, 250),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  SWANWidget.enabledTextFormField(
+                      email,
+                      'Email id',
                       TextInputType.text,
                       [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
                       (value) {
@@ -1875,7 +1887,7 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GestureDetector(
-                          onTap: (() => Get.off(() => Dashboard())),
+                          onTap: (() => Get.off(() => const Dashboard())),
                           child: AlertDialog(
                             content: SizedBox(
                               height: MediaQuery.of(context).size.height / 1.7,
@@ -1884,20 +1896,25 @@ class _ProfileState extends State<Profile> {
                                   Center(
                                     child: Image.asset(
                                       'assets/images/review.png',
-                                      height: MediaQuery.of(context).size.height / 1.7,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.7,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  Positioned(
-                                    bottom: 0.0,
-                                    left: MediaQuery.of(context).size.width / 7.8,
-                                    child: ElevatedButton(
-                                        onPressed: (){
-                                          Get.off(() => UpdateProfile());
-                                        },
-                                        child:
-                                        Text('Preview Your Profile',style: SWANWidget.buttonTextStyle,)),
-                                  )
+                                  // Positioned(
+                                  //   bottom: 0.0,
+                                  //   left:
+                                  //       MediaQuery.of(context).size.width / 7.8,
+                                  //   child: ElevatedButton(
+                                  //       onPressed: () {
+                                  //         Get.off(() => UpdateProfile());
+                                  //       },
+                                  //       child: Text(
+                                  //         'Preview Your Profile',
+                                  //         style: SWANWidget.buttonTextStyle,
+                                  //       )),
+                                  // )
                                 ],
                               ),
                             ),

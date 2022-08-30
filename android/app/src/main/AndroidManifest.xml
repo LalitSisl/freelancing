@@ -2,7 +2,7 @@
     package="com.example.freelancing">
      <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="freelancing"
+        android:label="SWAN"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
