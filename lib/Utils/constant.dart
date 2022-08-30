@@ -99,7 +99,7 @@ class ColorPalette {
   static const lightGreen = Color(0x334CAF50);
   static const red = Color(0xFFF44336);
   static const lightThemeBlue = Color(0x331fa1bd);
-
+  static const chipBgBlue = Color(0x338ac4ff);
 }
 
 class SWANWidget {
