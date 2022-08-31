@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:freelancing/Dashboard/dashboard.dart';
+import 'package:freelancing/Screens/review.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -195,33 +196,96 @@ class _ProfileState extends State<Profile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SWANWidget.enabledTextFormField(
-                    firstName,
-                    'First Name',
-                    TextInputType.text,
-                    [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                    (value) {
-                      if (value.isEmpty) {
+                  TextFormField(
+                    controller: firstName,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'First Name',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    onChanged: (value) {
+                      setState(() {
+                        name = value;
+                        if (value.isEmpty) {
+                          name = '[Name]';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
                         return 'The field is mandatory';
                       }
                       return null;
                     },
-                    250,
                   ),
+                  // SWANWidget.enabledTextFormField(
+                  //   firstName,
+                  //   'First Name',
+                  //   TextInputType.text,
+                  //   [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
+                  //   (value) {
+                  //     if (value.isEmpty) {
+                  //       return 'The field is mandatory';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   250,
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
-                  SWANWidget.enabledTextFormField(
-                      lastName,
-                      'Last Name',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                      (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
-                    }
-                    return null;
-                  }, 250),
+                  TextFormField(
+                    controller: lastName,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'Last Name',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    onChanged: (value) {
+                      setState(() {
+                        sr = value;
+                        if (value.isEmpty) {
+                          sr = '';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -239,17 +303,83 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 8,
                   ),
-                  SWANWidget.enabledTextFormField(
-                      address,
-                      'Address',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.singleLineFormatter],
-                      (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
-                    }
-                    return null;
-                  }, 250),
+                  TextFormField(
+                    controller: work,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'Profile',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    onChanged: (value) {
+                      setState(() {
+                        profile = value;
+                        if (value.isEmpty) {
+                          profile = '[Profile]';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  TextFormField(
+                    controller: address,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'Address',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    onChanged: (value) {
+                      setState(() {
+                        userAddress = value;
+                        if (value.isEmpty) {
+                          userAddress = '[Address]';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -268,20 +398,7 @@ class _ProfileState extends State<Profile> {
                   // const SizedBox(
                   //   height: 8,
                   // ),
-                  SWANWidget.enabledTextFormField(
-                      work,
-                      'Work Title',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                      (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
-                    }
-                    return null;
-                  }, 250),
-                  const SizedBox(
-                    height: 8,
-                  ),
+
                   TextFormField(
                     controller: dob,
                     decoration: InputDecoration(
@@ -343,7 +460,7 @@ class _ProfileState extends State<Profile> {
                       iconSize: 20,
                       style: const TextStyle(color: Colors.black),
 
-                      items: [
+                      items: <String>[
                         'Male',
                         'Female',
                       ].map<DropdownMenuItem<String>>((String value) {
@@ -352,6 +469,7 @@ class _ProfileState extends State<Profile> {
                           value: value,
                         );
                       }).toList(),
+
                       onChanged: (salutation) {
                         setState(() {
                           gender = salutation!;
@@ -1678,7 +1796,7 @@ class _ProfileState extends State<Profile> {
                                         scale: 3,
                                       ),
                                       Text(
-                                        'Upload Cancle Check',
+                                        'Upload Cancel Check',
                                         style:
                                             SWANWidget.subtextRegularTextStyle,
                                       )
@@ -1695,6 +1813,9 @@ class _ProfileState extends State<Profile> {
             ))
       ];
   var name = '[Name]';
+  var sr = '';
+  var profile = '[Profile]';
+  var userAddress = '[Address]';
 
   @override
   Widget build(BuildContext context) {
@@ -1776,20 +1897,23 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const Card(
-                          elevation: 15,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 2),
-                            child: Text(
-                              '[Work title]',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
+                        // const SizedBox(
+                        //   height: 30,
+                        // ),
+                        // SizedBox(
+                        //   width: 100,
+                        //   child: const Card(
+                        //     elevation: 15,
+                        //     child: Padding(
+                        //       padding: EdgeInsets.symmetric(
+                        //           horizontal: 10, vertical: 2),
+                        //       child: Text(
+                        //         '[Work title title title title ]',
+                        //         style: TextStyle(fontSize: 12),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                     const SizedBox(
@@ -1801,16 +1925,16 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: Text(
-                            name,
+                            '${name} ${sr}',
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 5),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
                           child: Text(
-                            '[Profile]',
-                            style: TextStyle(
+                            profile,
+                            style: const TextStyle(
                                 fontSize: 12,
                                 color: ColorPalette.bgGrey,
                                 fontWeight: FontWeight.w300),
@@ -1841,20 +1965,20 @@ class _ProfileState extends State<Profile> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.location_on_outlined,
                               size: 18,
                               color: ColorPalette.bgGrey,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             SizedBox(
                               width: 160,
                               child: Text(
-                                '[Address]',
-                                style: TextStyle(
+                                '$userAddress',
+                                style: const TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                             ),
@@ -1874,56 +1998,22 @@ class _ProfileState extends State<Profile> {
                 onStepContinue: () {
                   if (_activeCurrentStep < (stepList().length - 1)) {
                     setState(() {
-                      // if (formKeys[_activeCurrentStep].currentState!.validate()) {
-                      _activeCurrentStep += 1;
-                      // Get.to(const Dashboard());
-                      // }
+                      if (formKeys[_activeCurrentStep]
+                          .currentState!
+                          .validate()) {
+                        _activeCurrentStep += 1;
+                        // Get.to(const Dashboard());
+                      }
                     });
                   } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: GestureDetector(
-                          onTap: (() => Get.off(() => const Dashboard())),
-                          child: AlertDialog(
-                            content: SizedBox(
-                              height: MediaQuery.of(context).size.height / 1.7,
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      'assets/images/review.png',
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              1.7,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   bottom: 0.0,
-                                  //   left:
-                                  //       MediaQuery.of(context).size.width / 7.8,
-                                  //   child: ElevatedButton(
-                                  //       onPressed: () {
-                                  //         Get.off(() => UpdateProfile());
-                                  //       },
-                                  //       child: Text(
-                                  //         'Preview Your Profile',
-                                  //         style: SWANWidget.buttonTextStyle,
-                                  //       )),
-                                  // )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                    // Get.off(() => Dashboard());
-                    //Get.to(const Dashboard());
+                    setState(() {
+                      if (formKeys[_activeCurrentStep]
+                          .currentState!
+                          .validate()) {
+                        //_activeCurrentStep += 1;
+                        Get.to(const Review());
+                      }
+                    });
                   }
                   //if (_activeCurrentStep != 2 && _activeCurrentStep != 1) {
                   //print('lalit $_activeCurrentStep');
