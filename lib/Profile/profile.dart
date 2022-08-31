@@ -1,13 +1,12 @@
 import 'dart:io';
-import 'package:freelancing/Dashboard/dashboard.dart';
+
 import 'package:freelancing/Screens/review.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
-import '../UpdateProfile/updateProfile.dart';
-import 'Chip/multichip.dart';
+
 import 'package:get/get.dart';
 import 'Multiple Select/multi_select.dart';
 
@@ -24,7 +23,6 @@ class _ProfileState extends State<Profile> {
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
-    GlobalKey<FormState>()
   ];
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -63,10 +61,9 @@ class _ProfileState extends State<Profile> {
 
   var skill;
 
-  bool _checkbox = true;
+  bool _checkbox = false;
 
   File? panfront;
-  File? panback;
   File? aadharfront;
   File? aadharback;
   File? pic;
@@ -212,6 +209,9 @@ class _ProfileState extends State<Profile> {
                         ),
                         labelStyle: SWANWidget.fieldLabelTextStyle,
                         counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
                     onChanged: (value) {
                       setState(() {
                         name = value;
@@ -220,8 +220,6 @@ class _ProfileState extends State<Profile> {
                         }
                       });
                     },
-                    //enabled: true,
-                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
                     maxLines: null,
                     keyboardType: TextInputType.text,
                     style: SWANWidget.fieldValueTextStyle,
@@ -265,6 +263,9 @@ class _ProfileState extends State<Profile> {
                         ),
                         labelStyle: SWANWidget.fieldLabelTextStyle,
                         counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
                     onChanged: (value) {
                       setState(() {
                         sr = value;
@@ -293,12 +294,20 @@ class _ProfileState extends State<Profile> {
                       email,
                       'Email id',
                       TextInputType.text,
-                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
+                      [FilteringTextInputFormatter.singleLineFormatter],
                       (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
+                    String pattern =
+                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                        r"{0,253}[a-zA-Z0-9])?)*$";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid email address';
+                    } else {
+                      return null;
                     }
-                    return null;
                   }, 250),
                   const SizedBox(
                     height: 8,
@@ -319,6 +328,9 @@ class _ProfileState extends State<Profile> {
                         ),
                         labelStyle: SWANWidget.fieldLabelTextStyle,
                         counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
                     onChanged: (value) {
                       setState(() {
                         profile = value;
@@ -401,6 +413,7 @@ class _ProfileState extends State<Profile> {
 
                   TextFormField(
                     controller: dob,
+
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.calendar_month_outlined),
                         isDense: true,
@@ -437,30 +450,29 @@ class _ProfileState extends State<Profile> {
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: DropdownButtonFormField<String>(
+                    //height: 100,
+                    child: DropdownButtonFormField(
                       decoration: const InputDecoration(
                         labelText: 'Gender',
                         isDense: true, // Added this
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
                       value: gender,
-
                       dropdownColor: Colors.white,
                       isExpanded: true,
                       iconSize: 20,
                       style: const TextStyle(color: Colors.black),
 
-                      items: <String>[
+                      items: [
                         'Male',
                         'Female',
                       ].map<DropdownMenuItem<String>>((String value) {
@@ -475,6 +487,7 @@ class _ProfileState extends State<Profile> {
                           gender = salutation!;
                         });
                       },
+
                       //value: dropdownProject,
                       validator: (value) =>
                           value == null ? 'field required' : null,
@@ -485,7 +498,6 @@ class _ProfileState extends State<Profile> {
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 45,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Highest Qualification',
@@ -493,12 +505,12 @@ class _ProfileState extends State<Profile> {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
                       value: qualification,
@@ -554,52 +566,51 @@ class _ProfileState extends State<Profile> {
                       //textScaleFactor: labelTextScale,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'ID Proof',
-                        isDense: true, // Added this
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
-                        ),
-                      ),
-                      value: panDropdown,
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: DropdownButtonFormField<String>(
+                  //     decoration: const InputDecoration(
+                  //       labelText: 'ID Proof',
+                  //       isDense: true, // Added this
+                  //       contentPadding:
+                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //     ),
+                  //     value: panDropdown,
 
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      iconSize: 20,
-                      style: const TextStyle(color: Colors.black),
+                  //     dropdownColor: Colors.white,
+                  //     isExpanded: true,
+                  //     iconSize: 20,
+                  //     style: const TextStyle(color: Colors.black),
 
-                      items: [
-                        'Pan Card',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          child: Text(value),
-                          value: value,
-                        );
-                      }).toList(),
-                      onChanged: (salutation) {
-                        setState(() {
-                          panDropdown = salutation!;
-                        });
-                      },
-                      //value: dropdownProject,
-                      validator: (value) =>
-                          value == null ? 'field required' : null,
-                    ),
-                  ),
+                  //     items: [
+                  //       'Pan Card',
+                  //     ].map<DropdownMenuItem<String>>((String value) {
+                  //       return DropdownMenuItem<String>(
+                  //         child: Text(value),
+                  //         value: value,
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (salutation) {
+                  //       setState(() {
+                  //         panDropdown = salutation!;
+                  //       });
+                  //     },
+                  //     //value: dropdownProject,
+                  //     validator: (value) =>
+                  //         value == null ? 'field required' : null,
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -609,13 +620,18 @@ class _ProfileState extends State<Profile> {
                       TextInputType.text,
                       [FilteringTextInputFormatter.singleLineFormatter],
                       (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
+                    String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid pan number';
+                    } else {
+                      return null;
                     }
-                    return null;
                   }, 250),
                   const SizedBox(
-                    height: 5,
+                    height: 8,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -625,16 +641,75 @@ class _ProfileState extends State<Profile> {
                           panfront != null
                               ? GestureDetector(
                                   onTap: () async {
-                                    final ImagePicker _picker =
-                                        ImagePicker(); //added type ImagePicker
-                                    var image1 = await _picker.getImage(
-                                        source: ImageSource.camera);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                            content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final ImagePicker _picker =
+                                                    ImagePicker(); //added type ImagePicker
+                                                var image1 =
+                                                    await _picker.getImage(
+                                                        source:
+                                                            ImageSource.camera);
 
-                                    if (image1 != null) {
-                                      setState(() {
-                                        panfront = File(image1.path);
-                                      });
-                                    }
+                                                if (image1 != null) {
+                                                  setState(() {
+                                                    panfront =
+                                                        File(image1.path);
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
+                                              },
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/camera.png',
+                                                    scale: 2.5,
+                                                  ),
+                                                  const Text('Camera')
+                                                ],
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final ImagePicker _picker =
+                                                    ImagePicker(); //added type ImagePicker
+                                                var image1 =
+                                                    await _picker.getImage(
+                                                        source: ImageSource
+                                                            .gallery);
+
+                                                if (image1 != null) {
+                                                  setState(() {
+                                                    panfront =
+                                                        File(image1.path);
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
+                                              },
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/gallery.png',
+                                                    scale: 2.5,
+                                                  ),
+                                                  const Text('Gallery')
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     height: 130,
@@ -656,16 +731,69 @@ class _ProfileState extends State<Profile> {
                               : Container(),
                           GestureDetector(
                             onTap: () async {
-                              final ImagePicker _picker =
-                                  ImagePicker(); //added type ImagePicker
-                              var image1 = await _picker.getImage(
-                                  source: ImageSource.camera);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      content: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final ImagePicker _picker =
+                                              ImagePicker(); //added type ImagePicker
+                                          var image1 = await _picker.getImage(
+                                              source: ImageSource.camera);
 
-                              if (image1 != null) {
-                                setState(() {
-                                  panfront = File(image1.path);
-                                });
-                              }
+                                          if (image1 != null) {
+                                            setState(() {
+                                              panfront = File(image1.path);
+                                              Navigator.pop(context);
+                                            });
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/camera.png',
+                                              scale: 2.5,
+                                            ),
+                                            const Text('Camera')
+                                          ],
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final ImagePicker _picker =
+                                              ImagePicker(); //added type ImagePicker
+                                          var image1 = await _picker.getImage(
+                                              source: ImageSource.gallery);
+
+                                          if (image1 != null) {
+                                            setState(() {
+                                              panfront = File(image1.path);
+                                              Navigator.pop(context);
+                                            });
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/gallery.png',
+                                              scale: 2.5,
+                                            ),
+                                            const Text('Gallery')
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ));
+                                },
+                              );
                             },
                             child: panfront == null
                                 ? Container(
@@ -700,51 +828,50 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'Address Proof',
-                        isDense: true, // Added this
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
-                        ),
-                      ),
-                      value: aadhar,
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      iconSize: 20,
-                      style: const TextStyle(color: Colors.black),
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: DropdownButtonFormField<String>(
+                  //     decoration: const InputDecoration(
+                  //       labelText: 'Address Proof',
+                  //       isDense: true, // Added this
+                  //       contentPadding:
+                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //     ),
+                  //     value: aadhar,
+                  //     dropdownColor: Colors.white,
+                  //     isExpanded: true,
+                  //     iconSize: 20,
+                  //     style: const TextStyle(color: Colors.black),
 
-                      items: [
-                        'Aadhar Card',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          child: Text(value),
-                          value: value,
-                        );
-                      }).toList(),
-                      onChanged: (salutation) {
-                        setState(() {
-                          aadhar = salutation!;
-                        });
-                      },
-                      //value: dropdownProject,
-                      validator: (value) =>
-                          value == null ? 'field required' : null,
-                    ),
-                  ),
+                  //     items: [
+                  //       'Aadhar Card',
+                  //     ].map<DropdownMenuItem<String>>((String value) {
+                  //       return DropdownMenuItem<String>(
+                  //         child: Text(value),
+                  //         value: value,
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (salutation) {
+                  //       setState(() {
+                  //         aadhar = salutation!;
+                  //       });
+                  //     },
+                  //     //value: dropdownProject,
+                  //     validator: (value) =>
+                  //         value == null ? 'field required' : null,
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -753,10 +880,15 @@ class _ProfileState extends State<Profile> {
                       'Aadhar Card Number',
                       TextInputType.text,
                       [FilteringTextInputFormatter.digitsOnly], (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
+                    String pattern = r"^[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid Aadhar number';
+                    } else {
+                      return null;
                     }
-                    return null;
                   }, 250),
                   const SizedBox(
                     height: 5,
@@ -766,16 +898,69 @@ class _ProfileState extends State<Profile> {
                       aadharfront != null
                           ? GestureDetector(
                               onTap: () async {
-                                final ImagePicker _picker =
-                                    ImagePicker(); //added type ImagePicker
-                                var image1 = await _picker.getImage(
-                                    source: ImageSource.camera);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.camera);
 
-                                if (image1 != null) {
-                                  setState(() {
-                                    aadharfront = File(image1.path);
-                                  });
-                                }
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharfront = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/camera.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Camera')
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.gallery);
+
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharfront = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/gallery.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Gallery')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ));
+                                  },
+                                );
                               },
                               child: Container(
                                 height: 130,
@@ -794,18 +979,74 @@ class _ProfileState extends State<Profile> {
                               ),
                             )
                           : Container(),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       GestureDetector(
                         onTap: () async {
-                          final ImagePicker _picker =
-                              ImagePicker(); //added type ImagePicker
-                          var image1 = await _picker.getImage(
-                              source: ImageSource.camera);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.camera);
 
-                          if (image1 != null) {
-                            setState(() {
-                              aadharfront = File(image1.path);
-                            });
-                          }
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharfront = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/camera.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Camera')
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.gallery);
+
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharfront = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/gallery.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Gallery')
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ));
+                            },
+                          );
                         },
                         child: aadharfront == null
                             ? Container(
@@ -839,16 +1080,69 @@ class _ProfileState extends State<Profile> {
                       aadharback != null
                           ? GestureDetector(
                               onTap: () async {
-                                final ImagePicker _picker =
-                                    ImagePicker(); //added type ImagePicker
-                                var image1 = await _picker.getImage(
-                                    source: ImageSource.camera);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.camera);
 
-                                if (image1 != null) {
-                                  setState(() {
-                                    aadharback = File(image1.path);
-                                  });
-                                }
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharback = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/camera.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Camera')
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.gallery);
+
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharback = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/gallery.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Gallery')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ));
+                                  },
+                                );
                               },
                               child: Container(
                                 height: 130,
@@ -872,16 +1166,69 @@ class _ProfileState extends State<Profile> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          final ImagePicker _picker =
-                              ImagePicker(); //added type ImagePicker
-                          var image1 = await _picker.getImage(
-                              source: ImageSource.camera);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.camera);
 
-                          if (image1 != null) {
-                            setState(() {
-                              aadharback = File(image1.path);
-                            });
-                          }
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharback = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/camera.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Camera')
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.gallery);
+
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharback = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/gallery.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Gallery')
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ));
+                            },
+                          );
                         },
                         child: aadharback == null
                             ? Container(
@@ -1011,7 +1358,8 @@ class _ProfileState extends State<Profile> {
                           horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: ColorPalette.themeBlue)),
+                          border: Border.all(
+                              color: ColorPalette.themeBlue, width: 0.5)),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -1047,7 +1395,6 @@ class _ProfileState extends State<Profile> {
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 45,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Total Experience',
@@ -1055,12 +1402,12 @@ class _ProfileState extends State<Profile> {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
                       value: skill,
@@ -1188,10 +1535,16 @@ class _ProfileState extends State<Profile> {
                         TextInputType.text,
                         [FilteringTextInputFormatter.singleLineFormatter],
                         (value) {
-                      if (value.isEmpty) {
-                        return 'The field is mandatory';
+                      String pattern =
+                          r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+                      RegExp regex = RegExp(pattern);
+                      if (value == null ||
+                          value.isEmpty ||
+                          !regex.hasMatch(value)) {
+                        return 'Enter a valid GST number';
+                      } else {
+                        return null;
                       }
-                      return null;
                     }, 250),
                     const SizedBox(
                       height: 8,
@@ -1201,16 +1554,73 @@ class _ProfileState extends State<Profile> {
                         gst != null
                             ? GestureDetector(
                                 onTap: () async {
-                                  final ImagePicker _picker =
-                                      ImagePicker(); //added type ImagePicker
-                                  var image1 = await _picker.getImage(
-                                      source: ImageSource.camera);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.camera);
 
-                                  if (image1 != null) {
-                                    setState(() {
-                                      gst = File(image1.path);
-                                    });
-                                  }
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  gst = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/camera.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Camera')
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.gallery);
+
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  gst = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/gallery.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Gallery')
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ));
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   height: 130,
@@ -1223,7 +1633,7 @@ class _ProfileState extends State<Profile> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.file(
-                                      aadharback!,
+                                      gst!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -1235,16 +1645,69 @@ class _ProfileState extends State<Profile> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            final ImagePicker _picker =
-                                ImagePicker(); //added type ImagePicker
-                            var image1 = await _picker.getImage(
-                                source: ImageSource.camera);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.camera);
 
-                            if (image1 != null) {
-                              setState(() {
-                                gst = File(image1.path);
-                              });
-                            }
+                                        if (image1 != null) {
+                                          setState(() {
+                                            gst = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/camera.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Camera')
+                                        ],
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.gallery);
+
+                                        if (image1 != null) {
+                                          setState(() {
+                                            gst = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/gallery.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Gallery')
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                              },
+                            );
                           },
                           child: gst == null
                               ? Container(
@@ -1286,10 +1749,15 @@ class _ProfileState extends State<Profile> {
                         TextInputType.text,
                         [FilteringTextInputFormatter.singleLineFormatter],
                         (value) {
-                      if (value.isEmpty) {
-                        return 'The field is mandatory';
+                      String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
+                      RegExp regex = RegExp(pattern);
+                      if (value == null ||
+                          value.isEmpty ||
+                          !regex.hasMatch(value)) {
+                        return 'Enter a valid pan number';
+                      } else {
+                        return null;
                       }
-                      return null;
                     }, 250),
                     const SizedBox(
                       height: 8,
@@ -1464,7 +1932,8 @@ class _ProfileState extends State<Profile> {
                             horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: ColorPalette.themeBlue)),
+                            border: Border.all(
+                                color: ColorPalette.themeBlue, width: 0.5)),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1566,7 +2035,6 @@ class _ProfileState extends State<Profile> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: 45,
                       child: DropdownButtonFormField<String>(
                         decoration: const InputDecoration(
                           labelText: 'Select Bank',
@@ -1574,13 +2042,12 @@ class _ProfileState extends State<Profile> {
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: ColorPalette.themeBlue),
+                            borderSide: BorderSide(
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: ColorPalette.themeBlue,
-                            ),
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                         ),
                         value: workcity,
@@ -1655,7 +2122,6 @@ class _ProfileState extends State<Profile> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: 45,
                       child: DropdownButtonFormField<String>(
                         decoration: const InputDecoration(
                           labelText: 'Account Type',
@@ -1663,13 +2129,12 @@ class _ProfileState extends State<Profile> {
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: ColorPalette.themeBlue),
+                            borderSide: BorderSide(
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: ColorPalette.themeBlue,
-                            ),
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                         ),
                         value: acctype,
@@ -1735,16 +2200,73 @@ class _ProfileState extends State<Profile> {
                         check != null
                             ? GestureDetector(
                                 onTap: () async {
-                                  final ImagePicker _picker =
-                                      ImagePicker(); //added type ImagePicker
-                                  var image1 = await _picker.getImage(
-                                      source: ImageSource.camera);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.camera);
 
-                                  if (image1 != null) {
-                                    setState(() {
-                                      check = File(image1.path);
-                                    });
-                                  }
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  check = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/camera.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Camera')
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.gallery);
+
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  check = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/gallery.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Gallery')
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ));
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   height: 130,
@@ -1757,7 +2279,7 @@ class _ProfileState extends State<Profile> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.file(
-                                      aadharfront!,
+                                      check!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -1766,16 +2288,69 @@ class _ProfileState extends State<Profile> {
                             : Container(),
                         GestureDetector(
                           onTap: () async {
-                            final ImagePicker _picker =
-                                ImagePicker(); //added type ImagePicker
-                            var image1 = await _picker.getImage(
-                                source: ImageSource.camera);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.camera);
 
-                            if (image1 != null) {
-                              setState(() {
-                                check = File(image1.path);
-                              });
-                            }
+                                        if (image1 != null) {
+                                          setState(() {
+                                            check = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/camera.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Camera')
+                                        ],
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.gallery);
+
+                                        if (image1 != null) {
+                                          setState(() {
+                                            check = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/gallery.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Gallery')
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                              },
+                            );
                           },
                           child: check == null
                               ? Container(
@@ -1816,11 +2391,12 @@ class _ProfileState extends State<Profile> {
   var sr = '';
   var profile = '[Profile]';
   var userAddress = '[Address]';
-
+  final _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _key,
         backgroundColor: Colors.white,
         // appBar: AppBar(
         //   backgroundColor: Colors.white,
