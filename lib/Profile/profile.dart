@@ -1719,7 +1719,7 @@ class _ProfileState extends State<Profile> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: 180,
+              height: 170,
               child: Card(
                 elevation: 5,
                 child: Padding(
