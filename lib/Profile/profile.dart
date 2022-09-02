@@ -1,12 +1,12 @@
 import 'dart:io';
-import 'package:freelancing/Dashboard/dashboard.dart';
+
+import 'package:freelancing/Screens/review.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
-import '../UpdateProfile/updateProfile.dart';
-import 'Chip/multichip.dart';
+
 import 'package:get/get.dart';
 import 'Multiple Select/multi_select.dart';
 
@@ -23,7 +23,6 @@ class _ProfileState extends State<Profile> {
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
-    GlobalKey<FormState>()
   ];
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -62,10 +61,9 @@ class _ProfileState extends State<Profile> {
 
   var skill;
 
-  bool _checkbox = true;
+  bool _checkbox = false;
 
   File? panfront;
-  File? panback;
   File? aadharfront;
   File? aadharback;
   File? pic;
@@ -195,33 +193,100 @@ class _ProfileState extends State<Profile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SWANWidget.enabledTextFormField(
-                    firstName,
-                    'First Name',
-                    TextInputType.text,
-                    [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                    (value) {
-                      if (value.isEmpty) {
+                  TextFormField(
+                    controller: firstName,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'First Name',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        name = value;
+                        if (value.isEmpty) {
+                          name = '[Name]';
+                        }
+                      });
+                    },
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
                         return 'The field is mandatory';
                       }
                       return null;
                     },
-                    250,
                   ),
+                  // SWANWidget.enabledTextFormField(
+                  //   firstName,
+                  //   'First Name',
+                  //   TextInputType.text,
+                  //   [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
+                  //   (value) {
+                  //     if (value.isEmpty) {
+                  //       return 'The field is mandatory';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   250,
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
-                  SWANWidget.enabledTextFormField(
-                      lastName,
-                      'Last Name',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                      (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
-                    }
-                    return null;
-                  }, 250),
+                  TextFormField(
+                    controller: lastName,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'Last Name',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        sr = value;
+                        if (value.isEmpty) {
+                          sr = '';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -229,27 +294,104 @@ class _ProfileState extends State<Profile> {
                       email,
                       'Email id',
                       TextInputType.text,
-                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
+                      [FilteringTextInputFormatter.singleLineFormatter],
                       (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
+                    String pattern =
+                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                        r"{0,253}[a-zA-Z0-9])?)*$";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid email address';
+                    } else {
+                      return null;
                     }
-                    return null;
                   }, 250),
                   const SizedBox(
                     height: 8,
                   ),
-                  SWANWidget.enabledTextFormField(
-                      address,
-                      'Address',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.singleLineFormatter],
-                      (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
-                    }
-                    return null;
-                  }, 250),
+                  TextFormField(
+                    controller: work,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'Profile',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        profile = value;
+                        if (value.isEmpty) {
+                          profile = '[Profile]';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  TextFormField(
+                    controller: address,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText: 'Address',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    onChanged: (value) {
+                      setState(() {
+                        userAddress = value;
+                        if (value.isEmpty) {
+                          userAddress = '[Address]';
+                        }
+                      });
+                    },
+                    //enabled: true,
+                    //inputFormatters: FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -268,22 +410,10 @@ class _ProfileState extends State<Profile> {
                   // const SizedBox(
                   //   height: 8,
                   // ),
-                  SWANWidget.enabledTextFormField(
-                      work,
-                      'Work Title',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                      (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
-                    }
-                    return null;
-                  }, 250),
-                  const SizedBox(
-                    height: 8,
-                  ),
+
                   TextFormField(
                     controller: dob,
+
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.calendar_month_outlined),
                         isDense: true,
@@ -320,24 +450,23 @@ class _ProfileState extends State<Profile> {
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: DropdownButtonFormField<String>(
+                    //height: 100,
+                    child: DropdownButtonFormField(
                       decoration: const InputDecoration(
                         labelText: 'Gender',
                         isDense: true, // Added this
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
                       value: gender,
-
                       dropdownColor: Colors.white,
                       isExpanded: true,
                       iconSize: 20,
@@ -352,11 +481,13 @@ class _ProfileState extends State<Profile> {
                           value: value,
                         );
                       }).toList(),
+
                       onChanged: (salutation) {
                         setState(() {
                           gender = salutation!;
                         });
                       },
+
                       //value: dropdownProject,
                       validator: (value) =>
                           value == null ? 'field required' : null,
@@ -367,7 +498,6 @@ class _ProfileState extends State<Profile> {
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 45,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Highest Qualification',
@@ -375,12 +505,12 @@ class _ProfileState extends State<Profile> {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
                       value: qualification,
@@ -436,52 +566,51 @@ class _ProfileState extends State<Profile> {
                       //textScaleFactor: labelTextScale,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'ID Proof',
-                        isDense: true, // Added this
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
-                        ),
-                      ),
-                      value: panDropdown,
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: DropdownButtonFormField<String>(
+                  //     decoration: const InputDecoration(
+                  //       labelText: 'ID Proof',
+                  //       isDense: true, // Added this
+                  //       contentPadding:
+                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //     ),
+                  //     value: panDropdown,
 
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      iconSize: 20,
-                      style: const TextStyle(color: Colors.black),
+                  //     dropdownColor: Colors.white,
+                  //     isExpanded: true,
+                  //     iconSize: 20,
+                  //     style: const TextStyle(color: Colors.black),
 
-                      items: [
-                        'Pan Card',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          child: Text(value),
-                          value: value,
-                        );
-                      }).toList(),
-                      onChanged: (salutation) {
-                        setState(() {
-                          panDropdown = salutation!;
-                        });
-                      },
-                      //value: dropdownProject,
-                      validator: (value) =>
-                          value == null ? 'field required' : null,
-                    ),
-                  ),
+                  //     items: [
+                  //       'Pan Card',
+                  //     ].map<DropdownMenuItem<String>>((String value) {
+                  //       return DropdownMenuItem<String>(
+                  //         child: Text(value),
+                  //         value: value,
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (salutation) {
+                  //       setState(() {
+                  //         panDropdown = salutation!;
+                  //       });
+                  //     },
+                  //     //value: dropdownProject,
+                  //     validator: (value) =>
+                  //         value == null ? 'field required' : null,
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -491,13 +620,18 @@ class _ProfileState extends State<Profile> {
                       TextInputType.text,
                       [FilteringTextInputFormatter.singleLineFormatter],
                       (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
+                    String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid pan number';
+                    } else {
+                      return null;
                     }
-                    return null;
                   }, 250),
                   const SizedBox(
-                    height: 5,
+                    height: 8,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -507,16 +641,75 @@ class _ProfileState extends State<Profile> {
                           panfront != null
                               ? GestureDetector(
                                   onTap: () async {
-                                    final ImagePicker _picker =
-                                        ImagePicker(); //added type ImagePicker
-                                    var image1 = await _picker.getImage(
-                                        source: ImageSource.camera);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                            content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final ImagePicker _picker =
+                                                    ImagePicker(); //added type ImagePicker
+                                                var image1 =
+                                                    await _picker.getImage(
+                                                        source:
+                                                            ImageSource.camera);
 
-                                    if (image1 != null) {
-                                      setState(() {
-                                        panfront = File(image1.path);
-                                      });
-                                    }
+                                                if (image1 != null) {
+                                                  setState(() {
+                                                    panfront =
+                                                        File(image1.path);
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
+                                              },
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/camera.png',
+                                                    scale: 2.5,
+                                                  ),
+                                                  const Text('Camera')
+                                                ],
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final ImagePicker _picker =
+                                                    ImagePicker(); //added type ImagePicker
+                                                var image1 =
+                                                    await _picker.getImage(
+                                                        source: ImageSource
+                                                            .gallery);
+
+                                                if (image1 != null) {
+                                                  setState(() {
+                                                    panfront =
+                                                        File(image1.path);
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
+                                              },
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/gallery.png',
+                                                    scale: 2.5,
+                                                  ),
+                                                  const Text('Gallery')
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     height: 130,
@@ -538,16 +731,69 @@ class _ProfileState extends State<Profile> {
                               : Container(),
                           GestureDetector(
                             onTap: () async {
-                              final ImagePicker _picker =
-                                  ImagePicker(); //added type ImagePicker
-                              var image1 = await _picker.getImage(
-                                  source: ImageSource.camera);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      content: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final ImagePicker _picker =
+                                              ImagePicker(); //added type ImagePicker
+                                          var image1 = await _picker.getImage(
+                                              source: ImageSource.camera);
 
-                              if (image1 != null) {
-                                setState(() {
-                                  panfront = File(image1.path);
-                                });
-                              }
+                                          if (image1 != null) {
+                                            setState(() {
+                                              panfront = File(image1.path);
+                                              Navigator.pop(context);
+                                            });
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/camera.png',
+                                              scale: 2.5,
+                                            ),
+                                            const Text('Camera')
+                                          ],
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final ImagePicker _picker =
+                                              ImagePicker(); //added type ImagePicker
+                                          var image1 = await _picker.getImage(
+                                              source: ImageSource.gallery);
+
+                                          if (image1 != null) {
+                                            setState(() {
+                                              panfront = File(image1.path);
+                                              Navigator.pop(context);
+                                            });
+                                          }
+                                        },
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/gallery.png',
+                                              scale: 2.5,
+                                            ),
+                                            const Text('Gallery')
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ));
+                                },
+                              );
                             },
                             child: panfront == null
                                 ? Container(
@@ -582,51 +828,50 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'Address Proof',
-                        isDense: true, // Added this
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
-                        ),
-                      ),
-                      value: aadhar,
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      iconSize: 20,
-                      style: const TextStyle(color: Colors.black),
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: DropdownButtonFormField<String>(
+                  //     decoration: const InputDecoration(
+                  //       labelText: 'Address Proof',
+                  //       isDense: true, // Added this
+                  //       contentPadding:
+                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderSide: BorderSide(
+                  //             color: ColorPalette.themeBlue, width: 0.5),
+                  //       ),
+                  //     ),
+                  //     value: aadhar,
+                  //     dropdownColor: Colors.white,
+                  //     isExpanded: true,
+                  //     iconSize: 20,
+                  //     style: const TextStyle(color: Colors.black),
 
-                      items: [
-                        'Aadhar Card',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          child: Text(value),
-                          value: value,
-                        );
-                      }).toList(),
-                      onChanged: (salutation) {
-                        setState(() {
-                          aadhar = salutation!;
-                        });
-                      },
-                      //value: dropdownProject,
-                      validator: (value) =>
-                          value == null ? 'field required' : null,
-                    ),
-                  ),
+                  //     items: [
+                  //       'Aadhar Card',
+                  //     ].map<DropdownMenuItem<String>>((String value) {
+                  //       return DropdownMenuItem<String>(
+                  //         child: Text(value),
+                  //         value: value,
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (salutation) {
+                  //       setState(() {
+                  //         aadhar = salutation!;
+                  //       });
+                  //     },
+                  //     //value: dropdownProject,
+                  //     validator: (value) =>
+                  //         value == null ? 'field required' : null,
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -635,10 +880,15 @@ class _ProfileState extends State<Profile> {
                       'Aadhar Card Number',
                       TextInputType.text,
                       [FilteringTextInputFormatter.digitsOnly], (value) {
-                    if (value.isEmpty) {
-                      return 'The field is mandatory';
+                    String pattern = r"^[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid Aadhar number';
+                    } else {
+                      return null;
                     }
-                    return null;
                   }, 250),
                   const SizedBox(
                     height: 5,
@@ -648,16 +898,69 @@ class _ProfileState extends State<Profile> {
                       aadharfront != null
                           ? GestureDetector(
                               onTap: () async {
-                                final ImagePicker _picker =
-                                    ImagePicker(); //added type ImagePicker
-                                var image1 = await _picker.getImage(
-                                    source: ImageSource.camera);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.camera);
 
-                                if (image1 != null) {
-                                  setState(() {
-                                    aadharfront = File(image1.path);
-                                  });
-                                }
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharfront = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/camera.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Camera')
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.gallery);
+
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharfront = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/gallery.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Gallery')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ));
+                                  },
+                                );
                               },
                               child: Container(
                                 height: 130,
@@ -676,18 +979,74 @@ class _ProfileState extends State<Profile> {
                               ),
                             )
                           : Container(),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       GestureDetector(
                         onTap: () async {
-                          final ImagePicker _picker =
-                              ImagePicker(); //added type ImagePicker
-                          var image1 = await _picker.getImage(
-                              source: ImageSource.camera);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.camera);
 
-                          if (image1 != null) {
-                            setState(() {
-                              aadharfront = File(image1.path);
-                            });
-                          }
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharfront = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/camera.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Camera')
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.gallery);
+
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharfront = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/gallery.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Gallery')
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ));
+                            },
+                          );
                         },
                         child: aadharfront == null
                             ? Container(
@@ -721,16 +1080,69 @@ class _ProfileState extends State<Profile> {
                       aadharback != null
                           ? GestureDetector(
                               onTap: () async {
-                                final ImagePicker _picker =
-                                    ImagePicker(); //added type ImagePicker
-                                var image1 = await _picker.getImage(
-                                    source: ImageSource.camera);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.camera);
 
-                                if (image1 != null) {
-                                  setState(() {
-                                    aadharback = File(image1.path);
-                                  });
-                                }
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharback = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/camera.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Camera')
+                                            ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final ImagePicker _picker =
+                                                ImagePicker(); //added type ImagePicker
+                                            var image1 = await _picker.getImage(
+                                                source: ImageSource.gallery);
+
+                                            if (image1 != null) {
+                                              setState(() {
+                                                aadharback = File(image1.path);
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/gallery.png',
+                                                scale: 2.5,
+                                              ),
+                                              const Text('Gallery')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ));
+                                  },
+                                );
                               },
                               child: Container(
                                 height: 130,
@@ -754,16 +1166,69 @@ class _ProfileState extends State<Profile> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          final ImagePicker _picker =
-                              ImagePicker(); //added type ImagePicker
-                          var image1 = await _picker.getImage(
-                              source: ImageSource.camera);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.camera);
 
-                          if (image1 != null) {
-                            setState(() {
-                              aadharback = File(image1.path);
-                            });
-                          }
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharback = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/camera.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Camera')
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var image1 = await _picker.getImage(
+                                          source: ImageSource.gallery);
+
+                                      if (image1 != null) {
+                                        setState(() {
+                                          aadharback = File(image1.path);
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/gallery.png',
+                                          scale: 2.5,
+                                        ),
+                                        const Text('Gallery')
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ));
+                            },
+                          );
                         },
                         child: aadharback == null
                             ? Container(
@@ -893,7 +1358,8 @@ class _ProfileState extends State<Profile> {
                           horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: ColorPalette.themeBlue)),
+                          border: Border.all(
+                              color: ColorPalette.themeBlue, width: 0.5)),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -929,7 +1395,6 @@ class _ProfileState extends State<Profile> {
 
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: 45,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Total Experience',
@@ -937,12 +1402,12 @@ class _ProfileState extends State<Profile> {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ColorPalette.themeBlue),
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: ColorPalette.themeBlue,
-                          ),
+                              color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
                       value: skill,
@@ -1070,10 +1535,16 @@ class _ProfileState extends State<Profile> {
                         TextInputType.text,
                         [FilteringTextInputFormatter.singleLineFormatter],
                         (value) {
-                      if (value.isEmpty) {
-                        return 'The field is mandatory';
+                      String pattern =
+                          r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+                      RegExp regex = RegExp(pattern);
+                      if (value == null ||
+                          value.isEmpty ||
+                          !regex.hasMatch(value)) {
+                        return 'Enter a valid GST number';
+                      } else {
+                        return null;
                       }
-                      return null;
                     }, 250),
                     const SizedBox(
                       height: 8,
@@ -1083,16 +1554,73 @@ class _ProfileState extends State<Profile> {
                         gst != null
                             ? GestureDetector(
                                 onTap: () async {
-                                  final ImagePicker _picker =
-                                      ImagePicker(); //added type ImagePicker
-                                  var image1 = await _picker.getImage(
-                                      source: ImageSource.camera);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.camera);
 
-                                  if (image1 != null) {
-                                    setState(() {
-                                      gst = File(image1.path);
-                                    });
-                                  }
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  gst = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/camera.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Camera')
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.gallery);
+
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  gst = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/gallery.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Gallery')
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ));
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   height: 130,
@@ -1105,7 +1633,7 @@ class _ProfileState extends State<Profile> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.file(
-                                      aadharback!,
+                                      gst!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -1117,16 +1645,69 @@ class _ProfileState extends State<Profile> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            final ImagePicker _picker =
-                                ImagePicker(); //added type ImagePicker
-                            var image1 = await _picker.getImage(
-                                source: ImageSource.camera);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.camera);
 
-                            if (image1 != null) {
-                              setState(() {
-                                gst = File(image1.path);
-                              });
-                            }
+                                        if (image1 != null) {
+                                          setState(() {
+                                            gst = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/camera.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Camera')
+                                        ],
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.gallery);
+
+                                        if (image1 != null) {
+                                          setState(() {
+                                            gst = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/gallery.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Gallery')
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                              },
+                            );
                           },
                           child: gst == null
                               ? Container(
@@ -1168,10 +1749,15 @@ class _ProfileState extends State<Profile> {
                         TextInputType.text,
                         [FilteringTextInputFormatter.singleLineFormatter],
                         (value) {
-                      if (value.isEmpty) {
-                        return 'The field is mandatory';
+                      String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
+                      RegExp regex = RegExp(pattern);
+                      if (value == null ||
+                          value.isEmpty ||
+                          !regex.hasMatch(value)) {
+                        return 'Enter a valid pan number';
+                      } else {
+                        return null;
                       }
-                      return null;
                     }, 250),
                     const SizedBox(
                       height: 8,
@@ -1346,7 +1932,8 @@ class _ProfileState extends State<Profile> {
                             horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: ColorPalette.themeBlue)),
+                            border: Border.all(
+                                color: ColorPalette.themeBlue, width: 0.5)),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1448,7 +2035,6 @@ class _ProfileState extends State<Profile> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: 45,
                       child: DropdownButtonFormField<String>(
                         decoration: const InputDecoration(
                           labelText: 'Select Bank',
@@ -1456,13 +2042,12 @@ class _ProfileState extends State<Profile> {
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: ColorPalette.themeBlue),
+                            borderSide: BorderSide(
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: ColorPalette.themeBlue,
-                            ),
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                         ),
                         value: workcity,
@@ -1537,7 +2122,6 @@ class _ProfileState extends State<Profile> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: 45,
                       child: DropdownButtonFormField<String>(
                         decoration: const InputDecoration(
                           labelText: 'Account Type',
@@ -1545,13 +2129,12 @@ class _ProfileState extends State<Profile> {
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: ColorPalette.themeBlue),
+                            borderSide: BorderSide(
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: ColorPalette.themeBlue,
-                            ),
+                                color: ColorPalette.themeBlue, width: 0.5),
                           ),
                         ),
                         value: acctype,
@@ -1617,16 +2200,73 @@ class _ProfileState extends State<Profile> {
                         check != null
                             ? GestureDetector(
                                 onTap: () async {
-                                  final ImagePicker _picker =
-                                      ImagePicker(); //added type ImagePicker
-                                  var image1 = await _picker.getImage(
-                                      source: ImageSource.camera);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.camera);
 
-                                  if (image1 != null) {
-                                    setState(() {
-                                      check = File(image1.path);
-                                    });
-                                  }
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  check = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/camera.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Camera')
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker(); //added type ImagePicker
+                                              var image1 =
+                                                  await _picker.getImage(
+                                                      source:
+                                                          ImageSource.gallery);
+
+                                              if (image1 != null) {
+                                                setState(() {
+                                                  check = File(image1.path);
+                                                  Navigator.pop(context);
+                                                });
+                                              }
+                                            },
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/gallery.png',
+                                                  scale: 2.5,
+                                                ),
+                                                const Text('Gallery')
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ));
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   height: 130,
@@ -1639,7 +2279,7 @@ class _ProfileState extends State<Profile> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.file(
-                                      aadharfront!,
+                                      check!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -1648,16 +2288,69 @@ class _ProfileState extends State<Profile> {
                             : Container(),
                         GestureDetector(
                           onTap: () async {
-                            final ImagePicker _picker =
-                                ImagePicker(); //added type ImagePicker
-                            var image1 = await _picker.getImage(
-                                source: ImageSource.camera);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.camera);
 
-                            if (image1 != null) {
-                              setState(() {
-                                check = File(image1.path);
-                              });
-                            }
+                                        if (image1 != null) {
+                                          setState(() {
+                                            check = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/camera.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Camera')
+                                        ],
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final ImagePicker _picker =
+                                            ImagePicker(); //added type ImagePicker
+                                        var image1 = await _picker.getImage(
+                                            source: ImageSource.gallery);
+
+                                        if (image1 != null) {
+                                          setState(() {
+                                            check = File(image1.path);
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/gallery.png',
+                                            scale: 2.5,
+                                          ),
+                                          const Text('Gallery')
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                              },
+                            );
                           },
                           child: check == null
                               ? Container(
@@ -1678,7 +2371,7 @@ class _ProfileState extends State<Profile> {
                                         scale: 3,
                                       ),
                                       Text(
-                                        'Upload Cancle Check',
+                                        'Upload Cancel Check',
                                         style:
                                             SWANWidget.subtextRegularTextStyle,
                                       )
@@ -1695,11 +2388,15 @@ class _ProfileState extends State<Profile> {
             ))
       ];
   var name = '[Name]';
-
+  var sr = '';
+  var profile = '[Profile]';
+  var userAddress = '[Address]';
+  final _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _key,
         backgroundColor: Colors.white,
         // appBar: AppBar(
         //   backgroundColor: Colors.white,
@@ -1776,20 +2473,23 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        const Card(
-                          elevation: 15,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 2),
-                            child: Text(
-                              '[Work title]',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
+                        // const SizedBox(
+                        //   height: 30,
+                        // ),
+                        // SizedBox(
+                        //   width: 100,
+                        //   child: const Card(
+                        //     elevation: 15,
+                        //     child: Padding(
+                        //       padding: EdgeInsets.symmetric(
+                        //           horizontal: 10, vertical: 2),
+                        //       child: Text(
+                        //         '[Work title title title title ]',
+                        //         style: TextStyle(fontSize: 12),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                     const SizedBox(
@@ -1801,16 +2501,16 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: Text(
-                            name,
+                            '${name} ${sr}',
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 5),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
                           child: Text(
-                            '[Profile]',
-                            style: TextStyle(
+                            profile,
+                            style: const TextStyle(
                                 fontSize: 12,
                                 color: ColorPalette.bgGrey,
                                 fontWeight: FontWeight.w300),
@@ -1841,20 +2541,20 @@ class _ProfileState extends State<Profile> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.location_on_outlined,
                               size: 18,
                               color: ColorPalette.bgGrey,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             SizedBox(
                               width: 160,
                               child: Text(
-                                '[Address]',
-                                style: TextStyle(
+                                '$userAddress',
+                                style: const TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                             ),
@@ -1874,56 +2574,22 @@ class _ProfileState extends State<Profile> {
                 onStepContinue: () {
                   if (_activeCurrentStep < (stepList().length - 1)) {
                     setState(() {
-                      // if (formKeys[_activeCurrentStep].currentState!.validate()) {
-                      _activeCurrentStep += 1;
-                      // Get.to(const Dashboard());
-                      // }
+                      if (formKeys[_activeCurrentStep]
+                          .currentState!
+                          .validate()) {
+                        _activeCurrentStep += 1;
+                        // Get.to(const Dashboard());
+                      }
                     });
                   } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: GestureDetector(
-                          onTap: (() => Get.off(() => const Dashboard())),
-                          child: AlertDialog(
-                            content: SizedBox(
-                              height: MediaQuery.of(context).size.height / 1.7,
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      'assets/images/review.png',
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              1.7,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   bottom: 0.0,
-                                  //   left:
-                                  //       MediaQuery.of(context).size.width / 7.8,
-                                  //   child: ElevatedButton(
-                                  //       onPressed: () {
-                                  //         Get.off(() => UpdateProfile());
-                                  //       },
-                                  //       child: Text(
-                                  //         'Preview Your Profile',
-                                  //         style: SWANWidget.buttonTextStyle,
-                                  //       )),
-                                  // )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                    // Get.off(() => Dashboard());
-                    //Get.to(const Dashboard());
+                    setState(() {
+                      if (formKeys[_activeCurrentStep]
+                          .currentState!
+                          .validate()) {
+                        //_activeCurrentStep += 1;
+                        Get.to(const Review());
+                      }
+                    });
                   }
                   //if (_activeCurrentStep != 2 && _activeCurrentStep != 1) {
                   //print('lalit $_activeCurrentStep');
