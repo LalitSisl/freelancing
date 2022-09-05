@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/register.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -24,6 +26,41 @@ class _OtpState extends State<Otp> {
         content: Text(message!),
         duration: const Duration(seconds: 2),
       ),
+    );
+  }
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+
+  }
+
+
+  int _start = 30;
+  late Timer _timer;
+  bool isLoading = false;
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            isLoading = false;
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
     );
   }
 
@@ -139,8 +176,27 @@ class _OtpState extends State<Otp> {
                   },
                 )),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _start != 0 ?
+              Text('Resend in ${_start.toString()}'):Container(),
+              _start == 0 ?GestureDetector(
+                onTap: (){
+                  setState(() {
+                    _start = 30;
+                    isLoading = true;
+                    startTimer();
+                  });
+                },
+                child: const Text('Resend OTP'),
+              ):Container(),
+            ],
+          ),
+
+
           const SizedBox(
-            height: 50,
+            height: 30,
           ),
           Align(
             alignment: Alignment.bottomRight,
