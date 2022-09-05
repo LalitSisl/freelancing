@@ -72,7 +72,6 @@ class _RegisterState extends State<Register> {
                     leading: Image.asset('assets/images/teamuser.png'),
                     title: Text(
                       'Vendor',
-                      
                       style: GoogleFonts.aBeeZee(
                           fontSize: 22, color: ColorPalette.green),
                     ),
@@ -98,7 +97,8 @@ class _RegisterState extends State<Register> {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(const Profile());
+                      print('$_selectUser');
+                      Get.to(Profile(user: _selectUser));
                     },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 50),

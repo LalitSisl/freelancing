@@ -1,23 +1,27 @@
 import 'dart:io';
 
+import 'package:flutter/rendering.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'Multiple Select/multi_select.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  String? user;
+  Profile({Key? key, required this.user}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  var _selectaccount;
+  var _selectvendor;
   int _activeCurrentStep = 0;
   List<GlobalKey<FormState>> formKeys = [
     GlobalKey<FormState>(),
@@ -30,10 +34,23 @@ class _ProfileState extends State<Profile> {
   TextEditingController work = TextEditingController();
   TextEditingController dob = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController pincode = TextEditingController();
   TextEditingController state = TextEditingController();
   TextEditingController city = TextEditingController();
   TextEditingController address = TextEditingController();
+
+  //Vendor
+  TextEditingController company_name = TextEditingController();
+  TextEditingController search_item = TextEditingController();
+  TextEditingController pincode = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController fax = TextEditingController();
+  TextEditingController c_firstName = TextEditingController();
+  TextEditingController c_lastName = TextEditingController();
+  TextEditingController c_position = TextEditingController();
+  TextEditingController c_phone = TextEditingController();
+  TextEditingController turnover = TextEditingController();
+
+
   // idebtity
   TextEditingController pancard = TextEditingController();
   TextEditingController aadharcard = TextEditingController();
@@ -48,6 +65,12 @@ class _ProfileState extends State<Profile> {
   TextEditingController ifsc = TextEditingController();
   TextEditingController accHolderName = TextEditingController();
   TextEditingController bankName = TextEditingController();
+
+
+  //vendor dropdown
+  var vendor_city;
+  var vendor_state;
+  var vendor_company;
 
   // ignore: prefer_typing_uninitialized_variables
   var gender;
@@ -134,6 +157,12 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  @override
+  initState() {
+    super.initState();
+   print(widget.user);
+  }
+
   void _showMultiSelectskill() async {
     // a list of selectable items
     // these items can be hard-coded or dynamically fetched from a database/API
@@ -179,6 +208,8 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+
+
   List<Step> stepList() => [
         Step(
           state:
@@ -193,12 +224,17 @@ class _ProfileState extends State<Profile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+
                   TextFormField(
-                    controller: firstName,
+                    controller:
+                    widget.user == "0" ?
+                    firstName: company_name,
                     decoration: InputDecoration(
                         isDense: true,
                         contentPadding: const EdgeInsets.all(12),
-                        labelText: 'First Name',
+                        labelText:
+                        widget.user == "0" ?
+                        'First Name': 'Company Name',
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorPalette.themeBlue, width: 0.5),
@@ -231,28 +267,199 @@ class _ProfileState extends State<Profile> {
                       return null;
                     },
                   ),
-                  // SWANWidget.enabledTextFormField(
-                  //   firstName,
-                  //   'First Name',
-                  //   TextInputType.text,
-                  //   [FilteringTextInputFormatter.deny(RegExp("[0-9]"))],
-                  //   (value) {
-                  //     if (value.isEmpty) {
-                  //       return 'The field is mandatory';
-                  //     }
-                  //     return null;
-                  //   },
-                  //   250,
-                  // ),
+widget.user == "0"?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+
+                  widget.user == "1" ?
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: RichText(
+                      text:const TextSpan(
+                          text:
+                          'Account Group',
+                          style: TextStyle(
+                              color: ColorPalette.themeBlue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                          children: [
+                            TextSpan(
+                                text: ' *',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14))
+                          ]),
+                      //textScaleFactor: labelTextScale,
+                    ),
+                  ):Container(),
+
+widget.user == "1" ?
+                  ListTile(
+                    visualDensity: const VisualDensity(
+                      horizontal: VisualDensity.minimumDensity,
+                      vertical: VisualDensity.minimumDensity,
+                    ),
+                    leading: Transform.scale(
+                      scale: 0.8,
+                      child: Radio(
+
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: '0',
+                        groupValue: _selectaccount,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectaccount = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    title: Text(
+                      'Domestic',
+                      style: GoogleFonts.aBeeZee(
+                          fontSize: 12, color: Colors.black),
+                    ),
+
+                  ):Container(),
+                  widget.user == "1" ?
+                  ListTile(
+                    visualDensity: const VisualDensity(
+                      horizontal: VisualDensity.minimumDensity,
+                      vertical: VisualDensity.minimumDensity,
+                    ),
+                    leading: Transform.scale(
+                      scale: 0.8,
+                      child: Radio(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: '1',
+                        groupValue: _selectaccount,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectaccount = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    title: Text(
+                      'One time Vendor',
+                      style: GoogleFonts.aBeeZee(
+                          fontSize: 12, color: Colors.black),
+                    ),
+
+                  ):Container(),
+
+                  widget.user == "1" ?
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: RichText(
+                      text:const TextSpan(
+                          text:
+                          'Vendor required for',
+                          style: TextStyle(
+                              color: ColorPalette.themeBlue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                          children: [
+                            TextSpan(
+                                text: ' *',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14))
+                          ]),
+                      //textScaleFactor: labelTextScale,
+                    ),
+                  ):Container(),
+
+                  widget.user == "1" ?
+                  ListTile(
+                    visualDensity: const VisualDensity(
+                      horizontal: VisualDensity.minimumDensity,
+                      vertical: VisualDensity.minimumDensity,
+                    ),
+                    leading: Transform.scale(
+                      scale: 0.8,
+                      child: Radio(
+
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: '0',
+                        groupValue: _selectvendor,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectvendor = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    title: Text(
+                      'For project supply/service',
+                      style: GoogleFonts.aBeeZee(
+                          fontSize: 12, color: Colors.black),
+                    ),
+
+                  ):Container(),
+                  widget.user == "1" ?
+                  ListTile(
+                    visualDensity: const VisualDensity(
+                      horizontal: VisualDensity.minimumDensity,
+                      vertical: VisualDensity.minimumDensity,
+                    ),
+                    leading: Transform.scale(
+                      scale: 0.8,
+                      child: Radio(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: '1',
+                        groupValue: _selectvendor,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectvendor = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    title: Text(
+                      'IT',
+                      style: GoogleFonts.aBeeZee(
+                          fontSize: 12, color: Colors.black),
+                    ),
+
+                  ):Container(),
+
+                  widget.user == "1" ?
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: RichText(
+                      text:const TextSpan(
+                          text:
+                          'Account Group',
+                          style: TextStyle(
+                              color: ColorPalette.themeBlue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                          children: [
+                            TextSpan(
+                                text: ' *',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14))
+                          ]),
+                      //textScaleFactor: labelTextScale,
+                    ),
+                  ):Container(),
+
+                  widget.user == "0"?
                   TextFormField(
-                    controller: lastName,
+                    controller:
+
+                    lastName,
                     decoration: InputDecoration(
                         isDense: true,
                         contentPadding: const EdgeInsets.all(12),
-                        labelText: 'Last Name',
+                        labelText:
+                        widget.user == "0" ?
+                        'Last Name': 'Search Item',
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorPalette.themeBlue, width: 0.5),
@@ -286,10 +493,12 @@ class _ProfileState extends State<Profile> {
                       }
                       return null;
                     },
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+
                   SWANWidget.enabledTextFormField(
                       email,
                       'Email id',
@@ -312,6 +521,7 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 8,
                   ),
+                  widget.user == "0" ?
                   TextFormField(
                     controller: work,
                     decoration: InputDecoration(
@@ -351,10 +561,12 @@ class _ProfileState extends State<Profile> {
                       }
                       return null;
                     },
-                  ),
+                  ): Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   TextFormField(
                     controller: address,
                     decoration: InputDecoration(
@@ -391,10 +603,12 @@ class _ProfileState extends State<Profile> {
                       }
                       return null;
                     },
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+
 
                   // SWANWidget.enabledTextFormField(
                   //     business,
@@ -410,7 +624,7 @@ class _ProfileState extends State<Profile> {
                   // const SizedBox(
                   //   height: 8,
                   // ),
-
+                  widget.user == "0" ?
                   TextFormField(
                     controller: dob,
 
@@ -444,10 +658,12 @@ class _ProfileState extends State<Profile> {
                     onTap: () {
                       _selectDate(context);
                     },
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     //height: 100,
@@ -492,10 +708,12 @@ class _ProfileState extends State<Profile> {
                       validator: (value) =>
                           value == null ? 'field required' : null,
                     ),
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DropdownButtonFormField<String>(
@@ -542,20 +760,203 @@ class _ProfileState extends State<Profile> {
                       validator: (value) =>
                           value == null ? 'field required' : null,
                     ),
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  widget.user == "1" ?
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'City',
+                        isDense: true, // Added this
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                      ),
+                      value: vendor_city,
+
+                      dropdownColor: Colors.white,
+                      isExpanded: true,
+                      iconSize: 20,
+                      style: const TextStyle(color: Colors.black),
+
+                      items: [
+                        'Delhi',
+                        'Mumbai',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          child: Text(value),
+                          value: value,
+                        );
+                      }).toList(),
+                      onChanged: (salutation) {
+                        setState(() {
+                          vendor_city = salutation!;
+                        });
+                      },
+                      //value: dropdownProject,
+                      validator: (value) =>
+                          value == null ? 'field required' : null,
+                    ),
+                  ):Container(),
+                  const SizedBox(height: 8,),
+                  widget.user == "1" ?
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'State',
+                        isDense: true, // Added this
+                        contentPadding:
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                      ),
+                      value: vendor_state,
+
+                      dropdownColor: Colors.white,
+                      isExpanded: true,
+                      iconSize: 20,
+                      style: const TextStyle(color: Colors.black),
+
+                      items: [
+                        'Delhi',
+                        'Karnataka',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          child: Text(value),
+                          value: value,
+                        );
+                      }).toList(),
+                      onChanged: (salutation) {
+                        setState(() {
+                          vendor_city = salutation!;
+                        });
+                      },
+                      //value: dropdownProject,
+                      validator: (value) =>
+                      value == null ? 'field required' : null,
+                    ),
+                  ):Container(),
+                  const SizedBox(height: 8,),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      pincode,
+                      'Pincode',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.digitsOnly], (value) {
+
+                    if (value.isEmpty) {
+                      return 'Enter pincode';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  const SizedBox(height: 8,),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      phone,
+                      'Phone Number',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.digitsOnly], (value) {
+
+                    if (value.isEmpty) {
+                      return 'Enter phone number';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  const SizedBox(height: 8,),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      turnover,
+                      'Actual Turnover',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.digitsOnly], (value) {
+
+                    if (value.isEmpty) {
+                      return 'Enter turnover number';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  SizedBox(height: 8,),
+                  widget.user == "1" ?
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Type of Company ',
+                        isDense: true, // Added this
+                        contentPadding:
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                      ),
+                      value: vendor_company,
+
+                      dropdownColor: Colors.white,
+                      isExpanded: true,
+                      iconSize: 20,
+                      style: const TextStyle(color: Colors.black),
+
+                      items: [
+                        'MNC',
+                        'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          child: Text(value),
+                          value: value,
+                        );
+                      }).toList(),
+                      onChanged: (salutation) {
+                        setState(() {
+                          vendor_company = salutation!;
+                        });
+                      },
+                      //value: dropdownProject,
+                      validator: (value) =>
+                      value == null ? 'field required' : null,
+                    ),
+                  ):Container(),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: RichText(
-                      text: const TextSpan(
-                          text: 'Identity Proof',
-                          style: TextStyle(
+                      text:TextSpan(
+                          text:
+                          widget.user == "0" ?
+                          'Identity Proof': 'Vendor Contact Information',
+                          style: const TextStyle(
                               color: ColorPalette.themeBlue,
                               fontWeight: FontWeight.w500,
                               fontSize: 16),
-                          children: [
+                          children: const [
                             TextSpan(
                                 text: ' *',
                                 style: TextStyle(
@@ -566,54 +967,71 @@ class _ProfileState extends State<Profile> {
                       //textScaleFactor: labelTextScale,
                     ),
                   ),
-                  // const SizedBox(
-                  //   height: 8,
-                  // ),
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: DropdownButtonFormField<String>(
-                  //     decoration: const InputDecoration(
-                  //       labelText: 'ID Proof',
-                  //       isDense: true, // Added this
-                  //       contentPadding:
-                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-                  //       focusedBorder: OutlineInputBorder(
-                  //         borderSide: BorderSide(
-                  //             color: ColorPalette.themeBlue, width: 0.5),
-                  //       ),
-                  //       enabledBorder: OutlineInputBorder(
-                  //         borderSide: BorderSide(
-                  //             color: ColorPalette.themeBlue, width: 0.5),
-                  //       ),
-                  //     ),
-                  //     value: panDropdown,
+                  widget.user == "1" ?
+                  const SizedBox(height: 8,):Container(),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      c_firstName,
+                      'Contact First Name',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.singleLineFormatter], (value) {
 
-                  //     dropdownColor: Colors.white,
-                  //     isExpanded: true,
-                  //     iconSize: 20,
-                  //     style: const TextStyle(color: Colors.black),
+                    if (value.isEmpty) {
+                      return 'Enter pincode';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  widget.user == "1" ?
+                  const SizedBox(height: 8,):Container(),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      c_lastName,
+                      'Contact Last Name',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.singleLineFormatter], (value) {
 
-                  //     items: [
-                  //       'Pan Card',
-                  //     ].map<DropdownMenuItem<String>>((String value) {
-                  //       return DropdownMenuItem<String>(
-                  //         child: Text(value),
-                  //         value: value,
-                  //       );
-                  //     }).toList(),
-                  //     onChanged: (salutation) {
-                  //       setState(() {
-                  //         panDropdown = salutation!;
-                  //       });
-                  //     },
-                  //     //value: dropdownProject,
-                  //     validator: (value) =>
-                  //         value == null ? 'field required' : null,
-                  //   ),
-                  // ),
+                    if (value.isEmpty) {
+                      return 'Enter pincode';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  widget.user == "1" ?
+                  const SizedBox(height: 8,):Container(),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      c_position,
+                      'Contact Position',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.singleLineFormatter], (value) {
+
+                    if (value.isEmpty) {
+                      return 'Enter pincode';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  widget.user == "1" ?
+                  const SizedBox(height: 8,):Container(),
+                  widget.user == "1" ?
+                  SWANWidget.enabledTextFormField(
+                      c_phone,
+                      'Contact Phone Number',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.digitsOnly], (value) {
+
+                    if (value.isEmpty) {
+                      return 'Enter pincode';
+                    }else{
+                      return null;
+                    }
+                  }, 250):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   SWANWidget.enabledTextFormField(
                       pancard,
                       'PAN Card Number',
@@ -629,10 +1047,11 @@ class _ProfileState extends State<Profile> {
                     } else {
                       return null;
                     }
-                  }, 250),
+                  }, 250):Container(),
                   const SizedBox(
                     height: 8,
                   ),
+                  widget.user == "0" ?
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -827,7 +1246,7 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ],
-                  ),
+                  ):Container(),
                   // const SizedBox(
                   //   height: 8,
                   // ),
@@ -872,9 +1291,11 @@ class _ProfileState extends State<Profile> {
                   //         value == null ? 'field required' : null,
                   //   ),
                   // ),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   SWANWidget.enabledTextFormField(
                       aadharcard,
                       'Aadhar Card Number',
@@ -889,10 +1310,12 @@ class _ProfileState extends State<Profile> {
                     } else {
                       return null;
                     }
-                  }, 250),
+                  }, 250):Container(),
+
                   const SizedBox(
                     height: 5,
                   ),
+                  widget.user == "0" ?
                   Column(
                     children: [
                       aadharfront != null
@@ -1074,7 +1497,8 @@ class _ProfileState extends State<Profile> {
                             : Container(),
                       ),
                     ],
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   Column(
                     children: [
                       aadharback != null
@@ -1256,10 +1680,11 @@ class _ProfileState extends State<Profile> {
                             : Container(),
                       ),
                     ],
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 5,
-                  ),
+                  ):Container(),
 
                   // Padding(
                   //   padding: const EdgeInsets.all(8.0),
@@ -1324,10 +1749,11 @@ class _ProfileState extends State<Profile> {
                   //   }
                   //   return null;
                   // }, 250),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
-
+                  ):Container(),
+                  widget.user == "0" ?
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RichText(
@@ -1347,7 +1773,8 @@ class _ProfileState extends State<Profile> {
                           ]),
                       //textScaleFactor: labelTextScale,
                     ),
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   GestureDetector(
                     onTap: () {
                       print(_selectedItems);
@@ -1370,17 +1797,19 @@ class _ProfileState extends State<Profile> {
                             const Icon(Icons.arrow_drop_down)
                           ]),
                     ),
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   Wrap(
                     children: _selectedItemsskill
                         .map((e) => Chip(
                               label: Text(e),
                             ))
                         .toList(),
-                  ),
+                  ):Container(),
+                  widget.user == "0" ?
                   const SizedBox(
                     height: 8,
-                  ),
+                  ):Container(),
 
                   // MultiChip(
                   //   reportList,
@@ -1392,7 +1821,7 @@ class _ProfileState extends State<Profile> {
                   //   maxSelection: 5,
                   // ),
                   // Text(selectedReportList.join(" , ")),
-
+                  widget.user == "0" ?
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DropdownButtonFormField<String>(
@@ -1439,7 +1868,7 @@ class _ProfileState extends State<Profile> {
                       validator: (value) =>
                           value == null ? 'field required' : null,
                     ),
-                  ),
+                  ):Container(),
                   // const SizedBox(
                   //   height: 8,
                   // ),
@@ -2506,6 +2935,7 @@ class _ProfileState extends State<Profile> {
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ),
+                        widget.user == "0" ?
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: Text(
@@ -2515,7 +2945,7 @@ class _ProfileState extends State<Profile> {
                                 color: ColorPalette.bgGrey,
                                 fontWeight: FontWeight.w300),
                           ),
-                        ),
+                        ):Container(),
                         const SizedBox(
                           height: 15,
                         ),
