@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:freelancing/Screens/review.dart';
 import 'package:intl/intl.dart';
@@ -60,7 +61,11 @@ class _ProfileState extends State<Profile> {
   var aadhar;
 
   var skill;
-
+var name = "[Name]";
+var profile ="[Profile]";
+var phone_no ="[Phone Number]";
+var addr ="[Address]";
+var sr = '';
   bool _checkbox = false;
 
   File? panfront;
@@ -373,9 +378,9 @@ class _ProfileState extends State<Profile> {
                         counterText: ""),
                     onChanged: (value) {
                       setState(() {
-                        userAddress = value;
+                        addr = value;
                         if (value.isEmpty) {
-                          userAddress = '[Address]';
+                          addr = '[Address]';
                         }
                       });
                     },
@@ -2387,10 +2392,10 @@ class _ProfileState extends State<Profile> {
               ),
             ))
       ];
-  var name = '[Name]';
-  var sr = '';
-  var profile = '[Profile]';
-  var userAddress = '[Address]';
+ 
+
+
+
   final _key = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -2415,38 +2420,57 @@ class _ProfileState extends State<Profile> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 170,
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: Row(children: [
-                    Column(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                        height:190,
+                        width:double.infinity,
+                  child:Stack(
+                    children:[
+                            Positioned(
+                         top:-5,
+                        left: 0,                 
+                        child: SizedBox(
+                        height:100,
+                        width:100,
+                        child: Image.asset(              
+                          'assets/images/shade2.png'),
+                      )),
+                                 Positioned(
+                         bottom:-20,
+                         left:-20,
+                        child: SizedBox(
+                        height:100,
+                        width:100,
+                        child: Image.asset(
+                          
+                          'assets/images/shade4.png'),
+                      )),
+                      Positioned(
+                        bottom:-20,
+                        right:0,
+                        child: SizedBox(
+                        height:150,
+                        width:150,
+                        child: Image.asset(
+                          
+                          'assets/images/shade1.png'),
+                      )),
+                  Positioned(
+                    top:20,
+                    right:10,
+                    child: Stack(
                       children: [
-                        SizedBox(
-                          height: 80,
-                          width: 80,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            fit: StackFit.expand,
-                            children: [
-                              ClipOval(
-                                child: SizedBox.fromSize(
-                                    size: const Size.fromRadius(
-                                        48), // Image radius
-                                    child: pic != null
-                                        ? Image.file(
-                                            pic!,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.asset(
-                                            'assets/images/user.png')),
-                              ),
-                              Positioned(
-                                  bottom: 0,
-                                  right: -35,
+                        Container(
+                          height:130,
+                          width:130,
+                          child:Image.asset('assets/images/user.png')
+                        ),
+                           Positioned(
+                                  bottom: -5,
+                                  right: -25,
                                   child: RawMaterialButton(
                                     onPressed: () async {
                                       final ImagePicker _picker =
@@ -2470,102 +2494,210 @@ class _ProfileState extends State<Profile> {
                                     //padding: const EdgeInsets.all(2.0),
                                     shape: const CircleBorder(),
                                   )),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 40,
+                    left: 30,
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                                   Text('$name $sr',
+                                  style: const TextStyle(fontSize:17,fontWeight:FontWeight.bold,),
+                                   )
                             ],
                           ),
-                        ),
-                        // const SizedBox(
-                        //   height: 30,
-                        // ),
-                        // SizedBox(
-                        //   width: 100,
-                        //   child: const Card(
-                        //     elevation: 15,
-                        //     child: Padding(
-                        //       padding: EdgeInsets.symmetric(
-                        //           horizontal: 10, vertical: 2),
-                        //       child: Text(
-                        //         '[Work title title title title ]',
-                        //         style: TextStyle(fontSize: 12),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Text(
-                            '${name} ${sr}',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
+                      const SizedBox(height:5),
+                             Row(
+                             children: [
+                                Text(profile,style: const TextStyle(fontSize:17,fontWeight:FontWeight.bold,)),
+                                
+                            ],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Text(
-                            profile,
-                            style: const TextStyle(
-                                fontSize: 12,
-                                color: ColorPalette.bgGrey,
-                                fontWeight: FontWeight.w300),
+                          const SizedBox(height:5),
+                             Row(
+                            children: [
+                               Text(phone_no,style: TextStyle(fontSize:17,fontWeight:FontWeight.bold,)),
+                               
+                            ],
                           ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.phone,
-                              size: 15,
-                              color: ColorPalette.bgGrey,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              '[Phone number]',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              size: 18,
-                              color: ColorPalette.bgGrey,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            SizedBox(
-                              width: 160,
-                              child: Text(
-                                '$userAddress',
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                          const SizedBox(height:5),
+                             Row(
+                            children: [
+                             Text(addr,style: TextStyle(fontSize:17,fontWeight:FontWeight.bold,)),
+                           
+                            ],
+                          ),
+                       
+                       
+                        
+                        ],
+                      ),
                     ),
-                  ]),
+                  )
+                    ]
+                  )
                 ),
               ),
             ),
+            // SizedBox(
+            //   height: 170,
+            //   child: Card(
+            //     elevation: 5,
+            //     child: Padding(
+            //       padding:
+            //           const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            //       child: Row(children: [
+            //         Column(
+            //           children: [
+            //             SizedBox(
+            //               height: 80,
+            //               width: 80,
+            //               child: Stack(
+            //                 clipBehavior: Clip.none,
+            //                 fit: StackFit.expand,
+            //                 children: [
+            //                   ClipOval(
+                              
+            //                     child: SizedBox.fromSize(
+                                  
+            //                         size: const Size.fromRadius(
+            //                             20), // Image radius
+            //                         child: pic != null
+            //                             ? Image.file(
+            //                                 pic!,
+            //                                 fit: BoxFit.cover,
+            //                               )
+            //                             : Image.asset(
+            //                                 'assets/images/user.png',)),
+            //                   ),
+            //                   Positioned(
+            //                       bottom: 0,
+            //                       right: -35,
+            //                       child: RawMaterialButton(
+            //                         onPressed: () async {
+            //                           final ImagePicker _picker =
+            //                               ImagePicker(); //added type ImagePicker
+            //                           var image1 = await _picker.getImage(
+            //                               source: ImageSource.camera);
+
+            //                           if (image1 != null) {
+            //                             setState(() {
+            //                               pic = File(image1.path);
+            //                             });
+            //                           }
+            //                         },
+            //                         elevation: 2.0,
+            //                         fillColor: const Color(0xFFF5F6F9),
+            //                         child: const Icon(
+            //                           Icons.camera_alt_outlined,
+            //                           color: Colors.blue,
+            //                           size: 16,
+            //                         ),
+            //                         //padding: const EdgeInsets.all(2.0),
+            //                         shape: const CircleBorder(),
+            //                       )),
+            //                 ],
+            //               ),
+            //             ),
+            //             const SizedBox(
+            //               height: 30,
+            //             ),
+            //             // SizedBox(
+            //             //   width: 100,
+            //             //   child: const Card(
+            //             //     elevation: 15,
+            //             //     child: Padding(
+            //             //       padding: EdgeInsets.symmetric(
+            //             //           horizontal: 10, vertical: 2),
+            //             //       child: Text(
+            //             //         '[Work title title title title ]',
+            //             //         style: TextStyle(fontSize: 12),
+            //             //       ),
+            //             //     ),
+            //             //   ),
+            //             // ),
+            //           ],
+            //         ),
+            //         const SizedBox(
+            //           width: 20,
+            //         ),
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Padding(
+            //               padding: const EdgeInsets.only(left: 5),
+            //               child: Text(
+            //                 '${name} ${sr}',
+            //                 style: const TextStyle(
+            //                     fontSize: 16, fontWeight: FontWeight.w500),
+            //               ),
+            //             ),
+            //             Padding(
+            //               padding: const EdgeInsets.only(left: 5),
+            //               child: Text(
+            //                 profile,
+            //                 style: const TextStyle(
+            //                     fontSize: 12,
+            //                     color: ColorPalette.bgGrey,
+            //                     fontWeight: FontWeight.w300),
+            //               ),
+            //             ),
+            //             const SizedBox(
+            //               height: 15,
+            //             ),
+            //             Row(
+            //               children: const [
+            //                 Icon(
+            //                   Icons.phone,
+            //                   size: 15,
+            //                   color: ColorPalette.bgGrey,
+            //                 ),
+            //                 SizedBox(
+            //                   width: 5,
+            //                 ),
+            //                 Text(
+            //                   '[Phone number]',
+            //                   style: TextStyle(
+            //                       fontSize: 16, fontWeight: FontWeight.w500),
+            //                 ),
+            //               ],
+            //             ),
+            //             const SizedBox(
+            //               height: 10,
+            //             ),
+            //             Row(
+            //               mainAxisAlignment: MainAxisAlignment.start,
+            //               children: [
+            //                 const Icon(
+            //                   Icons.location_on_outlined,
+            //                   size: 18,
+            //                   color: ColorPalette.bgGrey,
+            //                 ),
+            //                 const SizedBox(
+            //                   width: 5,
+            //                 ),
+            //                 SizedBox(
+            //                   width: 160,
+            //                   child: Text(
+            //                     '$userAddress',
+            //                     style: const TextStyle(
+            //                         fontSize: 14, fontWeight: FontWeight.w400),
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ],
+            //         ),
+            //       ]),
+            //     ),
+            //   ),
+            // ),
             Expanded(
               child: Stepper(
                 type: StepperType.horizontal,
