@@ -76,7 +76,7 @@ class _ReviewState extends State<Review> {
                                     size: 16,
                                   ),
                                   //padding: const EdgeInsets.all(2.0),
-                                  shape: const CircleBorder(),
+                                  shape: CircleBorder(),
                                 )),
                           ],
                         ),

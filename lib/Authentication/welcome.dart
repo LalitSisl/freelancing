@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login.dart';
@@ -18,12 +19,12 @@ class _WelcomeState extends State<Welcome> {
     // TODO: implement initState
     super.initState();
 
-    Timer(const Duration(seconds: 3), () => navigation());
+    Timer(const Duration(seconds: 2), () => navigation());
     // startTimer();
   }
 
   void navigation() async {
-    Get.off(() => const Login());
+    Get.off(() =>  const Login());
   }
 
   @override
@@ -39,16 +40,31 @@ class _WelcomeState extends State<Welcome> {
               'assets/images/sisl.png',
               scale: 7,
             ),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(top: 3),
-              child: Text(
-                'SWAN',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                    letterSpacing: .8,
-                    color: Color.fromARGB(221, 44, 44, 44)),
-              ),
+              child: AnimatedTextKit(
+                
+                totalRepeatCount: 1,
+                    animatedTexts: [
+                    
+                    TyperAnimatedText("SWAN",
+                    textStyle: const TextStyle(fontSize: 40,fontWeight: FontWeight.bold,letterSpacing: .8,color: Color.fromARGB(221, 44, 44, 44)),
+                    speed: Duration(milliseconds: 200)
+                    )
+                  
+        ,
+               ],
+               
+                  
+                  ),
+              // child: Text(
+              //   'SWAN',
+              //   style: TextStyle(
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 40,
+              //       letterSpacing: .8,
+              //       color: Color.fromARGB(221, 44, 44, 44)),
+              // ),
             )
           ],
         )),
