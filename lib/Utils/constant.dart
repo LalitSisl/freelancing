@@ -250,7 +250,7 @@ class SWANWidget {
       fontWeight: FWeight.semiBold);
 
   static disableKeyboard() {
-    WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
+    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
   }
 
   static Row pieChartLabels(color, text, width) => Row(

@@ -50,7 +50,11 @@ class _MultiSelectState extends State<MultiSelect> {
         ),
       ),
       actions: [
-        TextButton(
+        // TextButton(
+        //   child: const Text('Cancel'),
+        //   onPressed:() => _cancel,
+        // ),
+        ElevatedButton(
           child: const Text('Cancel'),
           onPressed: _cancel,
         ),
@@ -113,7 +117,11 @@ class _MultiSelectcityState extends State<MultiSelectcity> {
         ),
       ),
       actions: [
-        TextButton(
+        // TextButton(
+        //   child: const Text('Cancel'),
+        //   onPressed: _cancel,
+        // ),
+        ElevatedButton(
           child: const Text('Cancel'),
           onPressed: _cancel,
         ),
@@ -176,7 +184,11 @@ class _MultiSelectskillState extends State<MultiSelectskill> {
         ),
       ),
       actions: [
-        TextButton(
+        // TextButton(
+        //   child: const Text('Cancel'),
+        //   onPressed: _cancel,
+        // ),
+        ElevatedButton(
           child: const Text('Cancel'),
           onPressed: _cancel,
         ),
