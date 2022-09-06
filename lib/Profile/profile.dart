@@ -883,10 +883,13 @@ var sr = '';
                   SWANWidget.enabledTextFormField(
                       aadharcard,
                       'Aadhar Card Number',
+                      
                       TextInputType.text,
+                      
                       [FilteringTextInputFormatter.digitsOnly], (value) {
                     String pattern = r"^[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
                     RegExp regex = RegExp(pattern);
+                    
                     if (value == null ||
                         value.isEmpty ||
                         !regex.hasMatch(value)) {
@@ -894,7 +897,7 @@ var sr = '';
                     } else {
                       return null;
                     }
-                  }, 250),
+                  }, 12),
                   const SizedBox(
                     height: 5,
                   ),
