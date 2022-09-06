@@ -96,7 +96,6 @@ var phone_no ="[Phone Number]";
 var addr ="[Address]";
 var sr = '';
   bool _checkbox = false;
-
   File? panfront;
   File? aadharfront;
   File? aadharback;
@@ -314,11 +313,11 @@ widget.user == "0"?
                     ),
                   ):Container(),
 
-widget.user == "1" ?
+                     widget.user == "1" ?
                   ListTile(
                     visualDensity: const VisualDensity(
                       horizontal: VisualDensity.minimumDensity,
-                      vertical: VisualDensity.minimumDensity,
+
                     ),
                     leading: Transform.scale(
                       scale: 0.8,
