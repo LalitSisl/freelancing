@@ -178,6 +178,7 @@ class _OtpState extends State<Otp> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            
             children: [
               _start != 0 ?
               Text('Resend in ${_start.toString()}'):Container(),
