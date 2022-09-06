@@ -1304,10 +1304,13 @@ widget.user == "1" ?
                   SWANWidget.enabledTextFormField(
                       aadharcard,
                       'Aadhar Card Number',
+                      
                       TextInputType.text,
+                      
                       [FilteringTextInputFormatter.digitsOnly], (value) {
                     String pattern = r"^[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
                     RegExp regex = RegExp(pattern);
+                    
                     if (value == null ||
                         value.isEmpty ||
                         !regex.hasMatch(value)) {
@@ -1315,7 +1318,7 @@ widget.user == "1" ?
                     } else {
                       return null;
                     }
-                  }, 250):Container(),
+                  }, 12):Container(),
 
                   const SizedBox(
                     height: 5,

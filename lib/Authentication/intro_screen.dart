@@ -54,7 +54,7 @@ bool isLastPage = false;
             height: _headerHeight,
             child: HeaderWidget(_headerHeight, false, Icons.login_rounded),
           ),
-          SizedBox(height: 100,),
+          const SizedBox(height: 100,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
