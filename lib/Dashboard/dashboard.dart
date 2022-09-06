@@ -110,10 +110,10 @@ class _DashboardState extends State<Dashboard> {
                         height: 110,
                         width: MediaQuery.of(context).size.width / 1.4,
                         decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               begin: Alignment.topRight,
                               end: Alignment.bottomLeft,
-                              colors: [
+                              colors: const [
                                 ColorPalette.blueTint,
                                 ColorPalette.blueTint1,
                               ],
@@ -162,10 +162,10 @@ class _DashboardState extends State<Dashboard> {
                         height: 110,
                         width: MediaQuery.of(context).size.width / 1.4,
                         decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               begin: Alignment.topRight,
                               end: Alignment.bottomLeft,
-                              colors: [
+                              colors: const [
                                 ColorPalette.chartOrange,
                                 ColorPalette.chipBgBlue,
                               ],
