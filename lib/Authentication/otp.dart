@@ -98,11 +98,13 @@ class _OtpState extends State<Otp> {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('${convertJson['success_msg']}'),
             ));
-            Get.to(const Register());
+
             setState(() {
               sharedPreferneces.setString('number', '${widget.number}');
               sharedPreferneces.setString('token', '${convertJson['token']}');
+              print(sharedPreferneces.getString('number'));
             });
+            Get.to(const Register());
           } else {
             setState(() {
               isLoading = false;
