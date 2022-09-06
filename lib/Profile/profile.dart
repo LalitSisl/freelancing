@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +12,10 @@ import 'package:freelancing/Utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import '../Utils/APIURLs.dart';
 import 'Multiple Select/multi_select.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   String? user;
@@ -84,6 +89,7 @@ class _ProfileState extends State<Profile> {
   var aadhar;
 
   var skill;
+  var experience;
 var name = "[Name]";
 var profile ="[Profile]";
 var phone_no ="[Phone Number]";
@@ -166,6 +172,14 @@ var sr = '';
   initState() {
     super.initState();
    print(widget.user);
+    getdata();
+  }
+   var number;
+   var token;
+  void getdata() async{
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    number = sharedPreferneces.getString('number');
+    token = sharedPreferneces.getString('token');
   }
 
   void _showMultiSelectskill() async {
@@ -1847,7 +1861,7 @@ widget.user == "1" ?
                               color: ColorPalette.themeBlue, width: 0.5),
                         ),
                       ),
-                      value: skill,
+                      value: experience,
 
                       dropdownColor: Colors.white,
                       isExpanded: true,
@@ -1869,7 +1883,7 @@ widget.user == "1" ?
                       }).toList(),
                       onChanged: (salutation) {
                         setState(() {
-                          skill = salutation!;
+                          experience = salutation!;
                         });
                       },
                       //value: dropdownProject,
@@ -3140,10 +3154,34 @@ widget.user == "1" ?
                 onStepContinue: () {
                   if (_activeCurrentStep < (stepList().length - 1)) {
                     setState(() {
+
                       if (formKeys[_activeCurrentStep]
                           .currentState!
                           .validate()) {
-                        _activeCurrentStep += 1;
+
+                        if(_activeCurrentStep == 0){
+                          print('lalit');
+                          add_Personal_Details(
+                            firstName.text,
+                            lastName.text,
+                            email.text,
+                            address.text,
+                            work.text,
+                            dob.text,
+                            gender,
+                            qualification,
+                            pancard.text,
+                            panfront,
+                            aadharcard.text,
+                            aadharfront,
+                            _selectedItemsskill,
+                            experience,
+                          );
+                          _activeCurrentStep += 1;
+                        }else if(_activeCurrentStep == 1){
+
+                        }
+
                         // Get.to(const Dashboard());
                       }
                     });
@@ -3203,4 +3241,89 @@ widget.user == "1" ?
   ];
 
   List<String> selectedlocation = [];
+
+
+  //personal details api
+  Future<void> add_Personal_Details(
+  name,
+  lastName,
+  email,
+  address,
+  work,
+  dob,
+  gender,
+  qualification,
+  pancard,
+  panfront,
+  aadharcard,
+  aadharfront,
+  _selectedItemsskill,
+  experience,
+      ) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "first_name":'$name',
+          "last_name":'$lastName',
+          "email":'$email',
+          "address": '$address',
+          "work_title": '$work',
+          "dob": '$dob',
+          "gender" : '$gender',
+          "highest_qualification": '$qualification',
+          "id_proof_type" : '1',
+          "id_proof_no" : '$pancard',
+          "id_proof_doc" : '$panfront',
+          "address_proof_type" : '2',
+          "address_proof_number" : '$aadharcard',
+          "address_proof_doc" : '$aadharback',
+          "skills" : "$_selectedItemsskill",
+          "total_experience" : '$experience',
+        });
+        print(body);
+        var response = await http.post(Uri.parse(APIUrls.ADD_PERSONAL_DETAILS), body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            // Get.to(Otp(number: phoneNumber));
+          } else {
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+
+
+
+
+
+
+
 }

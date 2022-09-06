@@ -24,35 +24,39 @@ class _LoginState extends State<Login> {
 
   var isLoading = false;
 
-  Widget _buildDropdownItem(country) => Row(
-        children: <Widget>[
-          CountryPickerUtils.getDefaultFlagImage(country),
-          const SizedBox(
-            width: 5.0,
-          ),
-          Text("+${country.phoneCode}"),
-        ],
-      );
+
 
   Future<void> sendOTP(phoneNumber) async {
+    print(phoneNumber);
+    setState(() {
+      isLoading=true;
+    });
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body = jsonEncode(<String, String>{
-          "phone_number": phoneNumber,
+          "phone_number": '$phoneNumber',
         });
         var response = await http.post(Uri.parse(APIUrls.LOG_IN), body: body);
         try {
           var convertJson = jsonDecode(response.body);
-
+          print('   lalit $convertJson');
           if (convertJson["status"]) {
+
             setState(() {
               isLoading = false;
             });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            Get.to(Otp(number: phoneNumber));
           } else {
             setState(() {
               isLoading = false;
             });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
           }
         } catch (e) {
           if (kDebugMode) {
@@ -141,6 +145,7 @@ class _LoginState extends State<Login> {
                                 color: ColorPalette.textGrey)),
                         Expanded(
                           child: TextFormField(
+                            controller: _phoneController,
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                                 isDense: true,
@@ -185,38 +190,22 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                    // const SizedBox(height: 22),
-                    // IntlPhoneField(
-                    //   controller: _phoneController,
-                    //   decoration: const InputDecoration(
-                    //     isDense: true,
-                    //     labelText: 'Phone Number',
-                    //     border: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.blue),
-                    //       borderRadius: BorderRadius.all(Radius.circular(10)),
-                    //     ),
-                    //   ),
-                    //   onChanged: (phone) {
-                    //     if (kDebugMode) {
-                    //       print(phone.completeNumber);
-                    //     }
-                    //   },
-                    //   onCountryChanged: (country) {
-                    //     if (kDebugMode) {
-                    //       print('Country changed to: ' + country.name);
-                    //     }
-                    //   },
-                    // ),
+
                     const SizedBox(
                       height: 50,
                     ),
+                    isLoading ?
+                        const Align(
+                            alignment: Alignment.bottomRight,
+                            child: CircularProgressIndicator()):
                     Align(
                       alignment: Alignment.bottomRight,
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Get.to(Otp(number: _phoneController.text));
-                          }
+                            sendOTP(_phoneController.text);
+
+                           }
                         },
                         child: const Text('Send OTP'),
                       ),
