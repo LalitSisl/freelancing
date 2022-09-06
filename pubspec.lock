@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bulleted_list:
+    dependency: "direct main"
+    description:
+      name: bulleted_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+0.1a"
   characters:
     dependency: transitive
     description:
@@ -120,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
+  dots_indicator:
+    dependency: transitive
+    description:
+      name: dots_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -282,6 +296,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  introduction_screen:
+    dependency: "direct main"
+    description:
+      name: introduction_screen
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   js:
     dependency: transitive
     description:
@@ -448,6 +469,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smooth_page_indicator:
+    dependency: "direct main"
+    description:
+      name: smooth_page_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+2"
   source_span:
     dependency: transitive
     description:
@@ -540,5 +568,13 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
+<<<<<<< HEAD
+<<<<<<< HEAD
+  dart: ">=2.17.0-0 <3.0.0"
+=======
   dart: ">=2.17.0 <3.0.0"
+>>>>>>> 087ad117861a296ecbd2684dddd3e89915337e64
+=======
+  dart: ">=2.17.0 <3.0.0"
+>>>>>>> sandeep_new
   flutter: ">=2.10.0"
