@@ -18,43 +18,67 @@ class Review extends StatefulWidget {
 
 class _ReviewState extends State<Review> {
   File? pic;
-  var name = '[Name]';
+
+   var name = "[Name]";
+  var profile = "[Profile]";
+  var phone_no = "[Phone Number]";
+  var addr = "[Address]";
+  var sr = '';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorPalette.white,
         body: Column(children: [
-          SizedBox(
-            height: 180,
-            child: Card(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Row(children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 80,
-                        width: 80,
+           Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                    height: 190,
+                    width: double.infinity,
+                    child: Stack(children: [
+                      Positioned(
+                          top: -5,
+                          left: 0,
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/images/shade2.png'),
+                          )),
+                      Positioned(
+                          bottom: -20,
+                          left: -20,
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/images/shade4.png'),
+                          )),
+                      Positioned(
+                          bottom: -20,
+                          right: 0,
+                          child: SizedBox(
+                            height: 150,
+                            width: 150,
+                            child: Image.asset('assets/images/shade1.png'),
+                          )),
+                      Positioned(
+                        top: 20,
+                        right: 10,
                         child: Stack(
-                          clipBehavior: Clip.none,
-                          fit: StackFit.expand,
                           children: [
-                            ClipOval(
-                              child: SizedBox.fromSize(
-                                  size:
-                                      const Size.fromRadius(48), // Image radius
-                                  child: pic != null
-                                      ? Image.file(
-                                          pic!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.asset('assets/images/user.png')),
-                            ),
+                            Container(
+                                height: 130,
+                                width: 130,
+                                child: pic != null
+                                    ? Image.file(
+                                        pic!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset('assets/images/user.png')),
                             Positioned(
-                                bottom: 0,
-                                right: -35,
+                                bottom: -5,
+                                right: -25,
                                 child: RawMaterialButton(
                                   onPressed: () async {
                                     final ImagePicker _picker =
@@ -81,96 +105,66 @@ class _ReviewState extends State<Review> {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      // const Card(
-                      //   elevation: 15,
-                      //   child: Padding(
-                      //     padding:
-                      //         EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                      //     child: Text(
-                      //       '[Work title]',
-                      //       style: TextStyle(fontSize: 12),
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text(
-                          name,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
+                      Positioned(
+                        top: 40,
+                        left: 30,
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    '$name $sr',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
+                              ),
+                         
+                                  const SizedBox(height: 5),
+                            
+                             
+                                  Row(
+                                      children: [
+                                        Text(profile,
+                                            style: const TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ],
+                                    ),
+                            
+                              const SizedBox(height: 5),
+                              Row(
+                                children: const[
+                                  Text('123456789',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              Row(
+                                children:[
+                                  Text(addr,
+                                      style:const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5),
-                        child: Text(
-                          '[Profile]',
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: ColorPalette.bgGrey,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.phone,
-                            size: 15,
-                            color: ColorPalette.bgGrey,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '[Phone number]',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Icon(
-                            Icons.location_on_outlined,
-                            size: 18,
-                            color: ColorPalette.bgGrey,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          SizedBox(
-                            width: 160,
-                            child: Text(
-                              '[Address]',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ]),
+                      )
+                    ])),
               ),
             ),
-          ),
           Expanded(
             child: Center(
               child: Image.asset(
