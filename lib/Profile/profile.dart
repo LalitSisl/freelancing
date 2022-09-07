@@ -12,10 +12,13 @@ import 'package:freelancing/Utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import '../Controller/app_data_controller.dart';
+import '../Model/subject_data_model.dart';
 import '../Utils/APIURLs.dart';
 import 'Multiple Select/multi_select.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 
 class Profile extends StatefulWidget {
   String? user;
@@ -27,6 +30,18 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  final AppDataController controller = Get.put(AppDataController());
+  List subjectData = [];
+  List subjectDatacity = [];
+
+  // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+  // controller.getSubjectData();
+  // });
+
+
+
+
   var _selectaccount;
   var _selectvendor;
   int _activeCurrentStep = 0;
@@ -113,7 +128,7 @@ class _ProfileState extends State<Profile> {
 
   List<String> _selectedItems = [];
   List<String> _selectedItemscity = [];
-  List<String> _selectedItemsskill = [];
+  List _selectedItemsskill = [];
   var selectedItem;
 
   void _showMultiSelect() async {
@@ -173,7 +188,11 @@ class _ProfileState extends State<Profile> {
     super.initState();
 
     print(widget.user);
+    //getSkills();
+    getQualification();
     getdata();
+    //controller.getSubjectData();
+    controller.getSkills();
   }
 
   var number;
@@ -194,18 +213,18 @@ class _ProfileState extends State<Profile> {
      user_id = sharedPreferneces.getString('user_id');
    });
   }
-  List<String> _items =[];
+  List<dynamic> _items =<dynamic>[];
   void _showMultiSelectskill() async {
     // a list of selectable items
     // these items can be hard-coded or dynamically fetched from a database/API
-    _items  = [
-      'Computer Network',
-      'Flutter',
-      'Developer',
-      'Web Developer',
-    ];
+    // _items  = [
+    //   'Computer Network',
+    //   'Flutter',
+    //   'Developer',
+    //   'Web Developer',
+    // ];
 
-    final List<String>? results = await showDialog(
+     List results = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return MultiSelectskill(items: _items);
@@ -755,7 +774,7 @@ class _ProfileState extends State<Profile> {
                   widget.user == "2"
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          child: DropdownButtonFormField<String>(
+                          child: DropdownButtonFormField<dynamic>(
                             decoration: const InputDecoration(
                               labelText: 'Highest Qualification',
                               isDense: true, // Added this
@@ -770,31 +789,31 @@ class _ProfileState extends State<Profile> {
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
                             ),
-                            value: qualification,
+                            //value: qualification,
 
                             dropdownColor: Colors.white,
                             isExpanded: true,
                             iconSize: 20,
                             style: const TextStyle(color: Colors.black),
-                            // items: qualificationData.map((item) {
-                            //   return DropdownMenuItem(
-                            //     child: Text(item['item_name']),
-                            //     value: item['id'].toString(),
-                            //   );
-                            // }).toList(),
-                            items: [
-                              '12th',
-                              'BCA',
-                              'B.Tech',
-                              'M.Tech',
-                              'Bsc',
-                              'MCA',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                child: Text(value),
-                                value: value,
+                            items: qualificationData.map((item) {
+                              return DropdownMenuItem(
+                                child: Text(item['qualification_name']),
+                                value: item['id'].toString(),
                               );
                             }).toList(),
+                            // items: [
+                            //   '12th',
+                            //   'BCA',
+                            //   'B.Tech',
+                            //   'M.Tech',
+                            //   'Bsc',
+                            //   'MCA',
+                            // ].map<DropdownMenuItem<String>>((String value) {
+                            //   return DropdownMenuItem<String>(
+                            //     child: Text(value),
+                            //     value: value,
+                            //   );
+                            // }).toList(),
                             onChanged: (salutation) {
                               setState(() {
                                 qualification = salutation!;
@@ -1898,47 +1917,97 @@ class _ProfileState extends State<Profile> {
                           ),
                         )
                       : Container(),
-                  widget.user == "2"
-                      ? GestureDetector(
-                          onTap: () {
-                            print(_selectedItems);
-                            _showMultiSelectskill();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                    color: ColorPalette.themeBlue, width: 0.5)),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Select Skills',
-                                    style:
-                                        SWANWidget.disabledFieldValueTextStyle,
-                                  ),
-                                  const Icon(Icons.arrow_drop_down)
-                                ]),
+
+                  widget.user == "2" ?
+                  Container(
+                    constraints: BoxConstraints(
+                      maxHeight: double.infinity,
+                    ),
+                 //  height: 120,
+                    child: GetBuilder<AppDataController>(builder: (controller) {
+                      return MultiSelectDialogField(
+                       // height: 200,
+                        items: controller.dropDownData,
+                        title: const Text(
+                          "Select Subject",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        selectedColor: Colors.black,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                                color: ColorPalette.themeBlue, width: 0.5)),
+                        buttonIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.blue,
+                        ),
+                        buttonText: const Text(
+                          "Select Skills",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
                           ),
-                        )
-                      : Container(),
-                  widget.user == "2"
-                      ? Wrap(
-                          children: _selectedItemsskill
-                              .map((e) => Chip(
-                                    label: Text(e),
-                                  ))
-                              .toList(),
-                        )
-                      : Container(),
-                  widget.user == "2"
-                      ? const SizedBox(
-                          height: 8,
-                        )
-                      : Container(),
+                        ),
+                        onConfirm: (results) {
+                          subjectData = [];
+                          for (var i = 0; i < results.length; i++) {
+                            SubjectModel data = results[i] as SubjectModel;
+                            print(data.subjectId);
+                            print(data.subjectName);
+                            subjectData.add(data.subjectId);
+                          }
+                          print("datalalitbank $subjectData");
+
+                          //_selectedAnimals = results;
+                        },
+                      );
+                    }),
+                  ):Container(),
+                  widget.user == "2" ?
+                   SizedBox(height: 8,):Container(),
+
+
+                  // widget.user == "2"
+                  //     ? GestureDetector(
+                  //         onTap: () {
+                  //           print(_selectedItems);
+                  //           _showMultiSelectskill();
+                  //         },
+                  //         child: Container(
+                  //           padding: const EdgeInsets.symmetric(
+                  //               horizontal: 10, vertical: 10),
+                  //           decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(4),
+                  //               border: Border.all(
+                  //                   color: ColorPalette.themeBlue, width: 0.5)),
+                  //           child: Row(
+                  //               mainAxisAlignment:
+                  //                   MainAxisAlignment.spaceBetween,
+                  //               children: [
+                  //                 Text(
+                  //                   'Select Skills',
+                  //                   style:
+                  //                       SWANWidget.disabledFieldValueTextStyle,
+                  //                 ),
+                  //                 const Icon(Icons.arrow_drop_down)
+                  //               ]),
+                  //         ),
+                  //       )
+                  //     : Container(),
+                  // widget.user == "2"
+                  //     ? Wrap(
+                  //         children: _selectedItemsskill
+                  //             .map((e) => Chip(
+                  //                   label: Text(e),
+                  //                 ))
+                  //             .toList(),
+                  //       )
+                  //     : Container(),
+                  // widget.user == "2"
+                  //     ? const SizedBox(
+                  //         height: 8,
+                  //       )
+                  //     : Container(),
 
                   // MultiChip(
                   //   reportList,
@@ -2480,6 +2549,55 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(
                       height: 8,
                     ),
+                    Container(
+                      constraints: BoxConstraints(
+                        maxHeight: double.infinity,
+                      ),
+                      //  height: 120,
+                      child: GetBuilder<AppDataControllerCIty>(builder: (controller) {
+                        return MultiSelectDialogField(
+                          // height: 200,
+                          items: controller.dropDownDatacity,
+                          title: const Text(
+                            "Select City",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          selectedColor: Colors.black,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  color: ColorPalette.themeBlue, width: 0.5)),
+                          buttonIcon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.blue,
+                          ),
+                          buttonText: const Text(
+                            "Select City",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          onConfirm: (results) {
+                            subjectDatacity = [];
+                            for (var i = 0; i < results.length; i++) {
+                              SubjectModel data = results[i] as SubjectModel;
+                              print(data.subjectId);
+                              print(data.subjectName);
+                              subjectDatacity.add(data.subjectId);
+                            }
+                            print("datalalitbank $subjectDatacity");
+
+                            //_selectedAnimals = results;
+                          },
+                        );
+                      }),
+                    ),
+
+
+
+
+
 
                     GestureDetector(
                       onTap: () {
@@ -3267,28 +3385,31 @@ class _ProfileState extends State<Profile> {
                 onStepContinue: () {
                   if (_activeCurrentStep < (stepList().length - 1)) {
                     setState(() {
+                      print('$_selectedItemsskill');
                       if (formKeys[_activeCurrentStep]
                           .currentState!
                           .validate()) {
                         if (_activeCurrentStep == 0) {
-                          print('lalit');
-                          add_Personal_Details(
-                            firstName.text,
-                            lastName.text,
-                            email.text,
-                            address.text,
-                            work.text,
-                            dob.text,
-                            gender,
-                            qualification,
-                            pancard.text,
-                            panfront,
-                            aadharcard.text,
-                            aadharfront,
-                            _selectedItemsskill,
-                            experience,
-                          );
-                          _activeCurrentStep += 1;
+
+                          //_selectedItemsskill.join(",");
+
+                          // add_Personal_Details(
+                          //   firstName.text,
+                          //   lastName.text,
+                          //   email.text,
+                          //   address.text,
+                          //   work.text,
+                          //   dob.text,
+                          //   gender,
+                          //   qualification,
+                          //   pancard.text,
+                          //   panfront,
+                          //   aadharcard.text,
+                          //   aadharfront,
+                          //   _selectedItemsskill,
+                          //   experience,
+                          // );
+                          // _activeCurrentStep += 1;
                         } else if (_activeCurrentStep == 1) {
                           add_Business_Details(
                             gstnumber.text,
@@ -3582,7 +3703,9 @@ class _ProfileState extends State<Profile> {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
+          setState(() {
             qualificationData = convertJson['data']['qualifications'];
+          });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('${convertJson['error_msg']}'),
@@ -3623,7 +3746,16 @@ class _ProfileState extends State<Profile> {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-           // _items = convertJson['data']['skills'];
+            setState(() {
+              // print(convertJson['data']['skills']);
+              for(int i = 0; i< convertJson['data']['skills'].length; i++){
+                _items = convertJson['data']['skills'][i]['name'];
+              print(_items);
+              }
+
+
+
+            });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('${convertJson['error_msg']}'),

@@ -135,7 +135,7 @@ class _MultiSelectcityState extends State<MultiSelectcity> {
 }
 
 class MultiSelectskill extends StatefulWidget {
-  final List<String> items;
+  final List items;
   const MultiSelectskill({Key? key, required this.items}) : super(key: key);
 
   @override
@@ -144,7 +144,7 @@ class MultiSelectskill extends StatefulWidget {
 
 class _MultiSelectskillState extends State<MultiSelectskill> {
   // this variable holds the selected items
-  final List<String> _selectedItems = [];
+  final List _selectedItems = [];
 
 // This function is triggered when a checkbox is checked or unchecked
   void _itemChange(String itemValue, bool isSelected) {
