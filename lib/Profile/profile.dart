@@ -32,6 +32,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   final AppDataController controller = Get.put(AppDataController());
+  final AppDataControllerCIty controllercity = Get.put(AppDataControllerCIty());
   List subjectData = [];
   List subjectDatacity = [];
 
@@ -104,6 +105,9 @@ class _ProfileState extends State<Profile> {
   // ignore: prefer_typing_uninitialized_variables
   var aadhar;
 
+  String? multiSkill;
+  String? multiCity;
+
   var skill;
   var experience;
   var name = "[Name]";
@@ -112,11 +116,12 @@ class _ProfileState extends State<Profile> {
   var addr = "[Address]";
   var sr = '';
   bool _checkbox = false;
+  var _checkboxvalue;
 
   File? panfront;
   File? aadharfront;
   File? aadharback;
-  File? pic;
+  String? pic;
   File? gst;
   File? check;
 
@@ -191,9 +196,12 @@ class _ProfileState extends State<Profile> {
     print(widget.user);
     //getSkills();
     getQualification();
+    getBank();
     getdata();
+
     //controller.getSubjectData();
     controller.getSkills();
+    controllercity.getCity();
   }
 
   var number;
@@ -976,7 +984,7 @@ class _ProfileState extends State<Profile> {
                           }
                         }, 250)
                       : Container(),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   widget.user == "1"
@@ -1280,8 +1288,11 @@ class _ProfileState extends State<Profile> {
 
                                                 if (image1 != null) {
                                                   setState(() {
-                                                    panfront =
-                                                        File(image1.path);
+                                                    final File file = File(
+                                                        image1
+                                                            .path);
+                                                    //pic = File(image1.path);
+                                                    postImage('id_proof_doc', file.path);
                                                     Navigator.pop(context);
                                                   });
                                                 }
@@ -1308,8 +1319,12 @@ class _ProfileState extends State<Profile> {
 
                                                 if (image1 != null) {
                                                   setState(() {
-                                                    panfront =
-                                                        File(image1.path);
+
+                                                    final File file = File(
+                                                        image1
+                                                            .path);
+                                                    //pic = File(image1.path);
+                                                    postImage('id_proof_doc', file.path);
                                                     Navigator.pop(context);
                                                   });
                                                 }
@@ -1921,7 +1936,7 @@ class _ProfileState extends State<Profile> {
 
                   widget.user == "2" ?
                   Container(
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       maxHeight: double.infinity,
                     ),
                  //  height: 120,
@@ -1958,6 +1973,9 @@ class _ProfileState extends State<Profile> {
                             subjectData.add(data.subjectId);
                           }
                           print("datalalitbank $subjectData");
+                          multiSkill = subjectData.join(',');
+                          print("afterlist $multiSkill");
+
 
                           //_selectedAnimals = results;
                         },
@@ -1965,7 +1983,7 @@ class _ProfileState extends State<Profile> {
                     }),
                   ):Container(),
                   widget.user == "2" ?
-                   SizedBox(height: 8,):Container(),
+                   const SizedBox(height: 8,):Container(),
 
 
                   // widget.user == "2"
@@ -2152,12 +2170,21 @@ class _ProfileState extends State<Profile> {
                           const Text("Do you have GST number"), //    <-- label
                       value: _checkbox,
                       onChanged: (newValue) {
-                        setState(() => _checkbox = !_checkbox);
+                        setState(() {
+                          _checkbox = ! _checkbox;
+                          if(_checkbox == false){
+                            _checkboxvalue = 0;
+                          }else{
+                            _checkboxvalue = 1;
+                          }
+                          print('checkbox value $_checkboxvalue');
+                        });
                       },
                     ),
                     const SizedBox(
                       height: 8,
                     ),
+                    _checkbox == true ?
                     SWANWidget.enabledTextFormField(
                         gstnumber,
                         'Enter GST number',
@@ -2174,10 +2201,11 @@ class _ProfileState extends State<Profile> {
                       } else {
                         return null;
                       }
-                    }, 250),
+                    }, 250):Container(),
                     const SizedBox(
                       height: 8,
                     ),
+                    _checkbox == true ?
                     Column(
                       children: [
                         gst != null
@@ -2367,7 +2395,7 @@ class _ProfileState extends State<Profile> {
                               : Container(),
                         ),
                       ],
-                    ),
+                    ):Container(),
                     const SizedBox(
                       height: 8,
                     ),
@@ -2551,7 +2579,7 @@ class _ProfileState extends State<Profile> {
                       height: 8,
                     ),
                     Container(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         maxHeight: double.infinity,
                       ),
                       //  height: 120,
@@ -2588,6 +2616,8 @@ class _ProfileState extends State<Profile> {
                               subjectDatacity.add(data.subjectId);
                             }
                             print("datalalitbank $subjectDatacity");
+                            multiCity = subjectDatacity.join(',');
+
 
                             //_selectedAnimals = results;
                           },
@@ -2728,26 +2758,32 @@ class _ProfileState extends State<Profile> {
                                 color: ColorPalette.themeBlue, width: 0.5),
                           ),
                         ),
-                        value: bank,
+                        //value: bank,
 
                         dropdownColor: Colors.white,
                         isExpanded: true,
                         iconSize: 20,
                         style: const TextStyle(color: Colors.black),
-
-                        items: [
-                          'State Bank of India',
-                          'Centrel Bank of india',
-                          'Punjab nationa l bank',
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            child: Text(value),
-                            value: value,
+                        items: bankData.map((item) {
+                          return DropdownMenuItem(
+                            child: Text(item['bank_name']),
+                            value: item['id'].toString(),
                           );
                         }).toList(),
+                        // items: [
+                        //   'State Bank of India',
+                        //   'Centrel Bank of india',
+                        //   'Punjab nationa l bank',
+                        // ].map<DropdownMenuItem<String>>((String value) {
+                        //   return DropdownMenuItem<String>(
+                        //     child: Text(value),
+                        //     value: value,
+                        //   );
+                        // }).toList(),
                         onChanged: (salutation) {
                           setState(() {
                             bank = salutation!;
+
                           });
                         },
                         //value: dropdownProject,
@@ -3131,8 +3167,8 @@ class _ProfileState extends State<Profile> {
                                 height: 130,
                                 width: 130,
                                 child: pic != null
-                                    ? Image.file(
-                                        pic!,
+                                    ? Image.network(
+                                  '${APIUrls.BASE_URL_IMAGE}$pic',
                                         fit: BoxFit.cover,
                                       )
                                     : Image.asset('assets/images/user.png')),
@@ -3148,7 +3184,11 @@ class _ProfileState extends State<Profile> {
 
                                     if (image1 != null) {
                                       setState(() {
-                                        pic = File(image1.path);
+                                        final File file = File(
+                                            image1
+                                                .path);
+                                        //pic = File(image1.path);
+                                        postImage('photo', file.path);
                                       });
                                     }
                                   },
@@ -3160,7 +3200,7 @@ class _ProfileState extends State<Profile> {
                                     size: 16,
                                   ),
                                   //padding: const EdgeInsets.all(2.0),
-                                  shape: CircleBorder(),
+                                  shape: const CircleBorder(),
                                 )),
                           ],
                         ),
@@ -3202,7 +3242,7 @@ class _ProfileState extends State<Profile> {
                               Row(
                                 children: [
                                   Text('$number',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                       )),
@@ -3212,7 +3252,7 @@ class _ProfileState extends State<Profile> {
                               Row(
                                 children: [
                                   Text(addr,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                       )),
@@ -3394,29 +3434,35 @@ class _ProfileState extends State<Profile> {
 
                           //_selectedItemsskill.join(",");
 
-                          // add_Personal_Details(
-                          //   firstName.text,
-                          //   lastName.text,
-                          //   email.text,
-                          //   address.text,
-                          //   work.text,
-                          //   dob.text,
-                          //   gender,
-                          //   qualification,
-                          //   pancard.text,
-                          //   panfront,
-                          //   aadharcard.text,
-                          //   aadharfront,
-                          //   _selectedItemsskill,
-                          //   experience,
-                          // );
-                          // _activeCurrentStep += 1;
+                        if(pic!=null && panfront!=null && aadharback != null){
+                          add_Personal_Details(
+                            firstName.text,
+                            lastName.text,
+                            email.text,
+                            address.text,
+                            work.text,
+                            dob.text,
+                            gender,
+                            qualification,
+                            pancard.text,
+                            panfront,
+                            aadharcard.text,
+                            aadharfront,
+                            multiSkill,
+                            experience,
+                          );
+                        }else{
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text('Please upload files'),
+                          ));
+                        }
+                         // _activeCurrentStep += 1;
                         } else if (_activeCurrentStep == 1) {
                           add_Business_Details(
                             gstnumber.text,
                             gst,
                             businessPanCard.text,
-                            _selectedItemscity
+                            multiCity
                           );
                         }
 
@@ -3504,7 +3550,7 @@ class _ProfileState extends State<Profile> {
     panfront,
     aadharcard,
     aadharfront,
-    _selectedItemsskill,
+    multiSkill,
     experience,
   ) async {
     try {
@@ -3527,7 +3573,7 @@ class _ProfileState extends State<Profile> {
           "address_proof_type": '2',
           "address_proof_number": '$aadharcard',
           "address_proof_doc": '$aadharback',
-          "skills": "$_selectedItemsskill",
+          "skills": "$multiSkill",
           "total_experience": '$experience',
         });
 
@@ -3539,6 +3585,9 @@ class _ProfileState extends State<Profile> {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
+            setState(() {
+              _activeCurrentStep += 1;
+            });
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('${convertJson['success_msg']}'),
             ));
@@ -3573,7 +3622,7 @@ class _ProfileState extends State<Profile> {
   gstnumber,
   gst,
   businessPanCard,
-  _selectedItemscity
+      multiCity
       ) async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -3584,7 +3633,7 @@ class _ProfileState extends State<Profile> {
           "gst_number": "$gstnumber",
           "gst_doc": "$gst",
           "pan_number": "$businessPanCard",
-          "service_area": "1,2"
+          "service_area": "$multiCity"
         });
 
         var response = await http.post(Uri.parse(APIUrls.ADD_BUSINESS_DETAILS),
@@ -3730,17 +3779,17 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  //getSkills
-
-  Future<void> getSkills() async {
+  List bankData = [];
+  Future<void> getBank() async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var queryParams = {
           "phone_number": "$number",
+
         };
         var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_SKILLS}", queryParams),
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_BANK}", queryParams),
             headers: {'Authorization': 'Bearer $token'});
 
         try {
@@ -3748,14 +3797,7 @@ class _ProfileState extends State<Profile> {
           print(convertJson);
           if (convertJson["status"]) {
             setState(() {
-              // print(convertJson['data']['skills']);
-              for(int i = 0; i< convertJson['data']['skills'].length; i++){
-                _items = convertJson['data']['skills'][i]['name'];
-              print(_items);
-              }
-
-
-
+              bankData = convertJson['data']['banks'];
             });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -3779,5 +3821,71 @@ class _ProfileState extends State<Profile> {
       ));
     }
   }
+
+
+  Future<void> postImage(imageName, file) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var request = http.MultipartRequest(
+            'POST', Uri.parse("${APIUrls.POST_IMAGES}"));
+        request.files.add(await http.MultipartFile.fromPath('img', file));
+        request.fields['phone_number'] = '$number';
+        request.fields['img_name'] = '$imageName';
+        request.headers['Authorization'] = 'Bearer $token';
+        // print("In upload photo");
+        var res = await request.send();
+        print(res);
+        try {
+         // var convertJson = jsonDecode(res.body);
+          //print(convertJson);
+          print(res.statusCode);
+          if (res.statusCode == 200){
+            var responseBody = await http.Response.fromStream(res);
+            var myData = json.decode(responseBody.body);
+            print(myData['status']);
+            if (myData['status']) {
+              setState(() {
+                print(myData['data']['file_path']);
+                if(imageName == "photo") {
+                  pic = myData['data']['file_path'];
+                }else if(imageName == "id_proof_doc"){
+                  panfront = myData['data']['file_path'];
+                }else if(imageName == "address_proof_doc"){
+                  aadharback = myData['data']['file_path'];
+                }else if(imageName == "gst_doc"){
+                  gst = myData['data']['file_path'];
+                }else if(imageName == "cancelled_cheque"){
+                  check = myData['data']['file_path'];
+                }
+              });
+            }
+            // setState(() {
+            //   bankData = convertJson['data']['banks'];
+            // });
+          } else {
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //   content: Text('${convertJson['error_msg']}'),
+            // ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+
 
 }

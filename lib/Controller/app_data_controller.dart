@@ -30,7 +30,7 @@ class AppDataController extends GetxController {
 
         try {
           var convertJson = jsonDecode(response.body);
-          print(convertJson);
+          //print(convertJson);
           if (convertJson["status"]) {
 
             List<SubjectModel> tempSubjectData = [];
@@ -44,7 +44,7 @@ class AppDataController extends GetxController {
                 );
               },
             );
-            print(tempSubjectData);
+            //print(tempSubjectData);
             subjectData.addAll(tempSubjectData);
 
             dropDownData = subjectData.map((subjectdata) {
@@ -99,16 +99,17 @@ class AppDataControllerCIty extends GetxController {
 
         try {
           var convertJson = jsonDecode(response.body);
-          print(convertJson);
+          //print(convertJson);
           if (convertJson["status"]) {
 
+
             List<SubjectModel> tempSubjectDatacity = [];
-            convertJson['data']['skills'].forEach(
+            convertJson['data']['cities'].forEach(
                   (data) {
                 tempSubjectDatacity.add(
                   SubjectModel(
-                    subjectId: data['id'],
-                    subjectName: data['name'],
+                    subjectId: data['city_id'],
+                    subjectName: data['city_name'],
                   ),
                 );
               },
