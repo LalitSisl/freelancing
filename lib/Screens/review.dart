@@ -63,8 +63,8 @@ class _ReviewState extends State<Review> {
                             child: Image.asset('assets/images/shade1.png'),
                           )),
                       Positioned(
-                        top: 20,
-                        right: 10,
+                        top: 30,
+                        right: 30,
                         child: Stack(
                           children: [
                             Container(
