@@ -953,7 +953,53 @@ class _ProfileState extends State<Profile> {
 
                   // const SizedBox(
                   //   height: 8,
-                  // ),
+                  // ), 
+                   widget.user == "1"
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: DropdownButtonFormField<String>(
+                            decoration: const InputDecoration(
+                              labelText: 'State',
+                              isDense: true, // Added this
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 9),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.themeBlue, width: 0.5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.themeBlue, width: 0.5),
+                              ),
+                            ),
+                            value: vendor_state,
+
+                            dropdownColor: Colors.white,
+                            isExpanded: true,
+                            iconSize: 20,
+                            style: const TextStyle(color: Colors.black),
+
+                            items: [
+                              'Delhi',
+                              'Karnataka',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                child: Text(value),
+                                value: value,
+                              );
+                            }).toList(),
+                            onChanged: (salutation) {
+                              setState(() {
+                                vendor_city = salutation!;
+                              });
+                            },
+                            //value: dropdownProject,
+                            validator: (value) =>
+                                value == null ? 'field required' : null,
+                          ),
+                        )
+                      : Container(),
+                     const SizedBox(height:8),
                   widget.user == "1"
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
@@ -1002,51 +1048,7 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 8,
                   ),
-                  widget.user == "1"
-                      ? SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: DropdownButtonFormField<String>(
-                            decoration: const InputDecoration(
-                              labelText: 'State',
-                              isDense: true, // Added this
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 9),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorPalette.themeBlue, width: 0.5),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorPalette.themeBlue, width: 0.5),
-                              ),
-                            ),
-                            value: vendor_state,
-
-                            dropdownColor: Colors.white,
-                            isExpanded: true,
-                            iconSize: 20,
-                            style: const TextStyle(color: Colors.black),
-
-                            items: [
-                              'Delhi',
-                              'Karnataka',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                child: Text(value),
-                                value: value,
-                              );
-                            }).toList(),
-                            onChanged: (salutation) {
-                              setState(() {
-                                vendor_city = salutation!;
-                              });
-                            },
-                            //value: dropdownProject,
-                            validator: (value) =>
-                                value == null ? 'field required' : null,
-                          ),
-                        )
-                      : Container(),
+                
                   const SizedBox(
                     height: 8,
                   ),
