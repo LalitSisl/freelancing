@@ -75,7 +75,7 @@ var isLoading =false;
               sharedPreferneces.setString('user_id','${convertJson['data']['user_id']}');
             });
             print(convertJson['data']['user_status']);
-            if(convertJson['data']['user_status'] == 3) {
+            if(convertJson['data']['user_status'] != "3") {
               Get.to(Profile(user: _selectUser,
                   user_status: convertJson['data']['user_status'].toString()));
               print('user status ${convertJson['data']['user_status']}');
