@@ -220,12 +220,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         });
                       },
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -1),
+                      visualDensity: const VisualDensity(vertical: -1),
                       title: Text('Personal Details',style: SWANWidget.fieldLabelTextStyle,),
                       trailing:
                       _isVisible ?
-                      Icon(Icons.keyboard_arrow_down_outlined):
-                      Icon(Icons.keyboard_arrow_up_outlined),
+                      const Icon(Icons.keyboard_arrow_down_outlined):
+                      const Icon(Icons.keyboard_arrow_up_outlined),
                     ),
                   ),
                   _isVisible ? Container():
@@ -931,12 +931,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         });
                       },
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -1),
+                      visualDensity: const VisualDensity(vertical: -1),
                       title: Text('Business Details',style: SWANWidget.fieldLabelTextStyle,),
                       trailing:
                       _isBusiness ?
-                      Icon(Icons.keyboard_arrow_down_outlined):
-                      Icon(Icons.keyboard_arrow_up_outlined),
+                      const Icon(Icons.keyboard_arrow_down_outlined):
+                      const Icon(Icons.keyboard_arrow_up_outlined),
                     ),
                   ),
                   _isBusiness ? Container():
@@ -1165,12 +1165,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         });
                       },
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -1),
+                      visualDensity: const VisualDensity(vertical: -1),
                       title: Text('Bank Details',style: SWANWidget.fieldLabelTextStyle,),
                       trailing:
                       _isBank ?
-                      Icon(Icons.keyboard_arrow_down_outlined):
-                      Icon(Icons.keyboard_arrow_up_outlined),
+                      const Icon(Icons.keyboard_arrow_down_outlined):
+                      const Icon(Icons.keyboard_arrow_up_outlined),
                     ),
                   ),
                   _isBank ? Container():

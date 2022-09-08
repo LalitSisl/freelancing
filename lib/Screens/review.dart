@@ -18,7 +18,12 @@ class Review extends StatefulWidget {
 
 class _ReviewState extends State<Review> {
   File? pic;
-  var name = '[Name]';
+
+   var name = "[Name]";
+  var profile = "[Profile]";
+  var phone_no = "[Phone Number]";
+  var addr = "[Address]";
+  var sr = '';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
