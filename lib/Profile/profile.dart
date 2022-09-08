@@ -273,7 +273,8 @@ class _ProfileState extends State<Profile> {
           state:
               _activeCurrentStep <= 0 ? StepState.editing : StepState.complete,
           isActive: _activeCurrentStep >= 0,
-          title: const Text('Personal Details'),
+          
+          title:  Text(widget.user == "1" ?'Vendor Details' : 'Personal Details'),
           //subtitle: const Text('Personal Details'),
           content: SingleChildScrollView(
             child: Form(
@@ -482,17 +483,43 @@ class _ProfileState extends State<Profile> {
                           ),
                         )
                       : Container(),
-
+  widget.user == "1"
+                      ? ListTile(
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                          leading: Transform.scale(
+                            scale: 0.8,
+                            child: Radio(
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              value: '1',
+                              groupValue: _selectvendor,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectvendor = value!;
+                                });
+                              },
+                            ),
+                          ),
+                          title: Text(
+                            'Other',
+                            style: GoogleFonts.aBeeZee(
+                                fontSize: 12, color: Colors.black),
+                          ),
+                        )
+                      : Container(),
                   widget.user == "1"
                       ? Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: RichText(
                             text: const TextSpan(
-                                text: 'Account Group',
+                                text: 'Vendor Details',
                                 style: TextStyle(
                                     color: ColorPalette.themeBlue,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 12),
+                                    fontSize: 16),
                                 children: [
                                   TextSpan(
                                       text: ' *',
@@ -2630,29 +2657,7 @@ class _ProfileState extends State<Profile> {
 
 
 
-                    GestureDetector(
-                      onTap: () {
-                        //print(_selectedItems);
-                        _showMultiSelectcity();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                                color: ColorPalette.themeBlue, width: 0.5)),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Select City',
-                                style: SWANWidget.disabledFieldValueTextStyle,
-                              ),
-                              const Icon(Icons.arrow_drop_down)
-                            ]),
-                      ),
-                    ),
+                   
                     Wrap(
                       children: _selectedItemscity
                           .map((e) => Chip(
