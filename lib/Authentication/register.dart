@@ -80,9 +80,9 @@ var isLoading =false;
                   user_status: convertJson['data']['user_status'].toString()));
               print('user status ${convertJson['data']['user_status']}');
             }else {
-              Get.to(Profile(user: _selectUser,
-                  user_status: convertJson['data']['user_status'].toString()));
-             // Get.to(Review());
+              // Get.to(Profile(user: _selectUser,
+              //     user_status: convertJson['data']['user_status'].toString()));
+              Get.to(Review());
             }
 
           } else {

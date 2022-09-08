@@ -93,13 +93,12 @@ class _ProfileState extends State<Profile> {
 
   Future<void> getUSERALLDETAILS() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-
+    print('lalit>>');
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var queryParams = {
           "phone_number": "${sharedPreferneces.getString('number')}",
-
         };
         var response = await http.get(
             Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_USER_COMPLETE_DETAILS}", queryParams),
@@ -111,6 +110,7 @@ class _ProfileState extends State<Profile> {
           print('   lalit $convertJson');
           if (convertJson["status"]) {
             setState(() {
+              sharedPreferneces.setString('user_id','${convertJson['data']['user_details']['profile_details']['id']}');
               name = '${convertJson['data']['user_details']['profile_details']['first_name']}';
               profile = '${convertJson['data']['user_details']['profile_details']['work_title']}';
               addr = '${convertJson['data']['user_details']['profile_details']['address']}';
@@ -136,7 +136,6 @@ class _ProfileState extends State<Profile> {
                accHolderName.text = '${convertJson['data']['user_details']['bank_details']['account_holder_name']}';
                check = '${convertJson['data']['user_details']['bank_details']['cancel_checque']}';
             });
-
           } else {
             // setState(() {
             //   isLoading = false;
@@ -281,6 +280,7 @@ class _ProfileState extends State<Profile> {
     getQualification();
     getBank();
     getdata();
+    getExperience();
     getUSERALLDETAILS();
 
     //controller.getSubjectData();
@@ -339,7 +339,7 @@ class _ProfileState extends State<Profile> {
       initialDatePickerMode: initialDatePickerMode1,
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1970),
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != selectedDate) {
@@ -680,10 +680,10 @@ class _ProfileState extends State<Profile> {
                               ),
                               labelStyle: SWANWidget.fieldLabelTextStyle,
                               counterText: ""),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp('[a-zA-Z]'))
-                          ],
+                          // inputFormatters: [
+                          //   FilteringTextInputFormatter.allow(
+                          //       RegExp('[a-zA-Z]'))
+                          // ],
                           onChanged: (value) {
                             setState(() {
                               profile = value;
@@ -1234,7 +1234,7 @@ class _ProfileState extends State<Profile> {
                           } else {
                             return null;
                           }
-                        }, 250)
+                        }, 10)
                       : Container(),
                   const SizedBox(
                     height: 8,
@@ -2046,10 +2046,10 @@ class _ProfileState extends State<Profile> {
                  //  height: 120,
                     child: GetBuilder<AppDataController>(builder: (controller) {
                       return MultiSelectDialogField(
-                       // height: 200,
+                       dialogHeight: MediaQuery.of(context).size.height/2.5,
                         items: controller.dropDownData,
                         title: const Text(
-                          "Select Subject",
+                          "Select Skills",
                           style: TextStyle(color: Colors.black),
                         ),
                         selectedColor: Colors.black,
@@ -2166,20 +2166,25 @@ class _ProfileState extends State<Profile> {
                             isExpanded: true,
                             iconSize: 20,
                             style: const TextStyle(color: Colors.black),
-
-                            items: [
-                              '0-1 year',
-                              '1-2 year',
-                              '2-3 year',
-                              '3-4 year',
-                              '4-5 year',
-                              '5+ year',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                child: Text(value),
-                                value: value,
+                            items: experinceData.map((item) {
+                              return DropdownMenuItem(
+                                child: Text(item['name']),
+                                value: item['id'].toString(),
                               );
                             }).toList(),
+                            // items: [
+                            //   '0-1 year',
+                            //   '1-2 year',
+                            //   '2-3 year',
+                            //   '3-4 year',
+                            //   '4-5 year',
+                            //   '5+ year',
+                            // ].map<DropdownMenuItem<String>>((String value) {
+                            //   return DropdownMenuItem<String>(
+                            //     child: Text(value),
+                            //     value: value,
+                            //   );
+                            // }).toList(),
                             onChanged: (salutation) {
                               setState(() {
                                 experience = salutation!;
@@ -2535,7 +2540,7 @@ class _ProfileState extends State<Profile> {
                       } else {
                         return null;
                       }
-                    }, 250),
+                    }, 10),
                     const SizedBox(
                       height: 8,
                     ),
@@ -2705,7 +2710,7 @@ class _ProfileState extends State<Profile> {
                       //  height: 120,
                       child: GetBuilder<AppDataControllerCIty>(builder: (controller) {
                         return MultiSelectDialogField(
-                          // height: 200,
+                          dialogHeight: MediaQuery.of(context).size.height/2.5,
                           items: controller.dropDownDatacity,
                           title: const Text(
                             "Select City",
@@ -2923,7 +2928,7 @@ class _ProfileState extends State<Profile> {
                         return 'The field is mandatory';
                       }
                       return null;
-                    }, 250),
+                    }, 18),
                     const SizedBox(
                       height: 8,
                     ),
@@ -2935,8 +2940,10 @@ class _ProfileState extends State<Profile> {
                       if (value.isEmpty) {
                         return 'The field is mandatory';
                       }
+                      if(value != accNumber.text){
+                        return 'Account number not Match';}
                       return null;
-                    }, 250),
+                    }, 18),
                     const SizedBox(
                       height: 8,
                     ),
@@ -3385,14 +3392,13 @@ class _ProfileState extends State<Profile> {
                                 ],
                               ),
                               const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Text(addr,
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ],
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width/1.7,
+                                child: Text(addr,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    )),
                               ),
                             ],
                           ),
@@ -3688,11 +3694,35 @@ class _ProfileState extends State<Profile> {
     multiSkill,
     experience,
   ) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = jsonEncode(<String, String>{
+        var body =
+        sharedPreferneces.getString('user_id') == null ?
+        jsonEncode(<String, String>{
           "phone_number": '$number',
+          "user_type": '${widget.user}',
+          "first_name": '$name',
+          "last_name": '$lastName',
+          "email": '$email',
+          "address": '$address',
+          "work_title": '$work',
+          "dob": '$dob',
+          "gender": '$gender',
+          "highest_qualification": '$qualification',
+          "id_proof_type": '1',
+          "id_proof_no": '$pancard',
+          "id_proof_doc": '$panfront',
+          "address_proof_type": '2',
+          "address_proof_number": '$aadharcard',
+          "address_proof_doc": '$aadharback',
+          "skills": "$multiSkill",
+          "total_experience": '$experience',
+        }):
+        jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3721,7 +3751,9 @@ class _ProfileState extends State<Profile> {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
+
             setState(() {
+              sharedPreferneces.setString('user_id','${convertJson['data']['user_id']}');
               _activeCurrentStep += 1;
             });
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -3760,14 +3792,28 @@ class _ProfileState extends State<Profile> {
   businessPanCard,
       multiCity
       ) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = jsonEncode(<String, String>{
+      
+        var body =
+        _checkboxvalue == 1 ?
+        jsonEncode(<String, String>{
           "phone_number": '$number',
-          "user_id": '$user_id',
-          "gst_number": "$gstnumber",
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "have_gst_no": "$_checkboxvalue",
+          "gst_number": "$gstnumber" ,
           "gst_doc": "$gst",
+          "pan_number": "$businessPanCard",
+          "service_area": "$multiCity"
+        }):
+        jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "have_gst_no": "$_checkboxvalue",
+          // "gst_number": "$gstnumber" ,
+          // "gst_doc": "$gst",
           "pan_number": "$businessPanCard",
           "service_area": "$multiCity"
         });
@@ -3822,18 +3868,19 @@ class _ProfileState extends State<Profile> {
   accHolderName,
   check
       ) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body = jsonEncode(<String, String>{
           "phone_number": '$number',
-          "user_id": '$user_id',
-          "bank": "1",
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "bank": "$bank",
           "account_no": "$accNumber",
           "ifsc_code": "$ifsc",
           "account_holder_name": "$accHolderName",
           "cancel_checque":"$check",
-          "account_type":"2"
+          "account_type":"$acctype"
         });
         print(body);
 
@@ -3891,7 +3938,7 @@ class _ProfileState extends State<Profile> {
 
         try {
           var convertJson = jsonDecode(response.body);
-          print(convertJson);
+         // print(' qualification >> $convertJson');
           if (convertJson["status"]) {
           setState(() {
             qualificationData = convertJson['data']['qualifications'];
@@ -3934,10 +3981,53 @@ class _ProfileState extends State<Profile> {
 
         try {
           var convertJson = jsonDecode(response.body);
-          print(convertJson);
+          //print(' bank >>> $convertJson');
           if (convertJson["status"]) {
             setState(() {
               bankData = convertJson['data']['banks'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  List experinceData = [];
+  Future<void> getExperience() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_EXPERIENCE}", queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          //print(' experince >> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              experinceData = convertJson['data']['work_exp'];
             });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
