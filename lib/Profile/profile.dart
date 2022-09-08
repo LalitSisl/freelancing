@@ -89,6 +89,89 @@ class _ProfileState extends State<Profile> {
   TextEditingController accHolderName = TextEditingController();
   TextEditingController bankName = TextEditingController();
 
+
+
+  Future<void> getUSERALLDETAILS() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "${sharedPreferneces.getString('number')}",
+
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_USER_COMPLETE_DETAILS}", queryParams),
+            headers: {'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'});
+        // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
+        //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
+        try {
+          var convertJson = jsonDecode(response.body);
+          print('   lalit $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              name = '${convertJson['data']['user_details']['profile_details']['first_name']}';
+              profile = '${convertJson['data']['user_details']['profile_details']['work_title']}';
+              addr = '${convertJson['data']['user_details']['profile_details']['address']}';
+              firstName.text = '${convertJson['data']['user_details']['profile_details']['first_name']}';
+              lastName.text = '${convertJson['data']['user_details']['profile_details']['last_name']}';
+              email.text = '${convertJson['data']['user_details']['profile_details']['email']}';
+              address.text = '${convertJson['data']['user_details']['profile_details']['address']}';
+              work.text = '${convertJson['data']['user_details']['profile_details']['work_title']}';
+              dob.text = '${convertJson['data']['user_details']['profile_details']['dob']}';
+              panfront = '${convertJson['data']['user_details']['profile_details']['id_proof_doc']}';
+              aadharback = '${convertJson['data']['user_details']['profile_details']['address_proof_doc']}';
+             //  //gender = '${convertJson['data']['user_details']['profile_details']['gender']}';
+             // // qualification = '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
+             // // experience = '${convertJson['data']['user_details']['profile_details']['experience']}';
+              pancard.text = '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
+              aadharcard.text = '${convertJson['data']['user_details']['profile_details']['address_proof_number']}';
+               gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
+               gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
+               businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
+               accNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
+               confirmAccNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
+               ifsc.text = '${convertJson['data']['user_details']['bank_details']['ifsc_code']}';
+               accHolderName.text = '${convertJson['data']['user_details']['bank_details']['account_holder_name']}';
+               check = '${convertJson['data']['user_details']['bank_details']['cancel_checque']}';
+            });
+
+          } else {
+            // setState(() {
+            //   isLoading = false;
+            // });
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //   content: Text('${convertJson['error_msg']}'),
+            // ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+          // setState(() {
+          //   isLoading = false;
+          // });
+          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          //   content: Text('Something went wrong, try again later'),
+          // ));
+        }
+      }
+    } on SocketException catch (_) {
+
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   content: Text(
+      //       'No internet connection. Connect to the internet and try again.'),
+      // ));
+    }
+  }
+
+
+
+
+
+
+
   //vendor dropdown
   var vendor_city;
   var vendor_state;
@@ -118,12 +201,12 @@ class _ProfileState extends State<Profile> {
   bool _checkbox = false;
   var _checkboxvalue;
 
-  File? panfront;
+  String? panfront;
   File? aadharfront;
-  File? aadharback;
+  String? aadharback;
   String? pic;
-  File? gst;
-  File? check;
+  String? gst;
+  String? check;
 
   // var items = [
   //   'Male',
@@ -198,6 +281,7 @@ class _ProfileState extends State<Profile> {
     getQualification();
     getBank();
     getdata();
+    getUSERALLDETAILS();
 
     //controller.getSubjectData();
     controller.getSkills();
@@ -754,8 +838,8 @@ class _ProfileState extends State<Profile> {
                             style: const TextStyle(color: Colors.black),
 
                             items: [
-                              'Male',
-                              'Female',
+                              'M',
+                              'F',
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 child: Text(value),
@@ -1187,8 +1271,11 @@ class _ProfileState extends State<Profile> {
 
                                                       if (image1 != null) {
                                                         setState(() {
-                                                          panfront =
-                                                              File(image1.path);
+                                                          final File file = File(
+                                                              image1
+                                                                  .path);
+                                                          //pic = File(image1.path);
+                                                          postImage('id_proof_doc', file.path);
                                                           Navigator.pop(
                                                               context);
                                                         });
@@ -1219,8 +1306,11 @@ class _ProfileState extends State<Profile> {
 
                                                       if (image1 != null) {
                                                         setState(() {
-                                                          panfront =
-                                                              File(image1.path);
+                                                          final File file = File(
+                                                              image1
+                                                                  .path);
+                                                          //pic = File(image1.path);
+                                                          postImage('id_proof_doc', file.path);
                                                           Navigator.pop(
                                                               context);
                                                         });
@@ -1258,8 +1348,8 @@ class _ProfileState extends State<Profile> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Image.file(
-                                              panfront!,
+                                            child: Image.network(
+                                              '${APIUrls.BASE_URL_IMAGE}$panfront',
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -1664,8 +1754,11 @@ class _ProfileState extends State<Profile> {
 
                                                   if (image1 != null) {
                                                     setState(() {
-                                                      aadharback =
-                                                          File(image1.path);
+                                                      final File file = File(
+                                                          image1
+                                                              .path);
+                                                      //pic = File(image1.path);
+                                                      postImage('address_proof_doc', file.path);
                                                       Navigator.pop(context);
                                                     });
                                                   }
@@ -1693,8 +1786,11 @@ class _ProfileState extends State<Profile> {
 
                                                   if (image1 != null) {
                                                     setState(() {
-                                                      aadharback =
-                                                          File(image1.path);
+                                                      final File file = File(
+                                                          image1
+                                                              .path);
+                                                      //pic = File(image1.path);
+                                                      postImage('address_proof_doc', file.path);
                                                       Navigator.pop(context);
                                                     });
                                                   }
@@ -1727,8 +1823,8 @@ class _ProfileState extends State<Profile> {
                                               color: ColorPalette.textGrey)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
-                                        child: Image.file(
-                                          aadharback!,
+                                        child: Image.network(
+                                          '${APIUrls.BASE_URL_IMAGE}$aadharback',
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -1758,7 +1854,11 @@ class _ProfileState extends State<Profile> {
 
                                             if (image1 != null) {
                                               setState(() {
-                                                aadharback = File(image1.path);
+                                                final File file = File(
+                                                    image1
+                                                        .path);
+                                                //pic = File(image1.path);
+                                                postImage('address_proof_doc', file.path);
                                                 Navigator.pop(context);
                                               });
                                             }
@@ -1783,7 +1883,11 @@ class _ProfileState extends State<Profile> {
 
                                             if (image1 != null) {
                                               setState(() {
-                                                aadharback = File(image1.path);
+                                                final File file = File(
+                                                    image1
+                                                        .path);
+                                                //pic = File(image1.path);
+                                                postImage('address_proof_doc', file.path);
                                                 Navigator.pop(context);
                                               });
                                             }
@@ -2231,7 +2335,11 @@ class _ProfileState extends State<Profile> {
 
                                               if (image1 != null) {
                                                 setState(() {
-                                                  gst = File(image1.path);
+                                                  final File file = File(
+                                                      image1
+                                                          .path);
+                                                  //pic = File(image1.path);
+                                                  postImage('gst_doc', file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -2258,7 +2366,11 @@ class _ProfileState extends State<Profile> {
 
                                               if (image1 != null) {
                                                 setState(() {
-                                                  gst = File(image1.path);
+                                                  final File file = File(
+                                                      image1
+                                                          .path);
+                                                  //pic = File(image1.path);
+                                                  postImage('gst_doc', file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -2289,8 +2401,8 @@ class _ProfileState extends State<Profile> {
                                           color: ColorPalette.textGrey)),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.file(
-                                      gst!,
+                                    child: Image.network(
+                                      '${APIUrls.BASE_URL_IMAGE}$gst',
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -2320,7 +2432,11 @@ class _ProfileState extends State<Profile> {
 
                                         if (image1 != null) {
                                           setState(() {
-                                            gst = File(image1.path);
+                                            final File file = File(
+                                                image1
+                                                    .path);
+                                            //pic = File(image1.path);
+                                            postImage('gst_doc', file.path);
                                             Navigator.pop(context);
                                           });
                                         }
@@ -2345,7 +2461,11 @@ class _ProfileState extends State<Profile> {
 
                                         if (image1 != null) {
                                           setState(() {
-                                            gst = File(image1.path);
+                                            final File file = File(
+                                                image1
+                                                    .path);
+                                            //pic = File(image1.path);
+                                            postImage('gst_doc', file.path);
                                             Navigator.pop(context);
                                           });
                                         }
@@ -2630,36 +2750,36 @@ class _ProfileState extends State<Profile> {
 
 
 
-                    GestureDetector(
-                      onTap: () {
-                        //print(_selectedItems);
-                        _showMultiSelectcity();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                                color: ColorPalette.themeBlue, width: 0.5)),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Select City',
-                                style: SWANWidget.disabledFieldValueTextStyle,
-                              ),
-                              const Icon(Icons.arrow_drop_down)
-                            ]),
-                      ),
-                    ),
-                    Wrap(
-                      children: _selectedItemscity
-                          .map((e) => Chip(
-                                label: Text(e),
-                              ))
-                          .toList(),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     //print(_selectedItems);
+                    //     _showMultiSelectcity();
+                    //   },
+                    //   child: Container(
+                    //     padding: const EdgeInsets.symmetric(
+                    //         horizontal: 10, vertical: 10),
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(4),
+                    //         border: Border.all(
+                    //             color: ColorPalette.themeBlue, width: 0.5)),
+                    //     child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Text(
+                    //             'Select City',
+                    //             style: SWANWidget.disabledFieldValueTextStyle,
+                    //           ),
+                    //           const Icon(Icons.arrow_drop_down)
+                    //         ]),
+                    //   ),
+                    // ),
+                    // Wrap(
+                    //   children: _selectedItemscity
+                    //       .map((e) => Chip(
+                    //             label: Text(e),
+                    //           ))
+                    //       .toList(),
+                    // ),
                     // SizedBox(
                     //   width: MediaQuery.of(context).size.width,
                     //   height: 45,
@@ -2934,7 +3054,11 @@ class _ProfileState extends State<Profile> {
 
                                               if (image1 != null) {
                                                 setState(() {
-                                                  check = File(image1.path);
+                                                  final File file = File(
+                                                      image1
+                                                          .path);
+                                                  //pic = File(image1.path);
+                                                  postImage('cancelled_cheque', file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -2961,7 +3085,11 @@ class _ProfileState extends State<Profile> {
 
                                               if (image1 != null) {
                                                 setState(() {
-                                                  check = File(image1.path);
+                                                  final File file = File(
+                                                      image1
+                                                          .path);
+                                                  //pic = File(image1.path);
+                                                  postImage('cancelled_cheque', file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -2992,8 +3120,8 @@ class _ProfileState extends State<Profile> {
                                           color: ColorPalette.textGrey)),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.file(
-                                      check!,
+                                    child: Image.network(
+                                      '${APIUrls.BASE_URL_IMAGE}$check',
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -3020,7 +3148,11 @@ class _ProfileState extends State<Profile> {
 
                                         if (image1 != null) {
                                           setState(() {
-                                            check = File(image1.path);
+                                            final File file = File(
+                                                image1
+                                                    .path);
+                                            //pic = File(image1.path);
+                                            postImage('cancelled_cheque', file.path);
                                             Navigator.pop(context);
                                           });
                                         }
@@ -3045,7 +3177,11 @@ class _ProfileState extends State<Profile> {
 
                                         if (image1 != null) {
                                           setState(() {
-                                            check = File(image1.path);
+                                            final File file = File(
+                                                image1
+                                                    .path);
+                                            //pic = File(image1.path);
+                                            postImage('cancelled_cheque', file.path);
                                             Navigator.pop(context);
                                           });
                                         }
@@ -3434,7 +3570,7 @@ class _ProfileState extends State<Profile> {
 
                           //_selectedItemsskill.join(",");
 
-                        if(pic!=null && panfront!=null && aadharback != null){
+                       // if(pic !=null && panfront !=null && aadharback != null){
                           add_Personal_Details(
                             firstName.text,
                             lastName.text,
@@ -3447,15 +3583,15 @@ class _ProfileState extends State<Profile> {
                             pancard.text,
                             panfront,
                             aadharcard.text,
-                            aadharfront,
+                            aadharback,
                             multiSkill,
                             experience,
                           );
-                        }else{
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text('Please upload files'),
-                          ));
-                        }
+                        // }else{
+                        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        //     content: Text('Please upload files'),
+                        //   ));
+                        // }
                          // _activeCurrentStep += 1;
                         } else if (_activeCurrentStep == 1) {
                           add_Business_Details(
@@ -3465,7 +3601,6 @@ class _ProfileState extends State<Profile> {
                             multiCity
                           );
                         }
-
                         // Get.to(const Dashboard());
                       }
                     });
@@ -3576,6 +3711,7 @@ class _ProfileState extends State<Profile> {
           "skills": "$multiSkill",
           "total_experience": '$experience',
         });
+        print(' personal data >> $body');
 
         var response = await http.post(Uri.parse(APIUrls.ADD_PERSONAL_DETAILS),
             headers: {'Authorization': 'Bearer $token'},
@@ -3635,7 +3771,7 @@ class _ProfileState extends State<Profile> {
           "pan_number": "$businessPanCard",
           "service_area": "$multiCity"
         });
-
+        print(body);
         var response = await http.post(Uri.parse(APIUrls.ADD_BUSINESS_DETAILS),
             headers: {'Authorization': 'Bearer $token'},
             body: body);
@@ -3644,6 +3780,9 @@ class _ProfileState extends State<Profile> {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
+            setState(() {
+              _activeCurrentStep += 1;
+            });
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('${convertJson['success_msg']}'),
             ));
@@ -3696,6 +3835,7 @@ class _ProfileState extends State<Profile> {
           "cancel_checque":"$check",
           "account_type":"2"
         });
+        print(body);
 
         var response = await http.post(Uri.parse(APIUrls.ADD_Bank_DETAILS),
             headers: {'Authorization': 'Bearer $token'},

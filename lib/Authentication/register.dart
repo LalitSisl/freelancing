@@ -80,6 +80,7 @@ var isLoading =false;
                   user_status: convertJson['data']['user_status'].toString()));
               print('user status ${convertJson['data']['user_status']}');
             }else {
+
               Get.to(Review());
             }
 
