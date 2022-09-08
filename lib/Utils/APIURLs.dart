@@ -12,6 +12,7 @@ class APIUrls {
   static const String GET_SKILLS = "/sisl-swan/index.php/api/skills_master";
   static const String GET_CITY = "/sisl-swan/index.php/api/cities";
   static const String GET_BANK = "/sisl-swan/index.php/api/bank_master";
+  static const String GET_EXPERIENCE = "/sisl-swan/index.php/api/work_experience_master";
 
   static const String OTP_RESEND = "${BASE_URL}resend_otp";
   static const String ADD_PERSONAL_DETAILS = "${BASE_URL}add_personal_details";
