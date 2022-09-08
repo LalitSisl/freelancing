@@ -1,9 +1,15 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/register.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Utils/APIURLs.dart';
 
 // ignore: must_be_immutable
 class Otp extends StatefulWidget {
@@ -15,7 +21,7 @@ class Otp extends StatefulWidget {
 }
 
 class _OtpState extends State<Otp> {
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController _otpController = TextEditingController();
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
@@ -53,7 +59,7 @@ class _OtpState extends State<Otp> {
         if (_start == 0) {
           setState(() {
             timer.cancel();
-            isLoading = false;
+            //isLoading = false;
           });
         } else {
           setState(() {
@@ -63,6 +69,76 @@ class _OtpState extends State<Otp> {
       },
     );
   }
+
+
+
+  Future<void> verifyOTP(otp) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    print(widget.number);
+    print(otp);
+    setState(() {
+      isLoading=true;
+    });
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": "${widget.number}",
+          "otp":'$otp'
+        });
+        var response = await http.post(Uri.parse(APIUrls.OTP_VERIFY), body: body);
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(' allit $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              isLoading = false;
+            });
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+
+            setState(() {
+              sharedPreferneces.setString('number', '${widget.number}');
+              sharedPreferneces.setString('token', '${convertJson['token']}');
+              print(sharedPreferneces.getString('number'));
+            });
+            Get.to(const Register());
+          } else {
+            setState(() {
+              isLoading = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +195,7 @@ class _OtpState extends State<Otp> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
                 child: PinCodeTextField(
+
                   appContext: context,
                   // pastedTextStyle: TextStyle(
                   //   color: Colors.green.shade600,
@@ -154,7 +231,7 @@ class _OtpState extends State<Otp> {
                   animationDuration: const Duration(milliseconds: 300),
                   enableActiveFill: true,
 
-                  controller: textEditingController,
+                  controller: _otpController,
                   keyboardType: TextInputType.number,
 
                   onCompleted: (v) {
@@ -186,8 +263,9 @@ class _OtpState extends State<Otp> {
                 onTap: (){
                   setState(() {
                     _start = 30;
-                    isLoading = true;
+                    //isLoading = true;
                     startTimer();
+                    resendOTP();
                   });
                 },
                 child: const Text('Resend OTP'),
@@ -199,13 +277,18 @@ class _OtpState extends State<Otp> {
           const SizedBox(
             height: 30,
           ),
+          isLoading ?
+          const Align(
+              alignment: Alignment.bottomRight,
+              child: CircularProgressIndicator()):
           Align(
             alignment: Alignment.bottomRight,
             child: ElevatedButton(
               onPressed: () {
                 //_modalBottomSheet();
                 if (formKey.currentState!.validate()) {
-                  Get.to(const Register());
+                  verifyOTP(_otpController.text);
+                  //Get.to(const Register());
                 }
               },
               child: const Text('Verify OTP'),
@@ -215,4 +298,48 @@ class _OtpState extends State<Otp> {
       ),
     ));
   }
+
+  Future<void> resendOTP() async {
+
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": "${widget.number}",
+        });
+        var response = await http.post(Uri.parse(APIUrls.OTP_RESEND), body: body);
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            // Get.to(Otp(number: phoneNumber));
+          } else {
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
 }
