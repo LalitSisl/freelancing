@@ -578,7 +578,7 @@ class _ProfileState extends State<Profile> {
                             child: Radio(
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
-                              value: '1',
+                              value: '2',
                               groupValue: _selectvendor,
                               onChanged: (value) {
                                 setState(() {
