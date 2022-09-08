@@ -421,7 +421,7 @@ class _ProfileState extends State<Profile> {
                                 style: TextStyle(
                                     color: ColorPalette.themeBlue,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 12),
+                                    fontSize: 16),
                                 children: [
                                   TextSpan(
                                       text: ' *',
@@ -499,7 +499,7 @@ class _ProfileState extends State<Profile> {
                                 style: TextStyle(
                                     color: ColorPalette.themeBlue,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 12),
+                                    fontSize: 16),
                                 children: [
                                   TextSpan(
                                       text: ' *',
@@ -667,7 +667,7 @@ class _ProfileState extends State<Profile> {
                           height: 8,
                         )
                       : Container(),
-
+ widget.user == "2"?
                   SWANWidget.enabledTextFormField(
                       email,
                       'Email id',
@@ -686,7 +686,7 @@ class _ProfileState extends State<Profile> {
                     } else {
                       return null;
                     }
-                  }, 250),
+                  }, 250):Container(),
                   const SizedBox(
                     height: 8,
                   ),
@@ -1004,7 +1004,7 @@ class _ProfileState extends State<Profile> {
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: DropdownButtonFormField<String>(
-                            decoration: const InputDecoration(
+                            decoration: const InputDecoration( 
                               labelText: 'City',
                               isDense: true, // Added this
                               contentPadding: EdgeInsets.symmetric(
@@ -1205,6 +1205,26 @@ class _ProfileState extends State<Profile> {
                           }
                         }, 250)
                       : Container(),
+                       widget.user == "1"?
+                  SWANWidget.enabledTextFormField(
+                      email,
+                       'Contact Email id',
+                      TextInputType.text,
+                      [FilteringTextInputFormatter.singleLineFormatter],
+                      (value) {
+                    String pattern =
+                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                        r"{0,253}[a-zA-Z0-9])?)*$";
+                    RegExp regex = RegExp(pattern);
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'Enter a valid email address';
+                    } else {
+                      return null;
+                    }
+                  }, 250):Container(),
                   widget.user == "1"
                       ? const SizedBox(
                           height: 8,
