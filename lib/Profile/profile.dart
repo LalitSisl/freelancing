@@ -3877,7 +3877,7 @@ class _ProfileState extends State<Profile> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body =
-        sharedPreferneces.getString('user_id') == null ?
+        sharedPreferneces.getString('user_id') != null ?
         jsonEncode(<String, String>{
           "phone_number": '$number',
           "user_type": '${widget.user}',
