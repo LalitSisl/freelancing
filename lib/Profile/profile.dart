@@ -3726,10 +3726,9 @@ class _ProfileState extends State<Profile> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body =
-        sharedPreferneces.getString('user_id') == null ?
+        sharedPreferneces.getString('user_id') != null ?
         jsonEncode(<String, String>{
-             "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "phone_number": '$number',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3749,7 +3748,8 @@ class _ProfileState extends State<Profile> {
           "total_experience": '$experience',
         }):
         jsonEncode(<String, String>{
-                         "phone_number": '$number',
+           "phone_number": '$number',
+            "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3778,7 +3778,6 @@ class _ProfileState extends State<Profile> {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-
             setState(() {
               sharedPreferneces.setString('user_id','${convertJson['data']['user_id']}');
               _activeCurrentStep += 1;
