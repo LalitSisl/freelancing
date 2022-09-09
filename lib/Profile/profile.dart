@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter_native_image/flutter_native_image.dart';
-import 'package:image_cropper/image_cropper.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:freelancing/Screens/review.dart';
@@ -94,7 +93,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> getUSERALLDETAILS() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-
+    print('lalit>>');
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -111,75 +110,31 @@ class _ProfileState extends State<Profile> {
           print('   lalit $convertJson');
           if (convertJson["status"]) {
             setState(() {
-
-              if(widget.user == "2") {
-                sharedPreferneces.setString('user_id',
-                    '${convertJson['data']['user_details']['profile_details']['id']}');
-                name =
-                '${convertJson['data']['user_details']['profile_details']['first_name']}';
-                profile =
-                '${convertJson['data']['user_details']['profile_details']['work_title']}';
-                addr =
-                '${convertJson['data']['user_details']['profile_details']['address']}';
-                firstName.text =
-                '${convertJson['data']['user_details']['profile_details']['first_name']}';
-                lastName.text =
-                '${convertJson['data']['user_details']['profile_details']['last_name']}';
-                email.text =
-                '${convertJson['data']['user_details']['profile_details']['email']}';
-                address.text =
-                '${convertJson['data']['user_details']['profile_details']['address']}';
-                work.text =
-                '${convertJson['data']['user_details']['profile_details']['work_title']}';
-                dob.text =
-                '${convertJson['data']['user_details']['profile_details']['dob']}';
-                panfront =
-                '${convertJson['data']['user_details']['profile_details']['id_proof_doc']}';
-                aadharback =
-                '${convertJson['data']['user_details']['profile_details']['address_proof_doc']}';
-                gender = '${convertJson['data']['user_details']['profile_details']['gender']}';
-               qualification = '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
-                experience = '${convertJson['data']['user_details']['profile_details']['experience']}';
-                pancard.text =
-                '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
-                aadharcard.text =
-                '${convertJson['data']['user_details']['profile_details']['address_proof_number']}';
-              }else {
-                name = '${convertJson['data']['user_details']['vendor_details']['company_name']}';
-                addr = '${convertJson['data']['user_details']['vendor_details']['vendor_city_name']}, ${convertJson['data']['user_details']['vendor_details']['vendor_state_name']} ${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
-                company_name.text = '${convertJson['data']['user_details']['vendor_details']['company_name']}';
-                pincode.text = '${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
-                phone.text = '${convertJson['data']['user_details']['vendor_details']['vendor_phone']}';
-                turnover.text = '${convertJson['data']['user_details']['vendor_details']['turnover']}';
-                c_firstName.text = '${convertJson['data']['user_details']['vendor_details']['contact_first_name']}';
-                c_lastName.text = '${convertJson['data']['user_details']['vendor_details']['contact_last_name']}';
-                email.text = '${convertJson['data']['user_details']['vendor_details']['contact_email']}';
-                c_position.text = '${convertJson['data']['user_details']['vendor_details']['contact_position']}';
-                c_phone.text = '${convertJson['data']['user_details']['vendor_details']['contact_phone_number']}';
-               // _selectaccount = '${convertJson['data']['user_details']['vendor_details']['account_group']}';
-                vendor_state = '${convertJson['data']['user_details']['vendor_details']['vendor_state']}';
-                vendor_city = '${convertJson['data']['user_details']['vendor_details']['vendor_city']}';
-                vendor_company = '${convertJson['data']['user_details']['vendor_details']['vendor_company_type']}';
-              }
-              //print('>>>>>>>>>> ${gstnumber.text}');
-              if(gstnumber.text != null){
-                _checkbox = true;
-                _checkboxvalue = 1;
-              }
-
-              gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
+              sharedPreferneces.setString('user_id','${convertJson['data']['user_details']['profile_details']['id']}');
+              name = '${convertJson['data']['user_details']['profile_details']['first_name']}';
+              profile = '${convertJson['data']['user_details']['profile_details']['work_title']}';
+              addr = '${convertJson['data']['user_details']['profile_details']['address']}';
+              firstName.text = '${convertJson['data']['user_details']['profile_details']['first_name']}';
+              lastName.text = '${convertJson['data']['user_details']['profile_details']['last_name']}';
+              email.text = '${convertJson['data']['user_details']['profile_details']['email']}';
+              address.text = '${convertJson['data']['user_details']['profile_details']['address']}';
+              work.text = '${convertJson['data']['user_details']['profile_details']['work_title']}';
+              dob.text = '${convertJson['data']['user_details']['profile_details']['dob']}';
+              panfront = '${convertJson['data']['user_details']['profile_details']['id_proof_doc']}';
+              aadharback = '${convertJson['data']['user_details']['profile_details']['address_proof_doc']}';
+             //  //gender = '${convertJson['data']['user_details']['profile_details']['gender']}';
+             // // qualification = '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
+             // // experience = '${convertJson['data']['user_details']['profile_details']['experience']}';
+              pancard.text = '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
+              aadharcard.text = '${convertJson['data']['user_details']['profile_details']['address_proof_number']}';
+               gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
                gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
                businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
-               bank = '${convertJson['data']['user_details']['bank_details']['bank']}';
                accNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                confirmAccNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                ifsc.text = '${convertJson['data']['user_details']['bank_details']['ifsc_code']}';
                accHolderName.text = '${convertJson['data']['user_details']['bank_details']['account_holder_name']}';
                check = '${convertJson['data']['user_details']['bank_details']['cancel_checque']}';
-               // vendor
-
-
-
             });
           } else {
             // setState(() {
@@ -326,8 +281,6 @@ class _ProfileState extends State<Profile> {
     getBank();
     getdata();
     getExperience();
-    getStates();
-    getVendorComapnyType();
     getUSERALLDETAILS();
 
     //controller.getSubjectData();
@@ -405,7 +358,7 @@ class _ProfileState extends State<Profile> {
               _activeCurrentStep <= 0 ? StepState.editing : StepState.complete,
           isActive: _activeCurrentStep >= 0,
           
-          title:  Text(widget.user == "1" ?'Vendor' : 'Personal'),
+          title:  Text(widget.user == "1" ?'Vendor Details' : 'Personal Details'),
           //subtitle: const Text('Personal Details'),
           content: SingleChildScrollView(
             child: Form(
@@ -436,7 +389,6 @@ class _ProfileState extends State<Profile> {
                     ],
                     onChanged: (value) {
                       setState(() {
-                        print(value);
                         name = value;
                         if (value.isEmpty) {
                           name = '[Name]';
@@ -494,12 +446,11 @@ class _ProfileState extends State<Profile> {
                             child: Radio(
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
-                              value: 'Domestic',
+                              value: '0',
                               groupValue: _selectaccount,
                               onChanged: (value) {
                                 setState(() {
                                   _selectaccount = value!;
-                                  print(_selectaccount);
                                 });
                               },
                             ),
@@ -522,12 +473,11 @@ class _ProfileState extends State<Profile> {
                             child: Radio(
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
-                              value: 'One time Vendor',
+                              value: '1',
                               groupValue: _selectaccount,
                               onChanged: (value) {
                                 setState(() {
                                   _selectaccount = value!;
-                                  print(_selectaccount);
                                 });
                               },
                             ),
@@ -574,7 +524,7 @@ class _ProfileState extends State<Profile> {
                             child: Radio(
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
-                              value: 'For project supply/service',
+                              value: '0',
                               groupValue: _selectvendor,
                               onChanged: (value) {
                                 setState(() {
@@ -601,7 +551,7 @@ class _ProfileState extends State<Profile> {
                             child: Radio(
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
-                              value: 'IT',
+                              value: '1',
                               groupValue: _selectvendor,
                               onChanged: (value) {
                                 setState(() {
@@ -628,7 +578,7 @@ class _ProfileState extends State<Profile> {
                             child: Radio(
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
-                              value: 'Other',
+                              value: '2',
                               groupValue: _selectvendor,
                               onChanged: (value) {
                                 setState(() {
@@ -959,7 +909,7 @@ class _ProfileState extends State<Profile> {
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
                             ),
-                            value: qualification,
+                            //value: qualification,
 
                             dropdownColor: Colors.white,
                             isExpanded: true,
@@ -1028,25 +978,19 @@ class _ProfileState extends State<Profile> {
                             isExpanded: true,
                             iconSize: 20,
                             style: const TextStyle(color: Colors.black),
-                            items: stateData.map((item) {
-                              return DropdownMenuItem(
-                                child: Text(item['state_name']),
-                                value: item['state_id'].toString(),
+
+                            items: [
+                              'Delhi',
+                              'Karnataka',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                child: Text(value),
+                                value: value,
                               );
                             }).toList(),
-                            // items: [
-                            //   'Delhi',
-                            //   'Karnataka',
-                            // ].map<DropdownMenuItem<String>>((String value) {
-                            //   return DropdownMenuItem<String>(
-                            //     child: Text(value),
-                            //     value: value,
-                            //   );
-                            // }).toList(),
                             onChanged: (salutation) {
                               setState(() {
-                                vendor_state = salutation!;
-                                getVendorCity(vendor_state);
+                                vendor_city = salutation!;
                               });
                             },
                             //value: dropdownProject,
@@ -1075,25 +1019,21 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             value: vendor_city,
+
                             dropdownColor: Colors.white,
                             isExpanded: true,
                             iconSize: 20,
                             style: const TextStyle(color: Colors.black),
-                            items: vendorCityData.map((item) {
-                              return DropdownMenuItem(
-                                child: Text(item['city_name']),
-                                value: item['city_id'].toString(),
+
+                            items: [
+                              'Delhi',
+                              'Mumbai',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                child: Text(value),
+                                value: value,
                               );
                             }).toList(),
-                            // items: [
-                            //   'Delhi',
-                            //   'Mumbai',
-                            // ].map<DropdownMenuItem<String>>((String value) {
-                            //   return DropdownMenuItem<String>(
-                            //     child: Text(value),
-                            //     value: value,
-                            //   );
-                            // }).toList(),
                             onChanged: (salutation) {
                               setState(() {
                                 vendor_city = salutation!;
@@ -1184,21 +1124,16 @@ class _ProfileState extends State<Profile> {
                             isExpanded: true,
                             iconSize: 20,
                             style: const TextStyle(color: Colors.black),
-                            items: vendorCompanyTypeData.map((item) {
-                              return DropdownMenuItem(
-                                child: Text(item['name']),
-                                value: item['id'].toString(),
+
+                            items: [
+                              'MNC',
+                              'Other',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                child: Text(value),
+                                value: value,
                               );
                             }).toList(),
-                            // items: [
-                            //   'MNC',
-                            //   'Other',
-                            // ].map<DropdownMenuItem<String>>((String value) {
-                            //   return DropdownMenuItem<String>(
-                            //     child: Text(value),
-                            //     value: value,
-                            //   );
-                            // }).toList(),
                             onChanged: (salutation) {
                               setState(() {
                                 vendor_company = salutation!;
@@ -1270,8 +1205,7 @@ class _ProfileState extends State<Profile> {
                           }
                         }, 250)
                       : Container(),
-                       const SizedBox(height: 8,),
-                       widget.user == "1" ?
+                       widget.user == "1"?
                   SWANWidget.enabledTextFormField(
                       email,
                        'Contact Email id',
@@ -1383,18 +1317,11 @@ class _ProfileState extends State<Profile> {
                                                               source:
                                                                   ImageSource
                                                                       .camera);
-                                                      File
-                                                      compressedFile =
-                                                      await FlutterNativeImage
-                                                          .compressImage(
-                                                        image1!.path,
-                                                        quality: 50,
-                                                      );
 
                                                       if (image1 != null) {
                                                         setState(() {
                                                           final File file = File(
-                                                              compressedFile
+                                                              image1
                                                                   .path);
                                                           //pic = File(image1.path);
                                                           postImage('id_proof_doc', file.path);
@@ -1497,18 +1424,11 @@ class _ProfileState extends State<Profile> {
                                                     await _picker.getImage(
                                                         source:
                                                             ImageSource.camera);
-                                                File
-                                                compressedFile =
-                                                await FlutterNativeImage
-                                                    .compressImage(
-                                                  image1!.path,
-                                                  quality: 50,
-                                                );
 
                                                 if (image1 != null) {
                                                   setState(() {
                                                     final File file = File(
-                                                        compressedFile
+                                                        image1
                                                             .path);
                                                     //pic = File(image1.path);
                                                     postImage('id_proof_doc', file.path);
@@ -1880,18 +1800,11 @@ class _ProfileState extends State<Profile> {
                                                       await _picker.getImage(
                                                           source: ImageSource
                                                               .camera);
-                                                  File
-                                                  compressedFile =
-                                                  await FlutterNativeImage
-                                                      .compressImage(
-                                                    image1!.path,
-                                                    quality: 50,
-                                                  );
 
                                                   if (image1 != null) {
                                                     setState(() {
                                                       final File file = File(
-                                                          compressedFile
+                                                          image1
                                                               .path);
                                                       //pic = File(image1.path);
                                                       postImage('address_proof_doc', file.path);
@@ -1987,17 +1900,11 @@ class _ProfileState extends State<Profile> {
                                                 ImagePicker(); //added type ImagePicker
                                             var image1 = await _picker.getImage(
                                                 source: ImageSource.camera);
-                                            File
-                                            compressedFile =
-                                            await FlutterNativeImage
-                                                .compressImage(
-                                              image1!.path,
-                                              quality: 50,
-                                            );
+
                                             if (image1 != null) {
                                               setState(() {
                                                 final File file = File(
-                                                    compressedFile
+                                                    image1
                                                         .path);
                                                 //pic = File(image1.path);
                                                 postImage('address_proof_doc', file.path);
@@ -2479,17 +2386,11 @@ class _ProfileState extends State<Profile> {
                                                   await _picker.getImage(
                                                       source:
                                                           ImageSource.camera);
-                                              File
-                                              compressedFile =
-                                              await FlutterNativeImage
-                                                  .compressImage(
-                                                image1!.path,
-                                                quality: 50,
-                                              );
+
                                               if (image1 != null) {
                                                 setState(() {
                                                   final File file = File(
-                                                      compressedFile
+                                                      image1
                                                           .path);
                                                   //pic = File(image1.path);
                                                   postImage('gst_doc', file.path);
@@ -2582,23 +2483,11 @@ class _ProfileState extends State<Profile> {
                                             ImagePicker(); //added type ImagePicker
                                         var image1 = await _picker.getImage(
                                             source: ImageSource.camera);
-                                        // File croppedFile =
-                                        // (await ImageCropper()
-                                        //     .cropImage(
-                                        //   sourcePath:
-                                        //   image1!.path,
-                                        // )) as File;
-                                        File
-                                        compressedFile =
-                                        await FlutterNativeImage
-                                            .compressImage(
-                                          image1!.path,
-                                          quality: 50,
-                                        );
+
                                         if (image1 != null) {
                                           setState(() {
                                             final File file = File(
-                                                compressedFile
+                                                image1
                                                     .path);
                                             //pic = File(image1.path);
                                             postImage('gst_doc', file.path);
@@ -3021,7 +2910,7 @@ class _ProfileState extends State<Profile> {
                                 color: ColorPalette.themeBlue, width: 0.5),
                           ),
                         ),
-                        value: bank,
+                        //value: bank,
 
                         dropdownColor: Colors.white,
                         isExpanded: true,
@@ -3196,17 +3085,11 @@ class _ProfileState extends State<Profile> {
                                                   await _picker.getImage(
                                                       source:
                                                           ImageSource.camera);
-                                              File
-                                              compressedFile =
-                                              await FlutterNativeImage
-                                                  .compressImage(
-                                                image1!.path,
-                                                quality: 50,
-                                              );
+
                                               if (image1 != null) {
                                                 setState(() {
                                                   final File file = File(
-                                                      compressedFile
+                                                      image1
                                                           .path);
                                                   //pic = File(image1.path);
                                                   postImage('cancelled_cheque', file.path);
@@ -3296,17 +3179,11 @@ class _ProfileState extends State<Profile> {
                                             ImagePicker(); //added type ImagePicker
                                         var image1 = await _picker.getImage(
                                             source: ImageSource.camera);
-                                        File
-                                        compressedFile =
-                                        await FlutterNativeImage
-                                            .compressImage(
-                                          image1!.path,
-                                          quality: 50,
-                                        );
+
                                         if (image1 != null) {
                                           setState(() {
                                             final File file = File(
-                                                compressedFile
+                                                image1
                                                     .path);
                                             //pic = File(image1.path);
                                             postImage('cancelled_cheque', file.path);
@@ -3474,17 +3351,11 @@ class _ProfileState extends State<Profile> {
                                         ImagePicker(); //added type ImagePicker
                                     var image1 = await _picker.getImage(
                                         source: ImageSource.camera);
-                                    File
-                                    compressedFile =
-                                    await FlutterNativeImage
-                                        .compressImage(
-                                      image1!.path,
-                                      quality: 50,
-                                    );
+
                                     if (image1 != null) {
                                       setState(() {
                                         final File file = File(
-                                            compressedFile
+                                            image1
                                                 .path);
                                         //pic = File(image1.path);
                                         postImage('photo', file.path);
@@ -3724,17 +3595,15 @@ class _ProfileState extends State<Profile> {
                 onStepContinue: () {
                   if (_activeCurrentStep < (stepList().length - 1)) {
                     setState(() {
-                      print(widget.user);
-                      // if (formKeys[_activeCurrentStep]
-                      //     .currentState!
-                      //     .validate()) {
+                      print('$_selectedItemsskill');
+                      if (formKeys[_activeCurrentStep]
+                          .currentState!
+                          .validate()) {
                         if (_activeCurrentStep == 0) {
-
 
                           //_selectedItemsskill.join(",");
 
                        // if(pic !=null && panfront !=null && aadharback != null){
-                          if(widget.user == "2"){
                           add_Personal_Details(
                             firstName.text,
                             lastName.text,
@@ -3751,26 +3620,6 @@ class _ProfileState extends State<Profile> {
                             multiSkill,
                             experience,
                           );
-                          }
-                          else{
-
-                            add_Vendor_Details(
-                              company_name.text,
-                              _selectaccount,
-                              _selectvendor,
-                              vendor_state,
-                              vendor_city,
-                              pincode.text,
-                              phone.text,
-                              turnover.text,
-                              vendor_company,
-                              c_firstName.text,
-                              c_lastName.text,
-                              email.text,
-                              c_position.text,
-                              c_phone.text
-                            );
-                          }
                         // }else{
                         //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         //     content: Text('Please upload files'),
@@ -3786,7 +3635,7 @@ class _ProfileState extends State<Profile> {
                           );
                         }
                         // Get.to(const Dashboard());
-                      //}
+                      }
                     });
                   } else {
                     setState(() {
@@ -3879,7 +3728,8 @@ class _ProfileState extends State<Profile> {
         var body =
         sharedPreferneces.getString('user_id') == null ?
         jsonEncode(<String, String>{
-          "phone_number": '$number',
+             "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3899,8 +3749,7 @@ class _ProfileState extends State<Profile> {
           "total_experience": '$experience',
         }):
         jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
+                         "phone_number": '$number',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -4099,85 +3948,6 @@ class _ProfileState extends State<Profile> {
   }
 
 
-  Future<void> add_Vendor_Details(
-  company_name,
-  _selectaccount,
-  _selectvendor,
-  vendor_state,
-  vendor_city,
-  pincode,
-  phone,
-  turnover,
-  vendor_company,
-  c_firstName,
-  c_lastName,
-  email,
-  c_position,
-  c_phone
-      ) async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "company_name": "$companyname",
-          "account_group": "$_selectaccount",
-          "vendor_required_for": "$_selectvendor",
-          "vendor_state": "$vendor_state",
-          "vendor_city": "$vendor_city",
-          "vendor_pin": "$pincode",
-          "vendor_phone": "$phone",
-          "turnover": "$turnover",
-          "vendor_company_type": "$vendor_company",
-          "contact_first_name":"$c_firstName",
-          "contact_last_name":"$c_lastName",
-          "contact_phone_number": "$c_phone",
-          "contact_email": "$email",
-          "user_type":"1",
-          "contact_position": "$c_position",
-        });
-        print(body);
-
-        var response = await http.post(Uri.parse(APIUrls.ADD_VENDOR_DETAILS),
-            headers: {'Authorization': 'Bearer $token'},
-            body: body);
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          print(convertJson);
-          if (convertJson["status"]) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
-            setState(() {
-              _activeCurrentStep += 1;
-            });
-
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
   // get qualification
 
   List qualificationData = [];
@@ -4200,136 +3970,6 @@ class _ProfileState extends State<Profile> {
           setState(() {
             qualificationData = convertJson['data']['qualifications'];
           });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  List stateData = [];
-  Future<void> getStates() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_STATE}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              stateData = convertJson['data']['states'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  List vendorCompanyTypeData = [];
-  Future<void> getVendorComapnyType() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_VENDOR_COMAPNY_TYPE}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              vendorCompanyTypeData = convertJson['data']['company_type'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
-  List vendorCityData = [];
-  Future<void> getVendorCity(String id) async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-          "state_id": "$id",
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              vendorCityData = convertJson['data']['cities'];
-            });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('${convertJson['error_msg']}'),
@@ -4441,8 +4081,6 @@ class _ProfileState extends State<Profile> {
 
 
   Future<void> postImage(imageName, file) async {
-    print(imageName);
-    print(file);
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -4462,7 +4100,7 @@ class _ProfileState extends State<Profile> {
           if (res.statusCode == 200){
             var responseBody = await http.Response.fromStream(res);
             var myData = json.decode(responseBody.body);
-            print(myData);
+            print(myData['status']);
             if (myData['status']) {
               setState(() {
                 print(myData['data']['file_path']);
