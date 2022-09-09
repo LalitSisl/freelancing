@@ -202,9 +202,15 @@ class _LoginState extends State<Login> {
                                           color: ColorPalette.textGrey)),
                                   Expanded(
                                     child: TextFormField(
+                                      
                                       controller: _phoneController,
                                       keyboardType: TextInputType.phone,
                                       decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedErrorBorder:const  OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                            borderSide: BorderSide(color: Colors.grey)),
                                           isDense: true,
                                           contentPadding: const EdgeInsets.symmetric(
                                               vertical: 13, horizontal: 5),

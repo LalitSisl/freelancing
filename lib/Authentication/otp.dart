@@ -271,7 +271,7 @@ class _OtpState extends State<Otp> {
                                   borderRadius: BorderRadius.circular(5),
                                   fieldHeight: 40,
                                   fieldWidth: 35,
-                                  activeFillColor: Colors.grey,
+                                  activeFillColor: Colors.white,
                                   selectedFillColor: Colors.grey,
                                   inactiveFillColor: Colors.grey),
                               cursorColor: Colors.grey,
