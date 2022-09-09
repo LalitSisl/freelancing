@@ -137,9 +137,9 @@ class _ProfileState extends State<Profile> {
                 '${convertJson['data']['user_details']['profile_details']['id_proof_doc']}';
                 aadharback =
                 '${convertJson['data']['user_details']['profile_details']['address_proof_doc']}';
-                //  //gender = '${convertJson['data']['user_details']['profile_details']['gender']}';
-                // // qualification = '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
-                // // experience = '${convertJson['data']['user_details']['profile_details']['experience']}';
+                gender = '${convertJson['data']['user_details']['profile_details']['gender']}';
+               qualification = '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
+                experience = '${convertJson['data']['user_details']['profile_details']['experience']}';
                 pancard.text =
                 '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
                 aadharcard.text =
@@ -959,7 +959,7 @@ class _ProfileState extends State<Profile> {
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
                             ),
-                            //value: qualification,
+                            value: qualification,
 
                             dropdownColor: Colors.white,
                             isExpanded: true,
