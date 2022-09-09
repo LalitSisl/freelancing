@@ -4,23 +4,23 @@
 
 import 'package:flutter/material.dart';
 
-class HeaderWidget extends StatefulWidget {
+class HeaderWidgetText extends StatefulWidget {
   final double _height;
-  final bool _showIcon;
-  final IconData _icon;
+  final bool _showText;
+  var _text;
 
-  const HeaderWidget(this._height, this._showIcon, this._icon, {Key? key}) : super(key: key);
+   HeaderWidgetText(this._height, this._showText, this._text, {Key? key}) : super(key: key);
 
   @override
-  _HeaderWidgetState createState() => _HeaderWidgetState(_height, _showIcon, _icon);
+  _HeaderWidgetTextState createState() => _HeaderWidgetTextState(_height, _showText, _text);
 }
 
-class _HeaderWidgetState extends State<HeaderWidget> {
+class _HeaderWidgetTextState extends State<HeaderWidgetText> {
   final double _height;
-  final bool _showIcon;
-  final IconData _icon;
+  final bool _showText;
+  var _text;
 
-  _HeaderWidgetState(this._height, this._showIcon, this._icon);
+  _HeaderWidgetTextState(this._height, this._showText, this._text);
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
           ),
           Visibility(
-            visible: _showIcon,
+            visible: _showText,
             child: Container(
               height: _height - 40,
               child: Center(
@@ -117,20 +117,10 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     right: 5.0,
                     bottom: 20.0,
                   ),
-                  decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(20),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(100),
-                      topRight: Radius.circular(100),
-                      bottomLeft: Radius.circular(60),
-                      bottomRight: Radius.circular(60),
-                    ),
-                    border: Border.all(width: 5, color: Colors.white),
-                  ),
-                  child: Icon(
-                    _icon,
-                    color: Colors.white,
-                    size: 40.0,
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(_text,style:const TextStyle(fontSize: 27,color: Colors.white,fontWeight: FontWeight.bold),),
                   ),
                 ),
               ),

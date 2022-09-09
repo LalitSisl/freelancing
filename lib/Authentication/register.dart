@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:freelancing/Authentication/header_widget.dart';
+import 'package:freelancing/Authentication/headerwidget1.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:http/http.dart' as http;
 import '../Profile/profile.dart';
@@ -22,7 +24,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   // ignore: prefer_typing_uninitialized_variables
   var _selectUser;
-
+ double _headerHeight = 250;
 var isLoading =false;
 
 
@@ -80,9 +82,9 @@ var isLoading =false;
                   user_status: convertJson['data']['user_status'].toString()));
               print('user status ${convertJson['data']['user_status']}');
             }else {
-              // Get.to(Profile(user: _selectUser,
-              //     user_status: convertJson['data']['user_status'].toString()));
-              Get.to(Review());
+              Get.to(Profile(user: _selectUser,
+                  user_status: convertJson['data']['user_status'].toString()));
+              //Get.to(Review());
             }
 
           } else {
@@ -127,36 +129,57 @@ var isLoading =false;
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0))),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Register as',
-                      style: GoogleFonts.alike(
-                          textStyle: Theme.of(context).textTheme.displayMedium,
-                          fontSize: 24),
-                    )),
-                const SizedBox(
-                  height: 20,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                Container(
+                      height: _headerHeight,
+                      child:HeaderWidgetText(_headerHeight, true,"Proceed as" )
+                    ),
+
+              const SizedBox(
+                height: 60,
+              ),
+              ListTile(
+                leading: Image.asset('assets/images/userservice.png'),
+                title: Text(
+                  'Freelancer',
+                  style: GoogleFonts.aBeeZee(
+                      fontSize: 22, color: ColorPalette.green),
                 ),
-                ListTile(
-                  leading: Image.asset('assets/images/userservice.png'),
+                subtitle: const Text(
+                  'If you are an individual Register as Freelancer.',
+                  style: TextStyle(color: ColorPalette.bgGrey),
+                ),
+                trailing: Radio(
+                  value: '2',
+                  groupValue: _selectUser,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectUser = value!;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 0),
+                child: ListTile(
+                  leading: Image.asset('assets/images/teamuser.png'),
                   title: Text(
-                    'Freelancer',
+                    'Vendor',
                     style: GoogleFonts.aBeeZee(
                         fontSize: 22, color: ColorPalette.green),
                   ),
                   subtitle: const Text(
-                    'If you are an individual Register as Freelancer.',
+                    'If you are a vendor Business Owner with a team of people.',
                     style: TextStyle(color: ColorPalette.bgGrey),
                   ),
                   trailing: Radio(
-                    value: '2',
+                    value: '1',
                     groupValue: _selectUser,
                     onChanged: (value) {
                       setState(() {
@@ -165,61 +188,34 @@ var isLoading =false;
                     },
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 0),
-                  child: ListTile(
-                    leading: Image.asset('assets/images/teamuser.png'),
-                    title: Text(
-                      'Vendor',
-                      style: GoogleFonts.aBeeZee(
-                          fontSize: 22, color: ColorPalette.green),
-                    ),
-                    subtitle: const Text(
-                      'If you are a vendor Business Owner with a team of people.',
-                      style: TextStyle(color: ColorPalette.bgGrey),
-                    ),
-                    trailing: Radio(
-                      value: '1',
-                      groupValue: _selectUser,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectUser = value!;
-                        });
-                      },
-                    ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child:
+                isLoading ? CircularProgressIndicator():
+                ElevatedButton(
+                  onPressed: () {
+                    print('$_selectUser');
+                    if(_selectUser == null){
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            'Please select User Type'),
+                      ));
+                    }else{
+                      register();
+                    }
+                    //Get.to(Profile(user: _selectUser));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: Text('Continue'),
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child:
-                  isLoading ? CircularProgressIndicator():
-                  ElevatedButton(
-                    onPressed: () {
-                      print('$_selectUser');
-                      if(_selectUser == null){
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              'Please select User Type'),
-                        ));
-                      }else{
-                        register();
-                      }
-                      //Get.to(Profile(user: _selectUser));
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: Text('Continue'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           )),
     ));
   }
