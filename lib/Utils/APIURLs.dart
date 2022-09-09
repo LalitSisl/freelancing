@@ -19,6 +19,7 @@ class APIUrls {
 
   static const String OTP_RESEND = "${BASE_URL}resend_otp";
   static const String ADD_PERSONAL_DETAILS = "${BASE_URL}add_personal_details";
+   static const String UPDATE_PERSONAL_DETAILS = "${BASE_URL}add_personal_details";
   static const String ADD_BUSINESS_DETAILS = "${BASE_URL}add_business_details";
   static const String ADD_Bank_DETAILS = "${BASE_URL}add_bank_details";
 
