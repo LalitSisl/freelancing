@@ -103,164 +103,169 @@ bool isLastPage = false;
       
     ),
            Container(
-           child: Column(
-           mainAxisAlignment: MainAxisAlignment.start,
-             children: [ 
+           child: SingleChildScrollView(
+             child: Column(
+             mainAxisAlignment: MainAxisAlignment.start,
+               children: [
  Container(
-                        height: _headerHeight,
-                        child: HeaderWidget(_headerHeight, true, Icons.login_rounded),
-                      ),
-                      SizedBox(height: 20,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  elevation: 10,
-                  child: Container(
-                
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8,20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                   
-                  SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: Image.asset('assets/images/sisl.png')),
-                                  const Text("SWAN",
-                                  style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,letterSpacing: .8,color: Color.fromARGB(221, 44, 44, 44)),)
-                  ],
-                ),
-             const  SizedBox(height: 20,),
-                                Row(
-                     children: [
-                    const    Text(
-                    '\u2022',
-                    style: TextStyle(
-                        fontSize: 25,
-                        height: 1.55,
-                    
-                    ),
-                  ),
-                               const   SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child: Container(
-                    child:const Text("Join a Team of 3500+ Members.",style: TextStyle(fontSize:20,letterSpacing: 1,)),
-                  ))
- 
-                     ]
-                   ),
-                        const   SizedBox(height: 10,),
-                          Row(
-                     children: [
-                    const    Text(
-                    '\u2022',
-                    style: TextStyle(
-                        fontSize: 25,
-                        height: 1.55,
-                    
-                    ),
-                  ),
-                               const   SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child: Container(
-                    child:const Text("Partner with one of the Top IT Company",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
-                  ))
-  
-                     ]
-                   ),
-                        const   SizedBox(height: 10,),
-                          Row(
-                     children: [
-                    const    Text(
-                    '\u2022',
-                    style: TextStyle(
-                        fontSize: 25,
-                        height: 1.55,
-                    
-                    ),
-                  ),
-                               const   SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child: Container(
-                    child:const Text("Flexible Working Hours.",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
-                  ))
-  
-                     ]
-                   ),
-                        const   SizedBox(height: 10,),
-                          Row(
-                     children: [
-                    const    Text(
-                    '\u2022',
-                    style: TextStyle(
-                        fontSize: 25,
-                        height: 1.55,
-                    
-                    ),
-                  ),
-                               const   SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child: Container(
-                    child:const Text("Easy Processing and Faster Payment.",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
-                  ))
-
-                     ]
-                   ),
-                const   SizedBox(height: 10,),
-                   Row(
-                     children: [
-                    const    Text(
-                    '\u2022',
-                    style: TextStyle(
-                        fontSize: 25,
-                        height: 1.55,
-                    
-                    ),
-                  ),
-                               const   SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child: Container(
-                    child:const Text("Work with High Tech Projects of PSU & Government Sectors.",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
-                  ))
-  
-                     ]
-                   ),
-                          ],
+                          height: _headerHeight,
+                          child: HeaderWidget(_headerHeight, true, Icons.login_rounded),
                         ),
+                        SizedBox(height: 20,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 8, 8,20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                    SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: Image.asset('assets/images/sisl.png')),
+                                    const Text("SWAN",
+                                    style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,letterSpacing: .8,color: Color.fromARGB(221, 44, 44, 44)),)
+                    ],
+                  ),
+               const  SizedBox(height: 20,),
+                                  Row(
+                       children: [
+                      const    Text(
+                      '\u2022',
+                      style: TextStyle(
+                          fontSize: 25,
+                          height: 1.55,
+
                       ),
+                    ),
+                                 const   SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                        child: Container(
+                      child:const Text("Join a Team of 3500+ Members.",style: TextStyle(fontSize:20,letterSpacing: 1,)),
+                    ))
+
+                       ]
+                     ),
+                          const   SizedBox(height: 10,),
+                            Row(
+                       children: [
+                      const    Text(
+                      '\u2022',
+                      style: TextStyle(
+                          fontSize: 25,
+                          height: 1.55,
+
+                      ),
+                    ),
+                                 const   SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(child: Container(
+                      child:const Text("Partner with one of the Top IT Company",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
+                    ))
+
+                       ]
+                     ),
+                          const   SizedBox(height: 10,),
+                            Row(
+                       children: [
+                      const    Text(
+                      '\u2022',
+                      style: TextStyle(
+                          fontSize: 25,
+                          height: 1.55,
+
+                      ),
+                    ),
+                                 const   SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(child: Container(
+                      child:const Text("Flexible Working Hours.",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
+                    ))
+
+                       ]
+                     ),
+                          const   SizedBox(height: 10,),
+                            Row(
+                       children: [
+                      const    Text(
+                      '\u2022',
+                      style: TextStyle(
+                          fontSize: 25,
+                          height: 1.55,
+
+                      ),
+                    ),
+                                 const   SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(child: Container(
+                      child:const Text("Easy Processing and Faster Payment.",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
+                    ))
+
+                       ]
+                     ),
+                  const   SizedBox(height: 10,),
+                     Row(
+                       children: [
+                      const    Text(
+                      '\u2022',
+                      style: TextStyle(
+                          fontSize: 25,
+                          height: 1.55,
+
+                      ),
+                    ),
+                                 const   SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(child: Container(
+                      child:const Text("Work with High Tech Projects of PSU & Government Sectors.",style: TextStyle(fontSize: 20,letterSpacing: 1,)),
+                    ))
+
+                       ]
+                     ),
+                            ],
+                          ),
+                        ),
+                    ),
                   ),
                 ),
-              ),
-                SizedBox(height: 20,),
-            Row(
+                  SizedBox(height: 20,),
+              Row(
         mainAxisAlignment: MainAxisAlignment.center,
          children: [
-           SizedBox(
-            width: MediaQuery.of(context).size.width/2,
-            height: MediaQuery.of(context).size.height/15,
-            child: ElevatedButton(onPressed: (){
-              Get.to(const Login());
-            }, child:Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:const [
-                 Text("Let's Go"),
-                 SizedBox(width: 10,),
-                Icon(Icons.arrow_forward)
-              ],
-            ),)),
+             SizedBox(
+              width: MediaQuery.of(context).size.width/2,
+              height: MediaQuery.of(context).size.height/15,
+              child: ElevatedButton(onPressed: (){
+                Get.to(const Login());
+              }, child:Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:const [
+                   Text("Let's Go"),
+                   SizedBox(width: 10,),
+                  Icon(Icons.arrow_forward)
+                ],
+              ),)),
          ],
-       )
-             ],
-           
+       ),
+                 SizedBox(height: 10,)
+
+               ],
+
+             ),
            ),
            
            )

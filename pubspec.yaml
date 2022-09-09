@@ -71,6 +71,8 @@ dev_dependencies:
   country_pickers: ^2.0.0
   flutter_launcher_icons: ^0.10.0
   shared_preferences: ^2.0.15
+  image_cropper: ^3.0.0
+  flutter_native_image: ^0.0.6+1
 
 
 flutter_native_splash:
