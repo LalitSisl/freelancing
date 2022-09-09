@@ -335,6 +335,7 @@ class SWANWidget {
       TextFormField(
         controller: _controller,
         decoration: InputDecoration(
+          
             isDense: true,
             contentPadding: const EdgeInsets.all(12),
             labelText: label,
@@ -388,6 +389,43 @@ class SWANWidget {
             ),
             labelStyle: SWANWidget.fieldLabelTextStyle,
             counterText: ""),
+        //enabled: true,
+        inputFormatters: inputFormatters,
+        maxLines: null,
+        keyboardType: inputType,
+        style: SWANWidget.fieldValueTextStyle,
+        maxLength: maxLength,
+        validator: validator,
+      );
+
+       static TextFormField enabledTextFormField2(_controller, label, inputType,
+          inputFormatters, validator, maxLength,_textcapatilization) =>
+      TextFormField(
+        textCapitalization: _textcapatilization,
+        controller: _controller,
+        decoration: InputDecoration(
+          
+            isDense: true,
+            contentPadding: const EdgeInsets.all(12),
+            labelText: label,
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+            ),
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+            ),
+            /*enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: ColorPalette.textGrey),
+            ),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: ColorPalette.textGrey),
+            ),
+            disabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: ColorPalette.grey),
+            ),*/
+            labelStyle: SWANWidget.fieldLabelTextStyle,
+            counterText: ""),
+        onChanged: (value) {},
         //enabled: true,
         inputFormatters: inputFormatters,
         maxLines: null,

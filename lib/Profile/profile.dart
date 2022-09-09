@@ -116,7 +116,7 @@ class _ProfileState extends State<Profile> {
                 sharedPreferneces.setString('user_id',
                     '${convertJson['data']['user_details']['profile_details']['id']}');
                 name =
-                '${convertJson['data']['user_details']['profile_details']['first_name']}';
+                '${convertJson['data']['user_details']['profile_details']['first_name']} ${convertJson['data']['user_details']['profile_details']['last_name']} ';
                 profile =
                 '${convertJson['data']['user_details']['profile_details']['work_title']}';
                 addr =
@@ -387,7 +387,7 @@ class _ProfileState extends State<Profile> {
       context: context,
       initialDate: selectedDate, // Refer step 1
       firstDate: DateTime(1970),
-      lastDate: DateTime(2025),
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -718,16 +718,17 @@ class _ProfileState extends State<Profile> {
                         )
                       : Container(),
  widget.user == "2"?
-                  SWANWidget.enabledTextFormField(
+                  SWANWidget.enabledTextFormField2(
                       email,
                       'Email id',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.singleLineFormatter],
+                      
+                      TextInputType.emailAddress,
+                      [UpperCaseTextFormatter()],
                       (value) {
                     String pattern =
-                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                        r"{0,253}[a-zA-Z0-9])?)*$";
+                        r"^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]"
+                        r"{0,253}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]"
+                        r"{0,253}[a-z0-9])?)*$";
                     RegExp regex = RegExp(pattern);
                     if (value == null ||
                         value.isEmpty ||
@@ -736,7 +737,7 @@ class _ProfileState extends State<Profile> {
                     } else {
                       return null;
                     }
-                  }, 250):Container(),
+                  }, 250,TextCapitalization.none):Container(),
                   const SizedBox(
                     height: 8,
                   ),
@@ -3424,7 +3425,7 @@ class _ProfileState extends State<Profile> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
-                    height: 190,
+                    height:MediaQuery.of(context).size.height/4,
                     width: double.infinity,
                     child: Stack(children: [
                       Positioned(
@@ -3452,8 +3453,8 @@ class _ProfileState extends State<Profile> {
                             child: Image.asset('assets/images/shade1.png'),
                           )),
                       Positioned(
-                        top: 30,
-                        right: 30,
+                        top: 20,
+                        right: 20,
                         child: Stack(
                           children: [
                             Container(
@@ -3549,7 +3550,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               const SizedBox(height: 5),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width/1.7,
+                                width:MediaQuery.of(context).size.width/2.1,
                                 child: Text(addr,
                                     style: const TextStyle(
                                       fontSize: 17,
@@ -3738,7 +3739,7 @@ class _ProfileState extends State<Profile> {
                           add_Personal_Details(
                             firstName.text,
                             lastName.text,
-                            email.text,
+                            email.text.toLowerCase(),
                             address.text,
                             work.text,
                             dob.text,
@@ -3880,6 +3881,7 @@ class _ProfileState extends State<Profile> {
         sharedPreferneces.getString('user_id') != null ?
         jsonEncode(<String, String>{
           "phone_number": '$number',
+           "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3900,7 +3902,7 @@ class _ProfileState extends State<Profile> {
         }):
         jsonEncode(<String, String>{
           "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
+         
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -4119,8 +4121,28 @@ class _ProfileState extends State<Profile> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = jsonEncode(<String, String>{
+        var body =  sharedPreferneces.getString('user_id') != null ?
+         jsonEncode(<String, String>{
           "phone_number": '$number',
+          "company_name": "$companyname",
+          "account_group": "$_selectaccount",
+          "vendor_required_for": "$_selectvendor",
+          "vendor_state": "$vendor_state",
+          "vendor_city": "$vendor_city",
+          "vendor_pin": "$pincode",
+          "vendor_phone": "$phone",
+          "turnover": "$turnover",
+          "vendor_company_type": "$vendor_company",
+          "contact_first_name":"$c_firstName",
+          "contact_last_name":"$c_lastName",
+          "contact_phone_number": "$c_phone",
+          "contact_email": "$email",
+          "user_type":"1",
+          "contact_position": "$c_position",
+        }):
+          jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
           "company_name": "$companyname",
           "account_group": "$_selectaccount",
           "vendor_required_for": "$_selectvendor",
@@ -4505,6 +4527,17 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-
-
+}
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: capitalize(newValue.text),
+      selection: newValue.selection,
+    );
+  }
+}
+String capitalize(String value) {
+  if(value.trim().isEmpty) return "";
+  return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
 }
