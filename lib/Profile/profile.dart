@@ -385,7 +385,7 @@ class _ProfileState extends State<Profile> {
     final DateTime? picked = await showDatePicker(
       initialDatePickerMode: initialDatePickerMode1,
       context: context,
-      initialDate: selectedDate, // Refer step 1
+      initialDate: DateTime(2004), // Refer step 1
       firstDate: DateTime(1970),
       lastDate: DateTime.now(),
     );
@@ -3506,7 +3506,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Positioned(
-                        top: 40,
+                        top: 20,
                         left: 30,
                         child: Container(
                           child: Column(
@@ -3878,31 +3878,11 @@ class _ProfileState extends State<Profile> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body =
-        sharedPreferneces.getString('user_id') != null ?
+     
         jsonEncode(<String, String>{
-          "phone_number": '$number',
-           "user_id": '${sharedPreferneces.getString('user_id')}',
-          "user_type": '${widget.user}',
-          "first_name": '$name',
-          "last_name": '$lastName',
-          "email": '$email',
-          "address": '$address',
-          "work_title": '$work',
-          "dob": '$dob',
-          "gender": '$gender',
-          "highest_qualification": '$qualification',
-          "id_proof_type": '1',
-          "id_proof_no": '$pancard',
-          "id_proof_doc": '$panfront',
-          "address_proof_type": '2',
-          "address_proof_number": '$aadharcard',
-          "address_proof_doc": '$aadharback',
-          "skills": "$multiSkill",
-          "total_experience": '$experience',
-        }):
-        jsonEncode(<String, String>{
-          "phone_number": '$number',
-         
+   
+              "phone_number": '$number',
+               "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3921,6 +3901,27 @@ class _ProfileState extends State<Profile> {
           "skills": "$multiSkill",
           "total_experience": '$experience',
         });
+      //  jsonEncode(<String, String>{
+      //        "phone_number": '$number',
+      //      "user_id": '${sharedPreferneces.getString('user_id')}',
+      //     "user_type": '${widget.user}',
+      //     "first_name": '$name',
+      //     "last_name": '$lastName',
+      //     "email": '$email',
+      //     "address": '$address',
+      //     "work_title": '$work',
+      //     "dob": '$dob',
+      //     "gender": '$gender',
+      //     "highest_qualification": '$qualification',
+      //     "id_proof_type": '1',
+      //     "id_proof_no": '$pancard',
+      //     "id_proof_doc": '$panfront',
+      //     "address_proof_type": '2',
+      //     "address_proof_number": '$aadharcard',
+      //     "address_proof_doc": '$aadharback',
+      //     "skills": "$multiSkill",
+      //     "total_experience": '$experience',
+      //   });
         print(' personal data >> $body');
 
         var response = await http.post(Uri.parse(APIUrls.ADD_PERSONAL_DETAILS),
@@ -3980,16 +3981,18 @@ class _ProfileState extends State<Profile> {
         var body =
         _checkboxvalue == 1 ?
         jsonEncode(<String, String>{
-          "phone_number": '$number',
+                "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
           "have_gst_no": "$_checkboxvalue",
           "gst_number": "$gstnumber" ,
           "gst_doc": "$gst",
           "pan_number": "$businessPanCard",
           "service_area": "$multiCity"
+   
         }):
         jsonEncode(<String, String>{
-          "phone_number": '$number',
+    
+                 "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
           "have_gst_no": "$_checkboxvalue",
           // "gst_number": "$gstnumber" ,
