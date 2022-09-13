@@ -44,7 +44,7 @@ class AppDataController extends GetxController {
                 );
               },
             );
-            print(tempSubjectData);
+            //print(tempSubjectData);
             subjectData.addAll(tempSubjectData);
 
             dropDownData = subjectData.map((subjectdata) {
