@@ -166,7 +166,15 @@ class _ProfileState extends State<Profile> {
                 _checkbox = true;
                 _checkboxvalue = 1;
               }
+              var service_areas_arrey  = convertJson['data']['user_details']['business_details']['service_areas'];
 
+              for (var imageAsset in service_areas_arrey) {
+                // subjectDatacity = convertJson['data']['user_details']['business_details']['service_areas'][i]['service_area_id'];
+                 print('area>>>>>>>>>>>>>${imageAsset['service_area_id']}');
+                 subjectDatacity.add(imageAsset['service_area_id']);
+                 print('are/////>$subjectDatacity');
+              }
+              //subjectDatacity = imageAsset['service_area_id'];
               gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
                gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
                businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
@@ -174,11 +182,10 @@ class _ProfileState extends State<Profile> {
                accNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                confirmAccNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                ifsc.text = '${convertJson['data']['user_details']['bank_details']['ifsc_code']}';
+              // acctype = '${convertJson['data']['user_details']['bank_details']['account_type']}';
                accHolderName.text = '${convertJson['data']['user_details']['bank_details']['account_holder_name']}';
                check = '${convertJson['data']['user_details']['bank_details']['cancel_checque']}';
                // vendor
-
-
 
             });
           } else {
@@ -319,7 +326,7 @@ class _ProfileState extends State<Profile> {
   @override
   initState() {
     super.initState();
-
+    print('>>>>>>>>>> $_checkbox');
     print(widget.user);
     //getSkills();
     getQualification();
@@ -2226,6 +2233,11 @@ class _ProfileState extends State<Profile> {
 
                           //_selectedAnimals = results;
                         },
+                        // validator: (value){
+                        //  if(multiSkill == null)
+                        //    return 'Please select skill';
+                        //  return null;
+                        // },
                       );
                     }),
                   ):Container(),
@@ -2335,7 +2347,7 @@ class _ProfileState extends State<Profile> {
                             },
                             //value: dropdownProject,
                             validator: (value) =>
-                                value == null ? 'field required' : null,
+                                value == null && multiSkill == null ? 'field required' : null,
                           ),
                         )
                       : Container(),
@@ -3508,57 +3520,53 @@ class _ProfileState extends State<Profile> {
                       Positioned(
                         top: 20,
                         left: 30,
-                        child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    '$name $sr',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              '$name $sr',
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            widget.user == "2"
+                                ? const SizedBox(height: 5)
+                                : Container(),
+                            widget.user == "2"
+                                ? Text(profile,
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
+                                    ))
+                                : Container(),
+                            const SizedBox(height: 5),
+                            Text('$number',
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            const SizedBox(height: 5),
+                            SizedBox(
+                              height: 60,
+                              width:MediaQuery.of(context).size.width/2.1,
+                              child: SingleChildScrollView(
+
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(addr,
+                                        style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ],
+                                ),
                               ),
-                              widget.user == "2"
-                                  ? const SizedBox(height: 5)
-                                  : Container(),
-                              widget.user == "2"
-                                  ? Row(
-                                      children: [
-                                        Text(profile,
-                                            style: const TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                      ],
-                                    )
-                                  : Container(),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Text('$number',
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                width:MediaQuery.of(context).size.width/2.1,
-                                child: Text(addr,
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       )
                     ])),
@@ -3735,42 +3743,49 @@ class _ProfileState extends State<Profile> {
                           //_selectedItemsskill.join(",");
 
                        // if(pic !=null && panfront !=null && aadharback != null){
-                          if(widget.user == "2"){
-                          add_Personal_Details(
-                            firstName.text,
-                            lastName.text,
-                            email.text.toLowerCase(),
-                            address.text,
-                            work.text,
-                            dob.text,
-                            gender,
-                            qualification,
-                            pancard.text,
-                            panfront,
-                            aadharcard.text,
-                            aadharback,
-                            multiSkill,
-                            experience,
-                          );
-                          }
-                          else{
 
-                            add_Vendor_Details(
-                              company_name.text,
-                              _selectaccount,
-                              _selectvendor,
-                              vendor_state,
-                              vendor_city,
-                              pincode.text,
-                              phone.text,
-                              turnover.text,
-                              vendor_company,
-                              c_firstName.text,
-                              c_lastName.text,
-                              email.text,
-                              c_position.text,
-                              c_phone.text
-                            );
+                          if(multiSkill!.isNotEmpty) {
+
+                            if (widget.user == "2") {
+                              add_Personal_Details(
+                                firstName.text,
+                                lastName.text,
+                                email.text.toLowerCase(),
+                                address.text,
+                                work.text,
+                                dob.text,
+                                gender,
+                                qualification,
+                                pancard.text,
+                                panfront,
+                                aadharcard.text,
+                                aadharback,
+                                multiSkill,
+                                experience,
+                              );
+                            }
+                            else {
+                              add_Vendor_Details(
+                                  company_name.text,
+                                  _selectaccount,
+                                  _selectvendor,
+                                  vendor_state,
+                                  vendor_city,
+                                  pincode.text,
+                                  phone.text,
+                                  turnover.text,
+                                  vendor_company,
+                                  c_firstName.text,
+                                  c_lastName.text,
+                                  email.text,
+                                  c_position.text,
+                                  c_phone.text
+                              );
+                            }
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                  content: Text('Please select skill'),
+                                ));
                           }
                         // }else{
                         //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -3878,11 +3893,39 @@ class _ProfileState extends State<Profile> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body =
+<<<<<<< HEAD
      
         jsonEncode(<String, String>{
    
               "phone_number": '$number',
                "user_id": '${sharedPreferneces.getString('user_id')}',
+=======
+        sharedPreferneces.getString('user_id') == null ?
+        jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "user_type": '${widget.user}',
+          "first_name": '$name',
+          "last_name": '$lastName',
+          "email": '$email',
+          "address": '$address',
+          "work_title": '$work',
+          "dob": '$dob',
+          "gender": '$gender',
+          "highest_qualification": '$qualification',
+          "id_proof_type": '1',
+          "id_proof_no": '$pancard',
+          "id_proof_doc": '$panfront',
+          "address_proof_type": '2',
+          "address_proof_number": '$aadharcard',
+          "address_proof_doc": '$aadharback',
+          "skills": "$multiSkill",
+          "total_experience": '$experience',
+        }):
+        jsonEncode(<String, String>{
+          "phone_number": '$number',
+         
+>>>>>>> 6809cff52457c856341788021ead82b07e05ce7d
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
