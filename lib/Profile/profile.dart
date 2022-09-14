@@ -393,7 +393,7 @@ class _ProfileState extends State<Profile> {
       initialDatePickerMode: initialDatePickerMode1,
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(1970),
+      firstDate: DateTime(1960),
       lastDate: DateTime.now(),
     );
     if (picked != null && picked != selectedDate) {
