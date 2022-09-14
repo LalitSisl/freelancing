@@ -1356,7 +1356,7 @@ var skill;
                           pancard,
                           'PAN Card Number',
                           TextInputType.text,
-                          [FilteringTextInputFormatter.singleLineFormatter],
+                          [Capatalized()],
                           (value) {
                           String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
                           RegExp regex = RegExp(pattern);
@@ -2445,7 +2445,7 @@ var skill;
                       value: _checkbox,
                       onChanged: (newValue) {
                         setState(() {
-                          _checkbox = ! _checkbox;
+                          _checkbox = !_checkbox;
                           if(_checkbox == false){
                             _checkboxvalue = 0;
                           }else{
@@ -2712,7 +2712,7 @@ var skill;
                         businessPanCard,
                         'PAN Card Number',
                         TextInputType.text,
-                        [FilteringTextInputFormatter.singleLineFormatter],
+                        [Capatalized()],
                         (value) {
                       String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
                       RegExp regex = RegExp(pattern);
@@ -4010,24 +4010,25 @@ var skill;
         var body =
         _checkboxvalue == 1 ?
         jsonEncode(<String, String>{
-                "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "have_gst_no": "$_checkboxvalue",
-          "gst_number": "$gstnumber" ,
-          "gst_doc": "$gst",
-          "pan_number": "$businessPanCard",
-          "service_area": "$multiCity"
-   
-        }):
-        jsonEncode(<String, String>{
-    
-                 "phone_number": '$number',
+           
+           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
           "have_gst_no": "$_checkboxvalue",
           // "gst_number": "$gstnumber" ,
           // "gst_doc": "$gst",
           "pan_number": "$businessPanCard",
           "service_area": "$multiCity"
+   
+        }):
+        jsonEncode(<String, String>{
+         "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "have_gst_no": "$_checkboxvalue",
+          "gst_number": "$gstnumber" ,
+          "gst_doc": "$gst",
+          "pan_number": "$businessPanCard",
+          "service_area": "$multiCity"
+       
         });
         print(body);
         var response = await http.post(Uri.parse(APIUrls.ADD_BUSINESS_DETAILS),
@@ -4573,4 +4574,13 @@ class UpperCaseTextFormatter extends TextInputFormatter {
 String capitalize(String value) {
   if(value.trim().isEmpty) return "";
   return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
+}
+class Capatalized extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }
