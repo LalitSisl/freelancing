@@ -167,24 +167,27 @@ var skill;
                 vendor_city = '${convertJson['data']['user_details']['vendor_details']['vendor_city']}';
                 vendor_company = '${convertJson['data']['user_details']['vendor_details']['vendor_company_type']}';
               }
+
+               businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
               // print('>>>>>>>>>>sandeep ${skill}');
               if(gstnumber.text != null){
                 _checkbox = true;
                 _checkboxvalue = 1;
               }
-              var service_areas_arrey  = convertJson['data']['user_details']['business_details']['service_areas'];
+              //var service_areas_arrey  = convertJson['data']['user_details']['business_details']['service_areas'];
 
-              for (var imageAsset in service_areas_arrey) {
-                // subjectDatacity = convertJson['data']['user_details']['business_details']['service_areas'][i]['service_area_id'];
-                 print('area>>>>>>>>>>>>>${imageAsset['service_area_id']}');
-                 subjectDatacity.add(imageAsset['service_area_id']);
-                 print('are/////>$subjectDatacity');
+              // for (var imageAsset in service_areas_arrey) {
+              //   // subjectDatacity = convertJson['data']['user_details']['business_details']['service_areas'][i]['service_area_id'];
+              //    print('area>>>>>>>>>>>>>${imageAsset['service_area_id']}');
+              //    subjectDatacity.add(imageAsset['service_area_id']);
+              //    print('are/////>$subjectDatacity');
               
-              }
+              // }
               //subjectDatacity = imageAsset['service_area_id'];
-              gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
+           
+              
+                  gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
                gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
-               businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
                bank = '${convertJson['data']['user_details']['bank_details']['bank']}';
                accNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                confirmAccNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
