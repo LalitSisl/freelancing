@@ -43,7 +43,7 @@ class _ProfileState extends State<Profile> {
 
 
 
-
+  var stateName;
   var _selectaccount;
   var _selectvendor;
   int _activeCurrentStep = 0;
@@ -421,13 +421,54 @@ class _ProfileState extends State<Profile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  widget.user == "2" ?
                   TextFormField(
-                    controller: widget.user == "2" ? firstName : company_name,
+                    controller:firstName,
                     decoration: InputDecoration(
                         isDense: true,
                         contentPadding: const EdgeInsets.all(12),
                         labelText:
-                            widget.user == "2" ? 'First Name' : 'Company Name',
+                            'First Name',
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: ColorPalette.themeBlue, width: 0.5),
+                        ),
+                        labelStyle: SWANWidget.fieldLabelTextStyle,
+                        counterText: ""),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        print(value);
+                        name = value;
+                        if (value.isEmpty) {
+                          name = '[Name]';
+                        }
+                      });
+                    },
+                    maxLines: null,
+                    keyboardType: TextInputType.text,
+                    style: SWANWidget.fieldValueTextStyle,
+                    maxLength: 250,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'The field is mandatory';
+                      }
+                      return null;
+                    },
+                  ):
+                  TextFormField(
+                    controller:company_name,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(12),
+                        labelText:
+                        'Company Name',
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: ColorPalette.themeBlue, width: 0.5),
@@ -1041,6 +1082,7 @@ class _ProfileState extends State<Profile> {
                                 child: Text(item['state_name']),
                                 value: item['state_id'].toString(),
                               );
+
                             }).toList(),
                             // items: [
                             //   'Delhi',
@@ -1054,6 +1096,7 @@ class _ProfileState extends State<Profile> {
                             onChanged: (salutation) {
                               setState(() {
                                 vendor_state = salutation!;
+                                vendor_city = null;
                                 getVendorCity(vendor_state);
                               });
                             },
@@ -3744,7 +3787,7 @@ class _ProfileState extends State<Profile> {
 
                        // if(pic !=null && panfront !=null && aadharback != null){
 
-                          if(multiSkill!.isNotEmpty) {
+                         // if(multiSkill!.isNotEmpty) {
 
                             if (widget.user == "2") {
                               add_Personal_Details(
@@ -3765,6 +3808,7 @@ class _ProfileState extends State<Profile> {
                               );
                             }
                             else {
+                              print(company_name.text);
                               add_Vendor_Details(
                                   company_name.text,
                                   _selectaccount,
@@ -3782,11 +3826,11 @@ class _ProfileState extends State<Profile> {
                                   c_phone.text
                               );
                             }
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                  content: Text('Please select skill'),
-                                ));
-                          }
+                          // }else{
+                          //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          //         content: Text('Please select skill'),
+                          //       ));
+                          // }
                         // }else{
                         //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         //     content: Text('Please upload files'),
