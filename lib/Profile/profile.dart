@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -46,6 +47,7 @@ class _ProfileState extends State<Profile> {
   var stateName;
   var _selectaccount;
   var _selectvendor;
+  var addr1 ='';
   int _activeCurrentStep = 0;
   List<GlobalKey<FormState>> formKeys = [
     GlobalKey<FormState>(),
@@ -70,6 +72,7 @@ class _ProfileState extends State<Profile> {
   TextEditingController fax = TextEditingController();
   TextEditingController c_firstName = TextEditingController();
   TextEditingController c_lastName = TextEditingController();
+  TextEditingController company_email = TextEditingController();
   TextEditingController c_position = TextEditingController();
   TextEditingController c_phone = TextEditingController();
   TextEditingController turnover = TextEditingController();
@@ -90,7 +93,7 @@ class _ProfileState extends State<Profile> {
   TextEditingController accHolderName = TextEditingController();
   TextEditingController bankName = TextEditingController();
 
-
+var skill;
 
   Future<void> getUSERALLDETAILS() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
@@ -144,6 +147,17 @@ class _ProfileState extends State<Profile> {
                 '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
                 aadharcard.text =
                 '${convertJson['data']['user_details']['profile_details']['address_proof_number']}';
+                //  skill =
+                // '${convertJson['data']['user_details']['profile_details']['skills']['skill_id']}';
+                businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
+
+
+                gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
+                gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
+                if(gstnumber.text.isNotEmpty){
+                  _checkbox = true;
+                  _checkboxvalue = 1;
+                }
               }else {
                 name = '${convertJson['data']['user_details']['vendor_details']['company_name']}';
                 addr = '${convertJson['data']['user_details']['vendor_details']['vendor_city_name']}, ${convertJson['data']['user_details']['vendor_details']['vendor_state_name']} ${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
@@ -153,32 +167,36 @@ class _ProfileState extends State<Profile> {
                 turnover.text = '${convertJson['data']['user_details']['vendor_details']['turnover']}';
                 c_firstName.text = '${convertJson['data']['user_details']['vendor_details']['contact_first_name']}';
                 c_lastName.text = '${convertJson['data']['user_details']['vendor_details']['contact_last_name']}';
-                email.text = '${convertJson['data']['user_details']['vendor_details']['contact_email']}';
+                company_email.text = '${convertJson['data']['user_details']['vendor_details']['contact_email']}';
                 c_position.text = '${convertJson['data']['user_details']['vendor_details']['contact_position']}';
                 c_phone.text = '${convertJson['data']['user_details']['vendor_details']['contact_phone_number']}';
                // _selectaccount = '${convertJson['data']['user_details']['vendor_details']['account_group']}';
                 vendor_state = '${convertJson['data']['user_details']['vendor_details']['vendor_state']}';
                 vendor_city = '${convertJson['data']['user_details']['vendor_details']['vendor_city']}';
                 vendor_company = '${convertJson['data']['user_details']['vendor_details']['vendor_company_type']}';
-              }
-              //print('>>>>>>>>>> ${gstnumber.text}');
-              if(gstnumber.text != null){
-                _checkbox = true;
-                _checkboxvalue = 1;
-              }
-              var service_areas_arrey  = convertJson['data']['user_details']['business_details']['service_areas'];
+                businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
 
-              for (var imageAsset in service_areas_arrey) {
-                // subjectDatacity = convertJson['data']['user_details']['business_details']['service_areas'][i]['service_area_id'];
-                 print('area>>>>>>>>>>>>>${imageAsset['service_area_id']}');
-                 subjectDatacity.add(imageAsset['service_area_id']);
-                 print('are/////>$subjectDatacity');
+                gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
+                gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
+                if(gstnumber.text.isNotEmpty){
+                  _checkbox = true;
+                  _checkboxvalue = 1;
+                }
               }
+
+
+
+              // var service_areas_arrey  = convertJson['data']['user_details']['business_details']['service_areas'];
+              //
+              // for (var imageAsset in service_areas_arrey) {
+              //   // subjectDatacity = convertJson['data']['user_details']['business_details']['service_areas'][i]['service_area_id'];
+              //    print('area>>>>>>>>>>>>>${imageAsset['service_area_id']}');
+              //    subjectDatacity.add(imageAsset['service_area_id']);
+              //    print('are/////>$subjectDatacity');
+              //
+              // }
               //subjectDatacity = imageAsset['service_area_id'];
-              gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
-               gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
-               businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
-               bank = '${convertJson['data']['user_details']['bank_details']['bank']}';
+                            bank = '${convertJson['data']['user_details']['bank_details']['bank']}';
                accNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                confirmAccNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
                ifsc.text = '${convertJson['data']['user_details']['bank_details']['ifsc_code']}';
@@ -242,7 +260,7 @@ class _ProfileState extends State<Profile> {
   String? multiSkill;
   String? multiCity;
 
-  var skill;
+
   var experience;
   var name = "[Name]";
   var profile = "[Profile]";
@@ -250,7 +268,7 @@ class _ProfileState extends State<Profile> {
   var addr = "[Address]";
   var sr = '';
   bool _checkbox = false;
-  var _checkboxvalue;
+  var _checkboxvalue = 0;
 
   String? panfront;
   File? aadharfront;
@@ -392,9 +410,9 @@ class _ProfileState extends State<Profile> {
     final DateTime? picked = await showDatePicker(
       initialDatePickerMode: initialDatePickerMode1,
       context: context,
-      initialDate: selectedDate, // Refer step 1
+      initialDate: DateTime(1997), // Refer step 1
       firstDate: DateTime(1970),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(2004),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -423,7 +441,7 @@ class _ProfileState extends State<Profile> {
                 children: [
                   widget.user == "2" ?
                   TextFormField(
-                    controller:firstName,
+                    controller: firstName,
                     decoration: InputDecoration(
                         isDense: true,
                         contentPadding: const EdgeInsets.all(12),
@@ -767,9 +785,9 @@ class _ProfileState extends State<Profile> {
                       : Container(),
  widget.user == "2"?
                   SWANWidget.enabledTextFormField2(
-                      email,
+                  
+                      email ,
                       'Email id',
-                      
                       TextInputType.emailAddress,
                       [UpperCaseTextFormatter()],
                       (value) {
@@ -1072,7 +1090,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             value: vendor_state,
-
+                           
                             dropdownColor: Colors.white,
                             isExpanded: true,
                             iconSize: 20,
@@ -1151,6 +1169,7 @@ class _ProfileState extends State<Profile> {
                               });
                             },
                             //value: dropdownProject,
+                           
                             validator: (value) =>
                                 value == null ? 'field required' : null,
                           ),
@@ -1324,7 +1343,7 @@ class _ProfileState extends State<Profile> {
                        const SizedBox(height: 8,),
                        widget.user == "1" ?
                   SWANWidget.enabledTextFormField(
-                      email,
+                      company_email,
                        'Contact Email id',
                       TextInputType.text,
                       [FilteringTextInputFormatter.singleLineFormatter],
@@ -1389,7 +1408,7 @@ class _ProfileState extends State<Profile> {
                           pancard,
                           'PAN Card Number',
                           TextInputType.text,
-                          [FilteringTextInputFormatter.singleLineFormatter],
+                          [Capatalized()],
                           (value) {
                           String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
                           RegExp regex = RegExp(pattern);
@@ -2478,7 +2497,7 @@ class _ProfileState extends State<Profile> {
                       value: _checkbox,
                       onChanged: (newValue) {
                         setState(() {
-                          _checkbox = ! _checkbox;
+                          _checkbox = !_checkbox;
                           if(_checkbox == false){
                             _checkboxvalue = 0;
                           }else{
@@ -2491,7 +2510,7 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(
                       height: 8,
                     ),
-                    _checkbox == true ?
+                    _checkbox != false ?
                     SWANWidget.enabledTextFormField(
                         gstnumber,
                         'Enter GST number',
@@ -2512,7 +2531,7 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(
                       height: 8,
                     ),
-                    _checkbox == true ?
+                    _checkbox != false ?
                     Column(
                       children: [
                         gst != null
@@ -2745,7 +2764,7 @@ class _ProfileState extends State<Profile> {
                         businessPanCard,
                         'PAN Card Number',
                         TextInputType.text,
-                        [FilteringTextInputFormatter.singleLineFormatter],
+                        [Capatalized()],
                         (value) {
                       String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
                       RegExp regex = RegExp(pattern);
@@ -3561,12 +3580,13 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Positioned(
-                        top: 40,
+                        top: 20,
                         left: 30,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                           
                             Text(
                               '$name $sr',
                               style: const TextStyle(
@@ -3574,6 +3594,7 @@ class _ProfileState extends State<Profile> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                           
                             widget.user == "2"
                                 ? const SizedBox(height: 5)
                                 : Container(),
@@ -3600,11 +3621,13 @@ class _ProfileState extends State<Profile> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    
                                     Text(addr,
                                         style: const TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold,
                                         )),
+                                       
                                   ],
                                 ),
                               ),
@@ -3781,73 +3804,74 @@ class _ProfileState extends State<Profile> {
                       //     .currentState!
                       //     .validate()) {
                         if (_activeCurrentStep == 0) {
-
-
                           //_selectedItemsskill.join(",");
 
-                       // if(pic !=null && panfront !=null && aadharback != null){
+                          // if(pic !=null && panfront !=null && aadharback != null){
 
-                         // if(multiSkill!.isNotEmpty) {
+                          // if(multiSkill!.isNotEmpty) {
 
-                            if (widget.user == "2") {
-                              add_Personal_Details(
-                                firstName.text,
-                                lastName.text,
-                                email.text.toLowerCase(),
-                                address.text,
-                                work.text,
-                                dob.text,
-                                gender,
-                                qualification,
-                                pancard.text,
-                                panfront,
-                                aadharcard.text,
-                                aadharback,
-                                multiSkill,
-                                experience,
-                              );
-                            }
-                            else {
-                              print(company_name.text);
-                              add_Vendor_Details(
-                                  company_name.text,
-                                  _selectaccount,
-                                  _selectvendor,
-                                  vendor_state,
-                                  vendor_city,
-                                  pincode.text,
-                                  phone.text,
-                                  turnover.text,
-                                  vendor_company,
-                                  c_firstName.text,
-                                  c_lastName.text,
-                                  email.text,
-                                  c_position.text,
-                                  c_phone.text
-                              );
-                            }
+                          //  if (multiSkill != null) {
+                          if (widget.user == "2") {
+                            add_Personal_Details(
+                              firstName.text,
+                              lastName.text,
+                              email.text.toLowerCase(),
+                              address.text,
+                              work.text,
+                              dob.text,
+                              gender,
+                              qualification,
+                              pancard.text,
+                              panfront,
+                              aadharcard.text,
+                              aadharback,
+                              multiSkill,
+                              experience,
+                            );
+                          }
+                          else {
+                            print(company_name.text);
+                            add_Vendor_Details(
+                                company_name.text,
+                                _selectaccount,
+                                _selectvendor,
+                                vendor_state,
+                                vendor_city,
+                                pincode.text,
+                                phone.text,
+                                turnover.text,
+                                vendor_company,
+                                c_firstName.text,
+                                c_lastName.text,
+                                company_email.text,
+                                c_position.text,
+                                c_phone.text
+                            );
+                          }
                           // }else{
                           //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           //         content: Text('Please select skill'),
                           //       ));
                           // }
-                        // }else{
-                        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        //     content: Text('Please upload files'),
-                        //   ));
-                        // }
-                         // _activeCurrentStep += 1;
-                        } else if (_activeCurrentStep == 1) {
-                          add_Business_Details(
-                            gstnumber.text,
-                            gst,
-                            businessPanCard.text,
-                            multiCity
-                          );
+                          // }else{
+                          //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          //     content: Text('Please upload files'),
+                          //   ));
+                          // }
+                          // _activeCurrentStep += 1;
+                          // }
                         }
-                        // Get.to(const Dashboard());
-                      //}
-                    });
+                          else if (_activeCurrentStep == 1) {
+                            add_Business_Details(
+                                gstnumber.text,
+                                gst,
+                                businessPanCard.text,
+                                multiCity
+                            );
+                          }
+                          // Get.to(const Dashboard());
+                          //}
+                        });
                   } else {
                     setState(() {
                       if (formKeys[_activeCurrentStep]
@@ -3937,31 +3961,11 @@ class _ProfileState extends State<Profile> {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body =
-        sharedPreferneces.getString('user_id') == null ?
+     
         jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "user_type": '${widget.user}',
-          "first_name": '$name',
-          "last_name": '$lastName',
-          "email": '$email',
-          "address": '$address',
-          "work_title": '$work',
-          "dob": '$dob',
-          "gender": '$gender',
-          "highest_qualification": '$qualification',
-          "id_proof_type": '1',
-          "id_proof_no": '$pancard',
-          "id_proof_doc": '$panfront',
-          "address_proof_type": '2',
-          "address_proof_number": '$aadharcard',
-          "address_proof_doc": '$aadharback',
-          "skills": "$multiSkill",
-          "total_experience": '$experience',
-        }):
-        jsonEncode(<String, String>{
-          "phone_number": '$number',
-         
+   
+              "phone_number": '$number',
+               "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '${widget.user}',
           "first_name": '$name',
           "last_name": '$lastName',
@@ -3980,6 +3984,27 @@ class _ProfileState extends State<Profile> {
           "skills": "$multiSkill",
           "total_experience": '$experience',
         });
+      //  jsonEncode(<String, String>{
+      //        "phone_number": '$number',
+      //      "user_id": '${sharedPreferneces.getString('user_id')}',
+      //     "user_type": '${widget.user}',
+      //     "first_name": '$name',
+      //     "last_name": '$lastName',
+      //     "email": '$email',
+      //     "address": '$address',
+      //     "work_title": '$work',
+      //     "dob": '$dob',
+      //     "gender": '$gender',
+      //     "highest_qualification": '$qualification',
+      //     "id_proof_type": '1',
+      //     "id_proof_no": '$pancard',
+      //     "id_proof_doc": '$panfront',
+      //     "address_proof_type": '2',
+      //     "address_proof_number": '$aadharcard',
+      //     "address_proof_doc": '$aadharback',
+      //     "skills": "$multiSkill",
+      //     "total_experience": '$experience',
+      //   });
         print(' personal data >> $body');
 
         var response = await http.post(Uri.parse(APIUrls.ADD_PERSONAL_DETAILS),
@@ -4031,13 +4056,14 @@ class _ProfileState extends State<Profile> {
   businessPanCard,
       multiCity
       ) async {
+    print('jjhj>> $_checkboxvalue');
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
       
         var body =
-        _checkboxvalue == 1 ?
+        _checkboxvalue != 0 ?
         jsonEncode(<String, String>{
           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
@@ -4046,16 +4072,20 @@ class _ProfileState extends State<Profile> {
           "gst_doc": "$gst",
           "pan_number": "$businessPanCard",
           "service_area": "$multiCity"
+
         }):
         jsonEncode(<String, String>{
-          "phone_number": '$number',
+           
+           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
           "have_gst_no": "$_checkboxvalue",
           // "gst_number": "$gstnumber" ,
           // "gst_doc": "$gst",
           "pan_number": "$businessPanCard",
           "service_area": "$multiCity"
-        });
+   
+        })
+       ;
         print(body);
         var response = await http.post(Uri.parse(APIUrls.ADD_BUSINESS_DETAILS),
             headers: {'Authorization': 'Bearer $token'},
@@ -4172,7 +4202,7 @@ class _ProfileState extends State<Profile> {
   vendor_company,
   c_firstName,
   c_lastName,
-  email,
+ company_email,
   c_position,
   c_phone
       ) async {
@@ -4180,10 +4210,11 @@ class _ProfileState extends State<Profile> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body =  sharedPreferneces.getString('user_id') != null ?
+        var body = 
          jsonEncode(<String, String>{
           "phone_number": '$number',
-          "company_name": "$companyname",
+           "user_id": '${sharedPreferneces.getString('user_id')}',
+          "company_name": "$company_name",
           "account_group": "$_selectaccount",
           "vendor_required_for": "$_selectvendor",
           "vendor_state": "$vendor_state",
@@ -4195,29 +4226,29 @@ class _ProfileState extends State<Profile> {
           "contact_first_name":"$c_firstName",
           "contact_last_name":"$c_lastName",
           "contact_phone_number": "$c_phone",
-          "contact_email": "$email",
-          "user_type":"1",
-          "contact_position": "$c_position",
-        }):
-          jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "company_name": "$companyname",
-          "account_group": "$_selectaccount",
-          "vendor_required_for": "$_selectvendor",
-          "vendor_state": "$vendor_state",
-          "vendor_city": "$vendor_city",
-          "vendor_pin": "$pincode",
-          "vendor_phone": "$phone",
-          "turnover": "$turnover",
-          "vendor_company_type": "$vendor_company",
-          "contact_first_name":"$c_firstName",
-          "contact_last_name":"$c_lastName",
-          "contact_phone_number": "$c_phone",
-          "contact_email": "$email",
+          "contact_email": "$company_email",
           "user_type":"1",
           "contact_position": "$c_position",
         });
+        //   jsonEncode(<String, String>{
+        //   "phone_number": '$number',
+        //   "user_id": '${sharedPreferneces.getString('user_id')}',
+        //   "company_name": "$companyname",
+        //   "account_group": "$_selectaccount",
+        //   "vendor_required_for": "$_selectvendor",
+        //   "vendor_state": "$vendor_state",
+        //   "vendor_city": "$vendor_city",
+        //   "vendor_pin": "$pincode",
+        //   "vendor_phone": "$phone",
+        //   "turnover": "$turnover",
+        //   "vendor_company_type": "$vendor_company",
+        //   "contact_first_name":"$c_firstName",
+        //   "contact_last_name":"$c_lastName",
+        //   "contact_phone_number": "$c_phone",
+        //   "contact_email": "$email",
+        //   "user_type":"1",
+        //   "contact_position": "$c_position",
+        // });
         print(body);
 
         var response = await http.post(Uri.parse(APIUrls.ADD_VENDOR_DETAILS),
@@ -4599,4 +4630,13 @@ class UpperCaseTextFormatter extends TextInputFormatter {
 String capitalize(String value) {
   if(value.trim().isEmpty) return "";
   return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
+}
+class Capatalized extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }
