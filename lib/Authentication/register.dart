@@ -19,13 +19,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
-  profile_controller controller = Get.put(profile_controller());
+
 
   @override
   State<Register> createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
+    profile_controller controller = Get.put(profile_controller());
   // ignore: prefer_typing_uninitialized_variables
   var selectUser;
   double _headerHeight = 250;
@@ -208,7 +209,7 @@ class _RegisterState extends State<Register> {
                               content: Text('Please select User Type'),
                             ));
                           } else {
-                            register();
+                          controller.register(selectUser);
                           }
                           //Get.to(Profile(user: _selectUser));
                         },

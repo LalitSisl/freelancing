@@ -22,156 +22,162 @@ class BusinessDetail extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Label("Business Details"),
-                    CheckboxListTile(
-                      title:
-                          const Text("Do you have GST number"), //    <-- label
-                      value: controller.checkbox,
-                      onChanged: (newValue) {
-                        print(newValue);
-                        print("h");
-                        controller.gstNumberCheckBox(newValue!);
-                        controller.checkbox=newValue;
-                      },
-                    ),
-                    controller.checkbox == true
-                        ? Column(
-                            children: [
-                              persnolDetailTextField(
-                                  controller.gstNumberController,
-                                  "Enter GST Number", (value) {
-                                if (value == null || value.isBlank) {
-                                  return "Please enter First Name";
-                                }
-                                return null;
-                              }, TextInputType.text, 30, [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z]'))
-                              ]),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                              content: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    controller.imggstdoc();
-                                                  },
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/images/camera.png',
-                                                        scale: 2.5,
-                                                      ),
-                                                      const Text('Camera')
-                                                    ],
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    controller.imggallerygst();
-                                                  },
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/images/gallery.png',
-                                                        scale: 2.5,
-                                                      ),
-                                                      const Text('Gallery')
-                                                    ],
-                                                  ),
-                                                ),
-                                              ]));
-                                        });
-                                  },
-                                  child: UplaodContainer(
-                                      "Upload GST Proof",
-                                      context,
-                                      controller.GstProofImage,
-                                      controller.gst)),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    persnolDetailTextField(
-                        controller.businessPanController, "Business PAN Number",
-                        (value) {
-                      if (value == null || value.isBlank) {
-                        return "Please enter First Name";
-                      }
-                      return null;
-                    }, TextInputType.text, 50, [
-                      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
-                    ]),
-                    Label("Service Area"),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: DropdownSearch.multiSelection(
-                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorPalette.themeBlue, width: 0.5),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorPalette.themeBlue, width: 0.5),
-                            ),
-                            errorBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: ColorPalette.red, width: 0.5),
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            labelText: "Select City",
-                            // hintText: "country in menu mode",
-                          ),
-                        ),
-                        items: List.generate(
-                            controller.getallcities!.data!.cities!.length,
-                            (index) => controller
-                                .getallcities!.data!.cities![index].cityName),
-                        onChanged: (value) {
-                          print(value);
-                          controller.selectCity(value);
-                          // print(controller.selectedSkill);
-                          print("object~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                child: Form(
+                  key: controller.businessformKey,
+                  child: Column(
+                    children: [
+                      Label("Business Details"),
+                      CheckboxListTile(
+                        title:
+                            const Text("Do you have GST number"), //    <-- label
+                        value: controller.checkbox,
+                        onChanged: (newValue) {
+                          print(newValue);
+                          print("h");
+                          controller.gstNumberCheckBox(newValue!);
+                          controller.checkbox = newValue;
                         },
-                        selectedItems: controller.userDetail!.data!.userDetails!
-                                    .businessDetails ==
-                                null
-                            ? []
-                            : List.generate(
-                                controller.userDetail!.data!.userDetails!
-                                    .businessDetails!.serviceAreas!.length,
-                                (index) => controller
-                                    .userDetail!
-                                    .data!
-                                    .userDetails!
-                                    .businessDetails!
-                                    .serviceAreas![index]
-                                    .serviceAreaName),
                       ),
-                    ),
-                  ],
+                      controller.checkbox == true
+                          ? Column(
+                              children: [
+                                persnolDetailTextField(
+                                    controller.gstNumberController,
+                                    "Enter GST Number", (value) {
+                                  if (value == null || value.isBlank) {
+                                    return "Please enter First Name";
+                                  }
+                                  return null;
+                                }, TextInputType.text, 30, [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[a-zA-Z]'))
+                                ]),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                            showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                content: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      print( controller.gst);
+                                                    controller.imggstdoc();
+                                                    },
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/camera.png',
+                                                          scale: 2.5,
+                                                        ),
+                                                        const Text('Camera')
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      controller.imggallerygst();
+                                                    },
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/gallery.png',
+                                                          scale: 2.5,
+                                                        ),
+                                                        const Text('Gallery')
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ]));
+                                          });
+                                  
+                                  
+                                    },
+                                    child: UplaodContainer(
+                                        "Upload GST Proof",
+                                        context,
+                                        controller.GstProofImage,
+                                        controller.gst)),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      persnolDetailTextField(
+                          controller.businessPanController, "Business PAN Number",
+                          (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter First Name";
+                        }
+                        return null;
+                      }, TextInputType.text, 50, [
+                        FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                      ]),
+                      Label("Service Area"),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: DropdownSearch.multiSelection(
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.themeBlue, width: 0.5),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.themeBlue, width: 0.5),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.red, width: 0.5),
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              labelText: "Select City",
+                              // hintText: "country in menu mode",
+                            ),
+                          ),
+                          items: List.generate(
+                              controller.getallcities!.data!.cities!.length,
+                              (index) => controller
+                                  .getallcities!.data!.cities![index].cityName),
+                          onChanged: (value) {
+                            print(value);
+                            controller.selectCity(value);
+                            // print(controller.selectedSkill);
+                            print("object~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                          },
+                          selectedItems: controller.userDetail?.data!.userDetails!
+                                      .businessDetails ==
+                                  null
+                              ? []
+                              : List.generate(
+                                  controller.userDetail!.data!.userDetails!
+                                      .businessDetails!.serviceAreas!.length,
+                                  (index) => controller
+                                      .userDetail!
+                                      .data!
+                                      .userDetails!
+                                      .businessDetails!
+                                      .serviceAreas![index]
+                                      .serviceAreaName),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ));
         });

@@ -190,7 +190,8 @@ class ApiHelper {
       }
     } on SocketException catch (_) {}
   }
-    Future<BankModelClass?> getBanksList() async {
+
+  Future<BankModelClass?> getBanksList() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
 
     try {
@@ -219,5 +220,4 @@ class ApiHelper {
       }
     } on SocketException catch (_) {}
   }
-
 }

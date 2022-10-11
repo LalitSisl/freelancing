@@ -20,56 +20,60 @@ class BankDetail extends StatelessWidget {
           child: Column(
             children: [
               Label("Bank Details"),
-                Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: DropdownButton(
-                        hint: const Text("Select Bank"),
-                        isDense: true,
-                        isExpanded: true,
-                        //  value: controller.bankController.text,
-                        items: List.generate(
-                            controller
-                                .getallBanks!.data!.banks!.length,
-                            (index) => DropdownMenuItem(
-                                  child: Text(controller.getallBanks!.data!
-                                      .banks![index].bankName
-                                      .toString()),
-                                  value: controller.getallBanks!.data!
-                                      .banks![index].id,
-                                )),
-                        onChanged: ((selectedbank) {
-                          controller.selectBanks(selectedbank);
-                          print(selectedbank);
-                          print(
-                              "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
-                        })),
-                  ),
-            const      SizedBox(height: 15,),
-                    Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: DropdownButton(
-                        hint: const Text("Select Account Type"),
-                        isDense: true,
-                        isExpanded: true,
-                          // value: controller.accountTypeController.text,
-                        items: [
-                          'Saving',
-                          'Current',
-                          'Other',
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            child: Text(value),
-                            value: value,
-                          );
-                        }).toList(),
-                        onChanged: ((accounttype) {
-                          controller.accountTypeController.text = accounttype.toString();
-                          print(accounttype);
-                          print(
-                              "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
-                        })),
-                  ),
-                        const      SizedBox(height: 15,),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: DropdownButton(
+                    hint: const Text("Select Bank"),
+                    isDense: true,
+                    isExpanded: true,
+                    //  value: controller.bankController.text,
+                    items: List.generate(
+                        controller.getallBanks!.data!.banks!.length,
+                        (index) => DropdownMenuItem(
+                              child: Text(controller
+                                  .getallBanks!.data!.banks![index].bankName
+                                  .toString()),
+                              value: controller
+                                  .getallBanks!.data!.banks![index].id,
+                            )),
+                    onChanged: ((selectedbank) {
+                      controller.selectBanks(selectedbank);
+                      print(selectedbank);
+                      print(
+                          "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
+                    })),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: DropdownButton(
+                    hint: const Text("Select Account Type"),
+                    isDense: true,
+                    isExpanded: true,
+                    // value: controller.accountTypeController.text,
+                    items: [
+                      'Saving',
+                      'Current',
+                      'Other',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        child: Text(value),
+                        value: value,
+                      );
+                    }).toList(),
+                    onChanged: ((accounttype) {
+                      controller.accountTypeController.text =
+                          accounttype.toString();
+                      print(accounttype);
+                      print(
+                          "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
+                    })),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               persnolDetailTextField(
                   controller.accountController, "Account Number", (value) {
                 if (value == null || value.isBlank) {

@@ -16,6 +16,8 @@ class profile_copy extends StatefulWidget {
 class _profile_copyState extends State<profile_copy> {
   profile_controller controller = Get.put(profile_controller());
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,14 +190,13 @@ class _profile_copyState extends State<profile_copy> {
                           controller.add_Personal_Details();
 
                           //   controller.add_Personal_Details();
-                        } else if (controller.activeCurrentStep == 1) {
+                        } else if ( controller.activeCurrentStep == 1 && controller.businessformKey.currentState!.validate() ) {
+
+                         // print("==================================================6666666");
                           controller.add_Business_Details();
-                          
-                        }else if(controller.activeCurrentStep>=2){
+                        } else if (controller.activeCurrentStep  == 2) {
                           controller.add_Bank_Details();
-                        } 
-                        
-                        else {
+                        } else {
                           //  controller.add_Personal_Details();
                           print("incomplit");
                         }

@@ -12,6 +12,7 @@ import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/bank.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/business.dart';
+import 'package:freelancing/Screens/profile_copy.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
 import 'package:get/get.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -25,6 +26,7 @@ import 'package:intl/intl.dart';
 class profile_controller extends GetxController {
   int activeCurrentStep = 0;
   final formKey = GlobalKey<FormState>();
+   final businessformKey = GlobalKey<FormState>();
 
 // List<UserSkill> skillsList = [];
 
@@ -33,7 +35,7 @@ class profile_controller extends GetxController {
   GetQualificationModal? getQualification;
   GetExperienceModal? getExperience;
   CityDetailModelClass? getallcities;
-BankModelClass?getallBanks;
+  BankModelClass? getallBanks;
   // Qualification? selectedQuelification;
   WorkExp? selectedExperience;
   // String? qualification;
@@ -62,8 +64,8 @@ BankModelClass?getallBanks;
   TextEditingController accountTypeController = TextEditingController();
   TextEditingController accountHolder = TextEditingController();
 
-  bool checkbox = true;
-  
+  bool checkbox = false;
+
   // List<ValueItem> selectedSkill = [];
   List selectedSkill = [];
   List selectedCity = [];
@@ -76,13 +78,16 @@ BankModelClass?getallBanks;
   String? gst;
   String? check;
   String? quelificationId;
-    String? bankId;
+  String? bankId;
   String? experinceId;
   // var imagePan;
   var imagegst;
   var imageaadhar;
   var imagecheque;
   var image1;
+  var selectedGenderOne;
+  var selectedqualificationOne;
+  var selectedexperienceOne;
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
   File? adharImage;
@@ -92,7 +97,6 @@ BankModelClass?getallBanks;
   final ImagePicker _picker = ImagePicker();
   @override
   void onInit() {
-
     // TODO: implement onInit
     super.onInit();
     getuserDetail();
@@ -101,6 +105,7 @@ BankModelClass?getallBanks;
     getExperienceData();
     getcitiesData();
     getBanksData();
+
   }
 
   selectSkill(item) {
@@ -115,14 +120,17 @@ BankModelClass?getallBanks;
 
   selectQuelification(qualification) {
     quelificationId = qualification;
+    selectedqualificationOne = qualification;
     highestqualController = TextEditingController(text: qualification);
     update();
   }
-selectBanks(bank){
-  bankId= bank;
-  bankController =TextEditingController(text: bank);
-  update();
-}
+
+  selectBanks(bank) {
+    bankId = bank;
+    bankController = TextEditingController(text: bank);
+    update();
+  }
+
   List<Step> stepsList() => [
         Step(
             state:
@@ -175,19 +183,38 @@ selectBanks(bank){
         "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     update();
   }
- getBanksData() async {
+
+  getBanksData() async {
     getallBanks = await ApiHelper().getBanksList();
     print(getallBanks!.status);
     print(
         "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<&&&&&&&&&&&&&&&&&");
     update();
   }
+
   getExperienceData() async {
     getExperience = await ApiHelper().getExperience();
     print(getExperience!.status);
     print("&&&&&&&&&&&&&&&&&&&&&");
   }
+  gstNumberCheckBox(bool value) {
+    checkbox = value;
+    print(checkbox);
+    update();
+  }
 
+  selectGender(gender) {
+    genderController = TextEditingController(text: gender);
+    selectedGenderOne= gender;
+    update();
+  }
+    selectExperience(data) {
+    //   = data.id.toString();
+    experinceId = data;
+    experienceController = TextEditingController(text: data);
+    selectedexperienceOne = data;
+    update();
+  }
   getuserDetail() async {
     userDetail = await ApiHelper().getFrelencer();
     update();
@@ -208,12 +235,12 @@ selectBanks(bank){
             text: userDetail!.data!.userDetails!.profileDetails!.address!);
         dobController = TextEditingController(
             text: userDetail!.data!.userDetails!.profileDetails!.dob!);
-        genderController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.gender);
+        selectedGenderOne = 
+             userDetail!.data!.userDetails!.profileDetails!.gender;
         update();
-        highestqualController = TextEditingController(
-            text: userDetail!
-                .data!.userDetails!.profileDetails!.highestQualification!);
+        selectedqualificationOne = 
+           userDetail!
+                .data!.userDetails!.profileDetails!.highestQualification!;
         pancardController = TextEditingController(
             text: userDetail!
                 .data!.userDetails!.profileDetails!.addressProofNumber!);
@@ -223,8 +250,8 @@ selectBanks(bank){
         panfront =
             userDetail!.data!.userDetails!.profileDetails!.addressProofDoc;
         aadharback = userDetail!.data!.userDetails!.profileDetails!.idProofDoc;
-        experienceController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.experience);
+        selectedexperienceOne = 
+           userDetail!.data!.userDetails!.profileDetails!.experience;
         print(experienceController.text);
         print("---------------8888-------------------------");
         // selectedQuelification = Qualification(
@@ -240,36 +267,35 @@ selectBanks(bank){
           },
         );
         update();
-        gstNumberController = TextEditingController(text: userDetail!.data!.userDetails!.businessDetails!.gstNumber);
-        businessPanController = TextEditingController(text: userDetail!.data!.userDetails!.businessDetails!.panNumber);
-        gst = userDetail!.data!.userDetails!.businessDetails!.gstDoc;
+        gstNumberController = TextEditingController(
+            text: userDetail!.data!.userDetails!.businessDetails?.gstNumber ??"" );
+        businessPanController = TextEditingController(
+            text: userDetail!.data!.userDetails!.businessDetails?.panNumber);
+        gst = userDetail!.data!.userDetails!.businessDetails?.gstDoc;
 
-         userDetail!.data!.userDetails!.businessDetails!.serviceAreas!.forEach(
+        userDetail!.data!.userDetails!.businessDetails?.serviceAreas!.forEach(
           (element) {
             selectedCity.add(element.serviceAreaName);
           },
         );
-        accountController =TextEditingController(text: userDetail!.data!.userDetails!.bankDetails!.accountNo);
-        ifscController =TextEditingController(text: userDetail!.data!.userDetails!.bankDetails!.ifscCode);
-        accountHolder = TextEditingController(text: userDetail!.data!.userDetails!.bankDetails!.accountHolderName);
-        check = userDetail!.data!.userDetails!.bankDetails!.cancelChecque;
-        bankController =TextEditingController(text: userDetail!.data!.userDetails!.bankDetails!.bankName);
-        accountTypeController =TextEditingController(text: userDetail!.data!.userDetails!.bankDetails!.accountType);
+        accountController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
+        ifscController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.ifscCode);
+        accountHolder = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.bankDetails?.accountHolderName);
+        check = userDetail!.data!.userDetails!.bankDetails?.cancelChecque;
+        bankController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.bankName);
+        accountTypeController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.accountType);
       }
     }
     update();
   }
 
-  gstNumberCheckBox(bool value) {
-    checkbox = value;
-    print(checkbox);
-    update();
-  }
 
-  selectGender(gender) {
-    genderController = TextEditingController(text: gender);
-    update();
-  }
 
   // selectqulificationr(Qualification data) {
   //    qualification = data.id;
@@ -279,12 +305,7 @@ selectBanks(bank){
   //   update();
   // }
 
-  selectExperience(data) {
-    //   = data.id.toString();
-    experinceId = data;
-    experienceController = TextEditingController(text: data);
-    update();
-  }
+
 
   Future<void> add_Personal_Details() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
@@ -316,8 +337,8 @@ selectBanks(bank){
           "address": addressController.text,
           "work_title": profileController.text,
           "dob": dobController.text,
-          "gender": genderController.text,
-          "highest_qualification": highestqualController.text,
+          "gender":selectedGenderOne,
+          "highest_qualification": selectedqualificationOne,
           "id_proof_type": '1',
           "id_proof_no": aadharController.text,
           "id_proof_doc": aadharback,
@@ -325,7 +346,7 @@ selectBanks(bank){
           "address_proof_number": pancardController.text,
           "address_proof_doc": panfront,
           "skills": data,
-          "total_experience": experinceId,
+          "total_experience": selectedexperienceOne,
         });
         //  jsonEncode(<String, String>{
         //        "phone_number": '$number',
@@ -473,6 +494,77 @@ selectBanks(bank){
   }
 // ========================add business details=====================
 
+  Future<void> register( var usertype) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+        var number = sharedPreferneces.getString('number');
+    var token = sharedPreferneces.getString('token');
+   
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+          "user_type": usertype,
+        };
+        var response = await http.get(
+            Uri.http(
+                "${APIUrls.DOMAIN}", "${APIUrls.REGISTER_AS}", queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+        // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
+        //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
+        try {
+          var convertJson = jsonDecode(response.body);
+          print('   lalit $convertJson');
+          if (convertJson["status"]) {
+         
+          
+            
+
+
+              sharedPreferneces.setString(
+                  'user_id', '${convertJson['data']['user_id']}');
+
+                   activeCurrentStep  = int.parse(convertJson['data']['user_status']);
+
+                  update();
+                    Get.to(() => profile_copy());
+          
+            // print(convertJson['data']['user_status']);
+            // if (convertJson['data']['user_status'] != "3") {
+            //   Get.to(() => profile_copy());
+            //   // Get.to(() =>Profile(
+            //   //     user: _selectUser,
+            //   //     user_status: convertJson['data']['user_status'].toString()));
+            //   print('user status ${convertJson['data']['user_status']}');
+            // } else {
+            //   // Get.to(Profile(user: _selectUser,
+            //   //     user_status: convertJson['data']['user_status'].toString()));
+            //   Get.to(profile_copy());
+            // }
+          } else {
+            Get.snackbar("Error", convertJson['error_msg'],
+                snackPosition: SnackPosition.BOTTOM);
+         
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+         Get.snackbar("Error","Something went wrong, try again later",
+                snackPosition: SnackPosition.BOTTOM);
+       
+        }
+      }
+    } on SocketException catch (_) {
+        Get.snackbar("Error"," 'No internet connection. Connect to the internet and try again.",
+                snackPosition: SnackPosition.BOTTOM);
+ 
+    }
+  }
+
+
+
+
   Future<void> add_Business_Details() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
@@ -520,10 +612,9 @@ selectBanks(bank){
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-           
             Get.snackbar("Business Details ", convertJson['success_msg'],
                 snackPosition: SnackPosition.BOTTOM);
-                 activeCurrentStep += 1;
+            activeCurrentStep += 1;
             update();
             // Get.to(Otp(number: phoneNumber));
           } else {
@@ -548,9 +639,10 @@ selectBanks(bank){
       // ));
     }
   }
+
   Future<void> add_Bank_Details() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-     var number = sharedPreferneces.getString('number');
+    var number = sharedPreferneces.getString('number');
     var token = sharedPreferneces.getString('token');
     var user_id = sharedPreferneces.getString('user_id');
     try {
@@ -575,30 +667,26 @@ selectBanks(bank){
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-             Get.snackbar("Bank Details ", convertJson['success_msg'],
+            Get.snackbar("Bank Details ", convertJson['success_msg'],
                 snackPosition: SnackPosition.BOTTOM);
-                 activeCurrentStep += 1;
+            activeCurrentStep += 1;
             update();
             // Get.to(const Review());
             // Get.to(Otp(number: phoneNumber));
           } else {
-         Get.snackbar("Error", convertJson['error_msg'],
+            Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);
           }
           update();
-          
         } catch (e) {
           if (kDebugMode) {
             print(e.toString());
           }
-
-        
         }
       }
-    } on SocketException catch (_) {
-    
-    }
+    } on SocketException catch (_) {}
   }
+
   imgpan() async {
     final XFile? image =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
@@ -674,7 +762,7 @@ selectBanks(bank){
   imgcheque() async {
     final XFile? image =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
-          File compressedFile = await FlutterNativeImage.compressImage(
+    File compressedFile = await FlutterNativeImage.compressImage(
       image!.path,
       quality: 50,
     );
@@ -765,7 +853,7 @@ selectBanks(bank){
   imggallerycheque() async {
     final XFile? image =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
-        File compressedFile = await FlutterNativeImage.compressImage(
+    File compressedFile = await FlutterNativeImage.compressImage(
       image!.path,
       quality: 50,
     );

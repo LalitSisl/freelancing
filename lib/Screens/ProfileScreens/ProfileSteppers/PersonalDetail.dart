@@ -132,20 +132,21 @@ class PersonalDetail extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: DropdownButton(
-                      
                         hint: const Text("Choose Gender"),
                         isDense: true,
                         isExpanded: true,
-                        value: controller.genderController.text,
+                        value: controller.selectedGenderOne,
                         items: controller.genderList.map((item) {
                           return DropdownMenuItem(
                             child: Text(item, textAlign: TextAlign.center),
                             value: item, //FAIL
                           );
                         }).toList(),
-                        onChanged: ((selectedGender) {
-                          controller.selectGender(selectedGender);
-                          print(selectedGender);
+                        onChanged: ((value) {
+                          controller.selectedGenderOne = value!;
+                          controller.genderController.text = controller.selectedGenderOne;
+                          controller.selectGender(value);
+                          print(value);
                           print(
                               "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
                         })),
@@ -160,7 +161,7 @@ class PersonalDetail extends StatelessWidget {
                         hint: const Text("Select Highest Qualification"),
                         isDense: true,
                         isExpanded: true,
-                        value: controller.highestqualController.text,
+                        value: controller.selectedqualificationOne,
                         items: List.generate(
                             controller
                                 .getQualification!.data!.qualifications!.length,
@@ -171,9 +172,11 @@ class PersonalDetail extends StatelessWidget {
                                   value: controller.getQualification!.data!
                                       .qualifications![index].id,
                                 )),
-                        onChanged: ((selectedQualification) {
-                          controller.selectQuelification(selectedQualification);
-                          print(selectedQualification);
+                        onChanged: ((value) {
+                          controller.selectQuelification(value);
+                          controller.selectedqualificationOne = value!;
+                          print(value);
+                          controller.highestqualController.text = value.toString();
                           print(
                               "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
                         })),
@@ -351,7 +354,7 @@ class PersonalDetail extends StatelessWidget {
                         hint: const Text("Select Experience"),
                         isDense: true,
                         isExpanded: true,
-                        value: controller.experienceController.text,
+                        value: controller.selectedexperienceOne,
                         items: List.generate(
                             controller.getExperience!.data!.workExp!.length,
                             (index) => DropdownMenuItem(
@@ -361,9 +364,10 @@ class PersonalDetail extends StatelessWidget {
                                       .getExperience!.data!.workExp![index].id
                                       .toString(),
                                 )),
-                        onChanged: ((selectedexperience) {
-                          controller.selectExperience(selectedexperience);
-                          print(selectedexperience);
+                        onChanged: ((newValue) {
+                          controller.selectExperience(newValue);
+                          controller.selectedexperienceOne = newValue!;
+                          print(newValue);
                           print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                         })),
                   ),

@@ -530,6 +530,7 @@ Widget Label(title) {
 }
 
 Widget UplaodContainer(text, BuildContext context, image, name) {
+  
   return Container(
     height: 130,
     width: MediaQuery.of(context).size.width / 1.4,
