@@ -42,23 +42,20 @@ class _WelcomeState extends State<Welcome> {
               'assets/images/sisl.png',
               scale: 7,
             ),
-             Padding(
+            Padding(
               padding: EdgeInsets.only(top: 3),
               child: AnimatedTextKit(
-                
                 totalRepeatCount: 1,
-                    animatedTexts: [
-                    
-                    TyperAnimatedText("SWAN",
-                    textStyle: const TextStyle(fontSize: 40,fontWeight: FontWeight.bold,letterSpacing: .8,color: Color.fromARGB(221, 44, 44, 44)),
-                    speed: Duration(milliseconds: 200)
-                    )
-                  
-        ,
-               ],
-               
-                  
-                  ),
+                animatedTexts: [
+                  TyperAnimatedText("SWAN",
+                      textStyle: const TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: .8,
+                          color: Color.fromARGB(221, 44, 44, 44)),
+                      speed: Duration(milliseconds: 200)),
+                ],
+              ),
               // child: Text(
               //   'SWAN',
               //   style: TextStyle(

@@ -4,6 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:freelancing/Utils/constant.dart';
+import 'package:freelancing/Screens/profile_copy.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,16 +22,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
   var isLoading = false;
-
-
 
   Future<void> sendOTP(phoneNumber) async {
     print(phoneNumber);
     setState(() {
-      isLoading=true;
+      isLoading = true;
     });
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -43,7 +42,6 @@ class _LoginState extends State<Login> {
           var convertJson = jsonDecode(response.body);
           print('   lalit $convertJson');
           if (convertJson["status"]) {
-
             setState(() {
               isLoading = false;
             });
@@ -83,66 +81,74 @@ class _LoginState extends State<Login> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _phoneController = TextEditingController(text: "8295019701");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-      height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          colors: [
+        height: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
           Colors.red.shade500,
           Colors.red.shade400,
           Colors.red.shade300,
-        ])
-      ),
+        ])),
         child: Column(
           children: [
             Container(
-
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height:80,),
-                    Text("Login",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.white),),
-                    SizedBox(height: 5,),
-                    
-                      // Text("Be Your Own Boss",style: TextStyle(fontSize: 20,color: Colors.white)),
-                       AnimatedTextKit(
-                
-                totalRepeatCount: 1,
-                    animatedTexts: [
-                    
-                    TyperAnimatedText("Be Your Own Boss",
-                    textStyle: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold,letterSpacing: .8,color: Colors.white,),
-                    speed: Duration(milliseconds: 200)
-                    )
-                  
-        ,
-               ],
-               
-                  
-                  ),
+                    SizedBox(
+                      height: 80,
+                    ),
+                    Text(
+                      "Login",
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+
+                    // Text("Be Your Own Boss",style: TextStyle(fontSize: 20,color: Colors.white)),
+                    AnimatedTextKit(
+                      totalRepeatCount: 1,
+                      animatedTexts: [
+                        TyperAnimatedText("Be Your Own Boss",
+                            textStyle: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: .8,
+                              color: Colors.white,
+                            ),
+                            speed: Duration(milliseconds: 200)),
+                      ],
+                    ),
                   ],
                 ),
               ),
             ),
-          
             Expanded(
               child: Container(
-                decoration:const BoxDecoration(
-                  color: Color.fromARGB(255, 255, 243, 243),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60)
-                  )
-                ),
-                
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 255, 243, 243),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60))),
                 child: Form(
                   key: _formKey,
                   child: Padding(
@@ -168,7 +174,8 @@ class _LoginState extends State<Login> {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 40,
                                           letterSpacing: .8,
-                                          color: Color.fromARGB(221, 44, 44, 44)),
+                                          color:
+                                              Color.fromARGB(221, 44, 44, 44)),
                                     ),
                                   )
                                 ],
@@ -184,16 +191,19 @@ class _LoginState extends State<Login> {
                                       margin: const EdgeInsets.only(bottom: 22),
                                       alignment: Alignment.center,
                                       height: 50,
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
                                       decoration: BoxDecoration(
                                           color: ColorPalette.white,
-                                          border:
-                                              Border.all(color: ColorPalette.textGrey),
-                                          borderRadius: BorderRadius.circular(5)),
+                                          border: Border.all(
+                                              color: ColorPalette.textGrey),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
                                       child: const Text(
                                         '+91',
                                         style: TextStyle(
-                                            color: ColorPalette.textGrey, fontSize: 16),
+                                            color: ColorPalette.textGrey,
+                                            fontSize: 16),
                                       )),
                                   Container(
                                       margin: const EdgeInsets.only(bottom: 20),
@@ -202,34 +212,41 @@ class _LoginState extends State<Login> {
                                           color: ColorPalette.textGrey)),
                                   Expanded(
                                     child: TextFormField(
-                                      
                                       controller: _phoneController,
                                       keyboardType: TextInputType.phone,
                                       decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        focusedErrorBorder:const  OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                            borderSide: BorderSide(color: Colors.grey)),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          focusedErrorBorder:
+                                              const OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5.0)),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.grey)),
                                           isDense: true,
-                                          contentPadding: const EdgeInsets.symmetric(
-                                              vertical: 13, horizontal: 5),
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 13, horizontal: 5),
                                           border: InputBorder.none,
                                           hintText: "Phone Number",
                                           enabledBorder: OutlineInputBorder(
                                             borderSide: const BorderSide(
                                                 color: ColorPalette.textGrey),
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: const BorderSide(
                                                 color: ColorPalette.textGrey),
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
                                           errorBorder: OutlineInputBorder(
                                             borderSide: const BorderSide(
                                                 color: ColorPalette.textGrey),
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           )),
                                       maxLength: 10,
                                       inputFormatters: <TextInputFormatter>[
@@ -240,7 +257,8 @@ class _LoginState extends State<Login> {
                                         print(value);
                                       },
                                       validator: (value) {
-                                        String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                                        String pattern =
+                                            r'(^(?:[+0]9)?[0-9]{10,12}$)';
                                         RegExp regExp = new RegExp(pattern);
                                         if (value?.length == 0) {
                                           return 'Please enter mobile number';
@@ -253,26 +271,26 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                               ),
-            
+
                               const SizedBox(
                                 height: 50,
                               ),
-                              isLoading ?
-                                  const Align(
+                              isLoading
+                                  ? const Align(
                                       alignment: Alignment.bottomRight,
-                                      child: CircularProgressIndicator()):
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      sendOTP(_phoneController.text);
-            
-                                     }
-                                  },
-                                  child: const Text('Send OTP'),
-                                ),
-                              )
+                                      child: CircularProgressIndicator())
+                                  : Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            sendOTP(_phoneController.text);
+                                          }
+                                        },
+                                        child: const Text('Send OTP'),
+                                      ),
+                                    )
                             ]),
                       ),
                     ),

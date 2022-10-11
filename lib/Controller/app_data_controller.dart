@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -26,16 +25,17 @@ class AppDataController extends GetxController {
         };
         var response = await http.get(
             Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_SKILLS}", queryParams),
-            headers: {'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'});
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
 
         try {
           var convertJson = jsonDecode(response.body);
           //print(convertJson);
           if (convertJson["status"]) {
-
             List<SubjectModel> tempSubjectData = [];
             convertJson['data']['skills'].forEach(
-                  (data) {
+              (data) {
                 tempSubjectData.add(
                   SubjectModel(
                     subjectId: data['id'],
@@ -46,38 +46,22 @@ class AppDataController extends GetxController {
             );
             //print(tempSubjectData);
             subjectData.addAll(tempSubjectData);
+            subjectData.forEach(((element) {
+              print(element.subjectName);
+            }));
+            print("========");
 
             dropDownData = subjectData.map((subjectdata) {
               return MultiSelectItem(subjectdata, subjectdata.subjectName);
             }).toList();
 
             update();
-          } else {
-
-          }
-        } catch (e) {
-
-        }
+          } else {}
+        } catch (e) {}
       }
-    } on SocketException catch (_) {
-
-    }
+    } on SocketException catch (_) {}
   }
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
 
 class AppDataControllerCIty extends GetxController {
   List<SubjectModel> subjectDatacity = [];
@@ -95,17 +79,17 @@ class AppDataControllerCIty extends GetxController {
         };
         var response = await http.get(
             Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
-            headers: {'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'});
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
 
         try {
           var convertJson = jsonDecode(response.body);
           //print(convertJson);
           if (convertJson["status"]) {
-
-
             List<SubjectModel> tempSubjectDatacity = [];
             convertJson['data']['cities'].forEach(
-                  (data) {
+              (data) {
                 tempSubjectDatacity.add(
                   SubjectModel(
                     subjectId: data['city_id'],
@@ -122,20 +106,9 @@ class AppDataControllerCIty extends GetxController {
             }).toList();
 
             update();
-          } else {
-
-          }
-        } catch (e) {
-
-        }
+          } else {}
+        } catch (e) {}
       }
-    } on SocketException catch (_) {
-
-    }
+    } on SocketException catch (_) {}
   }
-
-
-
-
 }
-

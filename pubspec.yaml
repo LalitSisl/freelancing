@@ -39,6 +39,11 @@ dependencies:
   introduction_screen: ^3.0.2
   smooth_page_indicator: ^1.0.0+2
   bulleted_list: ^0.0.1+0.1a
+  multi_select_flutter: ^4.1.2
+  multiselect_formfield: ^0.1.7
+  multi_dropdown: ^1.0.2
+  dropdown_button2: ^1.8.2
+  dropdown_search: ^5.0.3
   
   
   
@@ -65,7 +70,6 @@ dev_dependencies:
   intl: ^0.17.0
   google_fonts: ^3.0.1
   flutter_speed_dial: ^6.0.0
-  multi_select_flutter: ^4.1.2
   http: ^0.13.5
   flutter_native_splash:
   country_pickers: ^2.0.0

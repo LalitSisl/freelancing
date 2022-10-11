@@ -7,12 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-class AuthController extends GetxController{
-
-var isLoading = false.obs;
-
-
+class AuthController extends GetxController {
+  var isLoading = false.obs;
 
   Future<void> sendOTP(phoneNumber) async {
     isLoading.value = true;
@@ -27,9 +23,7 @@ var isLoading = false.obs;
           var convertJson = jsonDecode(response.body);
 
           if (convertJson["status"]) {
-
             isLoading.value = false;
-
           } else {
             isLoading.value = false;
           }

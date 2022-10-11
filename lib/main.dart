@@ -13,11 +13,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.red,
-        
-        fontFamily: "Ubuntu"
-      ),
+          useMaterial3: true, primarySwatch: Colors.red, fontFamily: "Ubuntu"),
       home: const Welcome(),
     );
   }

@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:freelancing/Controller/profile_controller.dart';
+import 'package:freelancing/Utils/APIURLs.dart';
+import 'package:get/get.dart';
 
 class Dimension {
   Dimension._();
@@ -335,7 +340,6 @@ class SWANWidget {
       TextFormField(
         controller: _controller,
         decoration: InputDecoration(
-          
             isDense: true,
             contentPadding: const EdgeInsets.all(12),
             labelText: label,
@@ -398,13 +402,12 @@ class SWANWidget {
         validator: validator,
       );
 
-       static TextFormField enabledTextFormField2(_controller, label, inputType,
-          inputFormatters, validator, maxLength,_textcapatilization) =>
+  static TextFormField enabledTextFormField2(_controller, label, inputType,
+          inputFormatters, validator, maxLength, _textcapatilization) =>
       TextFormField(
         textCapitalization: _textcapatilization,
         controller: _controller,
         decoration: InputDecoration(
-          
             isDense: true,
             contentPadding: const EdgeInsets.all(12),
             labelText: label,
@@ -434,4 +437,127 @@ class SWANWidget {
         maxLength: maxLength,
         validator: validator,
       );
+}
+
+Widget persnolDetailTextField(
+    _controller, label, validator, inputType, maxLength, inputFormatters) {
+  return Padding(
+    padding: const EdgeInsets.all(5.0),
+    child: TextFormField(
+      controller: _controller,
+      decoration: InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          labelText: label,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.textGrey),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.textGrey),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+          ),
+          labelStyle: SWANWidget.fieldLabelTextStyle,
+          counterText: ""),
+      validator: validator,
+      maxLength: maxLength,
+      keyboardType: inputType,
+      inputFormatters: inputFormatters,
+    ),
+  );
+}
+
+Widget persnolDetailTextField1(
+    _controller, label, validator, inputType, maxLength) {
+  return Padding(
+    padding: const EdgeInsets.all(5.0),
+    child: TextFormField(
+      controller: _controller,
+      decoration: InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          labelText: label,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.textGrey),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.textGrey),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+          ),
+          labelStyle: SWANWidget.fieldLabelTextStyle,
+          counterText: ""),
+      validator: validator,
+      maxLength: maxLength,
+      keyboardType: inputType,
+    ),
+  );
+}
+
+Widget Label(title) {
+  return Padding(
+    padding: const EdgeInsets.all(5.0),
+    child: Row(
+      children: [
+        RichText(
+          text: TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: ColorPalette.themeBlue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
+              children: const [
+                TextSpan(
+                    text: ' *',
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14))
+              ]),
+          //textScaleFactor: labelTextScale,
+        ),
+      ],
+    ),
+  );
+}
+
+Widget UplaodContainer(text, BuildContext context, image, name) {
+  return Container(
+    height: 130,
+    width: MediaQuery.of(context).size.width / 1.4,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: ColorPalette.textGrey)),
+    child: name == null && image == null
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/upload.png',
+                scale: 3,
+              ),
+              Text(
+                text,
+                style: SWANWidget.subtextRegularTextStyle,
+              )
+            ],
+          )
+        : image != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(image, fit: BoxFit.fill))
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network('${APIUrls.BASE_URL_IMAGE}${name}',
+                    fit: BoxFit.fill)),
+  );
 }

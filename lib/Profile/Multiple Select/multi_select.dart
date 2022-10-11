@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MultiSelect extends StatefulWidget {
-  final List<String> items;
   const MultiSelect({Key? key, required this.items}) : super(key: key);
+
+  final List<String> items;
 
   @override
   State<StatefulWidget> createState() => _MultiSelectState();
@@ -68,8 +69,9 @@ class _MultiSelectState extends State<MultiSelect> {
 }
 
 class MultiSelectcity extends StatefulWidget {
-  final List<String> items;
   const MultiSelectcity({Key? key, required this.items}) : super(key: key);
+
+  final List<String> items;
 
   @override
   State<StatefulWidget> createState() => _MultiSelectcityState();
@@ -135,8 +137,9 @@ class _MultiSelectcityState extends State<MultiSelectcity> {
 }
 
 class MultiSelectskill extends StatefulWidget {
-  final List items;
   const MultiSelectskill({Key? key, required this.items}) : super(key: key);
+
+  final List items;
 
   @override
   State<StatefulWidget> createState() => _MultiSelectskillState();

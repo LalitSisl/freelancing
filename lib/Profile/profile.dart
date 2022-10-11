@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -23,77 +23,179 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 
 class Profile extends StatefulWidget {
+  Profile({Key? key, required this.user, required this.user_status})
+      : super(key: key);
+
   String? user;
   String? user_status;
-  Profile({Key? key, required this.user, required this.user_status}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  // ignore: prefer_typing_uninitialized_variables
+  var aadhar;
 
+  TextEditingController aadharcard = TextEditingController();
+  File? aadharfront;
+  TextEditingController accHolderName = TextEditingController();
+  // bank
+  TextEditingController accNumber = TextEditingController();
+
+  var acctype;
+  var addr = "[Address]";
+  var addr1 = '';
+  TextEditingController address = TextEditingController();
+  var bank;
+  List bankData = [];
+  TextEditingController bankName = TextEditingController();
+  TextEditingController business = TextEditingController();
+  TextEditingController businessPanCard = TextEditingController();
+  TextEditingController c_firstName = TextEditingController();
+  TextEditingController c_lastName = TextEditingController();
+  TextEditingController c_phone = TextEditingController();
+  TextEditingController c_position = TextEditingController();
+  String? check;
+  TextEditingController city = TextEditingController();
+  TextEditingController company_email = TextEditingController();
+  //Vendor
+  TextEditingController company_name = TextEditingController();
+
+  TextEditingController companyname = TextEditingController();
+  TextEditingController confirmAccNumber = TextEditingController();
   final AppDataController controller = Get.put(AppDataController());
   final AppDataControllerCIty controllercity = Get.put(AppDataControllerCIty());
-  List subjectData = [];
-  List subjectDatacity = [];
-
-  // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-  // controller.getSubjectData();
-  // });
-
-
-
-
-  var _selectaccount;
-  var _selectvendor;
-  var addr1 ='';
-  int _activeCurrentStep = 0;
+  TextEditingController dob = TextEditingController();
+  TextEditingController email = TextEditingController();
+  var experience;
+  List experinceData = [];
+  TextEditingController fax = TextEditingController();
+  var fetchcity;
+  TextEditingController firstName = TextEditingController();
   List<GlobalKey<FormState>> formKeys = [
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
   ];
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
-  TextEditingController business = TextEditingController();
-  TextEditingController work = TextEditingController();
-  TextEditingController dob = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController state = TextEditingController();
-  TextEditingController city = TextEditingController();
-  TextEditingController address = TextEditingController();
 
-  //Vendor
-  TextEditingController company_name = TextEditingController();
-  TextEditingController search_item = TextEditingController();
-  TextEditingController pincode = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController fax = TextEditingController();
-  TextEditingController c_firstName = TextEditingController();
-  TextEditingController c_lastName = TextEditingController();
-  TextEditingController company_email = TextEditingController();
-  TextEditingController c_position = TextEditingController();
-  TextEditingController c_phone = TextEditingController();
-  TextEditingController turnover = TextEditingController();
+  // ignore: prefer_typing_uninitialized_variables
+  var gender;
+
+  String? gst;
+  String? aadharback;
+  // business
+  TextEditingController gstnumber = TextEditingController();
+
+  TextEditingController ifsc = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  List<String> location = [
+    'Delhi',
+    'Mumbai',
+    'Bangelore',
+    'Gurgaon',
+    'Ahmedabad',
+    'Noida',
+  ];
+
+  String? multiCity;
+  String? multiSkill;
+  var name = "[Name]";
+  var number;
+  // ignore: prefer_typing_uninitialized_variables
+  var panDropdown;
 
   // idebtity
   TextEditingController pancard = TextEditingController();
-  TextEditingController aadharcard = TextEditingController();
 
-  // business
-  TextEditingController gstnumber = TextEditingController();
-  TextEditingController businessPanCard = TextEditingController();
-  TextEditingController companyname = TextEditingController();
+  String? panfront;
+  TextEditingController phone = TextEditingController();
+  var phone_no = "[Phone Number]";
+  String? pic;
+  TextEditingController pincode = TextEditingController();
+  var profile = "[Profile]";
+  var qualification;
+  // get qualification
 
-  // bank
-  TextEditingController accNumber = TextEditingController();
-  TextEditingController confirmAccNumber = TextEditingController();
-  TextEditingController ifsc = TextEditingController();
-  TextEditingController accHolderName = TextEditingController();
-  TextEditingController bankName = TextEditingController();
+  List qualificationData = [];
 
-var skill;
+  List<String> reportList = [
+    'Computer Network',
+    'Mobile Application',
+    'Computers & Others',
+    'Digital Display Services',
+    'Flutter',
+    'Developement',
+  ];
+
+  TextEditingController search_item = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  var selectedItem;
+  List<String> selectedReportList = [];
+  List<String> selectedSkillsList = [];
+  List<String> selectedcitiesList = [];
+  List<String> selectedlocation = [];
+  var skill;
+  var sr = '';
+  TextEditingController state = TextEditingController();
+  List stateData = [];
+  List subjectData = [];
+  List subjectDatacity = [];
+  var token;
+  TextEditingController turnover = TextEditingController();
+  var user_id;
+  List vendorCityData = [];
+  List vendorCompanyTypeData = [];
+  //vendor dropdown
+  var vendor_city;
+
+  var vendor_company;
+  var vendor_state;
+  TextEditingController work = TextEditingController();
+  var workcity;
+
+  int _activeCurrentStep = 0;
+  bool _checkbox = false;
+  var _checkboxvalue;
+  List<dynamic> _items = <dynamic>[];
+  final _key = GlobalKey<ScaffoldState>();
+  // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+  // controller.getSubjectData();
+  // });
+
+  var _selectaccount;
+
+  // var items = [
+  //   'Male',
+  //   'Female',
+  // ];
+
+// mutli sleect state
+
+  List<String> _selectedItems = [];
+
+  List<String> _selectedItemscity = [];
+  List _selectedItemsskill = [];
+  var _selectvendor;
+
+  @override
+  initState() {
+    super.initState();
+    print('>>>>>>>>>> $_checkbox');
+    print(widget.user);
+    //getSkills();
+    getQualification();
+    getBank();
+    getdata();
+    getExperience();
+    getStates();
+    getVendorComapnyType();
+    getUSERALLDETAILS();
+
+    //controller.getSubjectData();
+    controller.getSkills();
+    controllercity.getCity();
+  }
 
   Future<void> getUSERALLDETAILS() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
@@ -105,75 +207,110 @@ var skill;
           "phone_number": "${sharedPreferneces.getString('number')}",
         };
         var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_USER_COMPLETE_DETAILS}", queryParams),
-            headers: {'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'});
+            Uri.http("${APIUrls.DOMAIN}",
+                "${APIUrls.GET_USER_COMPLETE_DETAILS}", queryParams),
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
         // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
         //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
+
         try {
           var convertJson = jsonDecode(response.body);
-          print('   lalit $convertJson');
+          print("-------------------------------------------------------");
+          print(convertJson);
+          print("-------------------------------------------------------");
           if (convertJson["status"]) {
             setState(() {
-
-              if(widget.user == "2") {
+              if (widget.user == "2") {
+                convertJson['data']['user_details']['profile_details']['skills']
+                    .forEach(((element) {
+                  print(element['skill_name']);
+                  print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+                  setState(() {
+                    selectedSkillsList.add((element['skill_name']));
+                  });
+                  print(selectedSkillsList.length);
+                }));
                 sharedPreferneces.setString('user_id',
                     '${convertJson['data']['user_details']['profile_details']['id']}');
+
                 name =
-                '${convertJson['data']['user_details']['profile_details']['first_name']} ${convertJson['data']['user_details']['profile_details']['last_name']} ';
+                    '${convertJson['data']['user_details']['profile_details']['first_name']} ${convertJson['data']['user_details']['profile_details']['last_name']} ';
                 profile =
-                '${convertJson['data']['user_details']['profile_details']['work_title']}';
+                    '${convertJson['data']['user_details']['profile_details']['work_title']}';
                 addr =
-                '${convertJson['data']['user_details']['profile_details']['address']}';
+                    '${convertJson['data']['user_details']['profile_details']['address']}';
                 firstName.text =
-                '${convertJson['data']['user_details']['profile_details']['first_name']}';
+                    '${convertJson['data']['user_details']['profile_details']['first_name']}';
                 lastName.text =
-                '${convertJson['data']['user_details']['profile_details']['last_name']}';
+                    '${convertJson['data']['user_details']['profile_details']['last_name']}';
                 email.text =
-                '${convertJson['data']['user_details']['profile_details']['email']}';
+                    '${convertJson['data']['user_details']['profile_details']['email']}';
                 address.text =
-                '${convertJson['data']['user_details']['profile_details']['address']}';
+                    '${convertJson['data']['user_details']['profile_details']['address']}';
                 work.text =
-                '${convertJson['data']['user_details']['profile_details']['work_title']}';
+                    '${convertJson['data']['user_details']['profile_details']['work_title']}';
                 dob.text =
-                '${convertJson['data']['user_details']['profile_details']['dob']}';
+                    '${convertJson['data']['user_details']['profile_details']['dob']}';
                 panfront =
-                '${convertJson['data']['user_details']['profile_details']['id_proof_doc']}';
+                    '${convertJson['data']['user_details']['profile_details']['id_proof_doc']}';
                 aadharback =
-                '${convertJson['data']['user_details']['profile_details']['address_proof_doc']}';
-                gender = '${convertJson['data']['user_details']['profile_details']['gender']}';
-               qualification = '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
-                experience = '${convertJson['data']['user_details']['profile_details']['experience']}';
+                    '${convertJson['data']['user_details']['profile_details']['address_proof_doc']}';
+                gender =
+                    '${convertJson['data']['user_details']['profile_details']['gender']}';
+                qualification =
+                    '${convertJson['data']['user_details']['profile_details']['highest_qualification']}';
+                experience =
+                    '${convertJson['data']['user_details']['profile_details']['experience']}';
                 pancard.text =
-                '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
+                    '${convertJson['data']['user_details']['profile_details']['id_proof_number']}';
                 aadharcard.text =
-                '${convertJson['data']['user_details']['profile_details']['address_proof_number']}';
-                 skill =
-                '${convertJson['data']['user_details']['profile_details']['skills']['skill_id']}';
-             
-              }else {
-                name = '${convertJson['data']['user_details']['vendor_details']['company_name']}';
-                addr = '${convertJson['data']['user_details']['vendor_details']['vendor_city_name']}, ${convertJson['data']['user_details']['vendor_details']['vendor_state_name']} ${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
-                company_name.text = '${convertJson['data']['user_details']['vendor_details']['company_name']}';
-                pincode.text = '${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
-                phone.text = '${convertJson['data']['user_details']['vendor_details']['vendor_phone']}';
-                turnover.text = '${convertJson['data']['user_details']['vendor_details']['turnover']}';
-                c_firstName.text = '${convertJson['data']['user_details']['vendor_details']['contact_first_name']}';
-                c_lastName.text = '${convertJson['data']['user_details']['vendor_details']['contact_last_name']}';
-                company_email.text = '${convertJson['data']['user_details']['vendor_details']['contact_email']}';
-                c_position.text = '${convertJson['data']['user_details']['vendor_details']['contact_position']}';
-                c_phone.text = '${convertJson['data']['user_details']['vendor_details']['contact_phone_number']}';
-               // _selectaccount = '${convertJson['data']['user_details']['vendor_details']['account_group']}';
-                vendor_state = '${convertJson['data']['user_details']['vendor_details']['vendor_state']}';
-                vendor_city = '${convertJson['data']['user_details']['vendor_details']['vendor_city']}';
-                vendor_company = '${convertJson['data']['user_details']['vendor_details']['vendor_company_type']}';
+                    '${convertJson['data']['user_details']['profile_details']['address_proof_number']}';
+                skill =
+                    '${convertJson['data']['user_details']['profile_details']['skills']['skill_id']}';
+              } else {
+                name =
+                    '${convertJson['data']['user_details']['vendor_details']['company_name']}';
+                addr =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_city_name']}, ${convertJson['data']['user_details']['vendor_details']['vendor_state_name']} ${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
+                company_name.text =
+                    '${convertJson['data']['user_details']['vendor_details']['company_name']}';
+                pincode.text =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_pin']}';
+                phone.text =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_phone']}';
+                turnover.text =
+                    '${convertJson['data']['user_details']['vendor_details']['turnover']}';
+                c_firstName.text =
+                    '${convertJson['data']['user_details']['vendor_details']['contact_first_name']}';
+                c_lastName.text =
+                    '${convertJson['data']['user_details']['vendor_details']['contact_last_name']}';
+                company_email.text =
+                    '${convertJson['data']['user_details']['vendor_details']['contact_email']}';
+                c_position.text =
+                    '${convertJson['data']['user_details']['vendor_details']['contact_position']}';
+                c_phone.text =
+                    '${convertJson['data']['user_details']['vendor_details']['contact_phone_number']}';
+                _selectaccount =
+                    '${convertJson['data']['user_details']['vendor_details']['account_group']}';
+                _selectvendor =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_required_for']}';
+                vendor_state =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_state']}';
+                vendor_city =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_city']}';
+                vendor_company =
+                    '${convertJson['data']['user_details']['vendor_details']['vendor_company_type']}';
               }
 
-               businessPanCard.text = '${convertJson['data']['user_details']['business_details']['pan_number']}';
-              // print('>>>>>>>>>>sandeep ${skill}');
-              if(gstnumber.text != null){
+              businessPanCard.text =
+                  '${convertJson['data']['user_details']['business_details']['pan_number']}';
+              if (gstnumber.text != null) {
                 _checkbox = true;
                 _checkboxvalue = 1;
               }
+
               //var service_areas_arrey  = convertJson['data']['user_details']['business_details']['service_areas'];
 
               // for (var imageAsset in service_areas_arrey) {
@@ -181,22 +318,30 @@ var skill;
               //    print('area>>>>>>>>>>>>>${imageAsset['service_area_id']}');
               //    subjectDatacity.add(imageAsset['service_area_id']);
               //    print('are/////>$subjectDatacity');
-              
+
               // }
               //subjectDatacity = imageAsset['service_area_id'];
-           
-              
-                  gstnumber.text = '${convertJson['data']['user_details']['business_details']['gst_number']}';
-               gst = '${convertJson['data']['user_details']['business_details']['gst_doc']}';
-               bank = '${convertJson['data']['user_details']['bank_details']['bank']}';
-               accNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
-               confirmAccNumber.text = '${convertJson['data']['user_details']['bank_details']['account_no']}';
-               ifsc.text = '${convertJson['data']['user_details']['bank_details']['ifsc_code']}';
-              // acctype = '${convertJson['data']['user_details']['bank_details']['account_type']}';
-               accHolderName.text = '${convertJson['data']['user_details']['bank_details']['account_holder_name']}';
-               check = '${convertJson['data']['user_details']['bank_details']['cancel_checque']}';
-               // vendor
 
+              gstnumber.text =
+                  '${convertJson['data']['user_details']['business_details']['gst_number']}';
+              gstnumber.text =
+                  '${convertJson['data']['user_details']['business_details']['gst_number']}';
+              gst =
+                  '${convertJson['data']['user_details']['business_details']['gst_doc']}';
+              bank =
+                  '${convertJson['data']['user_details']['bank_details']['bank']}';
+              accNumber.text =
+                  '${convertJson['data']['user_details']['bank_details']['account_no']}';
+              confirmAccNumber.text =
+                  '${convertJson['data']['user_details']['bank_details']['account_no']}';
+              ifsc.text =
+                  '${convertJson['data']['user_details']['bank_details']['ifsc_code']}';
+              // acctype = '${convertJson['data']['user_details']['bank_details']['account_type']}';
+              accHolderName.text =
+                  '${convertJson['data']['user_details']['bank_details']['account_holder_name']}';
+              check =
+                  '${convertJson['data']['user_details']['bank_details']['cancel_checque']}';
+              // vendor
             });
           } else {
             // setState(() {
@@ -219,7 +364,6 @@ var skill;
         }
       }
     } on SocketException catch (_) {
-
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //   content: Text(
       //       'No internet connection. Connect to the internet and try again.'),
@@ -227,193 +371,20 @@ var skill;
     }
   }
 
-
-
-
-
-
-
-  //vendor dropdown
-  var vendor_city;
-  var vendor_state;
-  var vendor_company;
-
-  // ignore: prefer_typing_uninitialized_variables
-  var gender;
-  var qualification;
-  var workcity;
-  var acctype;
-  var bank;
-  // ignore: prefer_typing_uninitialized_variables
-  var panDropdown;
-  // ignore: prefer_typing_uninitialized_variables
-  var aadhar;
-
-  String? multiSkill;
-  String? multiCity;
-
-
-  var experience;
-  var name = "[Name]";
-  var profile = "[Profile]";
-  var phone_no = "[Phone Number]";
-  var addr = "[Address]";
-  var sr = '';
-  bool _checkbox = false;
-  var _checkboxvalue;
-
-  String? panfront;
-  File? aadharfront;
-  String? aadharback;
-  String? pic;
-  String? gst;
-  String? check;
-
-  // var items = [
-  //   'Male',
-  //   'Female',
-  // ];
-
-// mutli sleect state
-
-  List<String> _selectedItems = [];
-  List<String> _selectedItemscity = [];
-  List _selectedItemsskill = [];
-  var selectedItem;
-
-  void _showMultiSelect() async {
-    // a list of selectable items
-    // these items can be hard-coded or dynamically fetched from a database/API
-    final List<String> _items = [
-      'Delhi',
-      'Mumbai',
-      'Bangalore',
-      'Noida',
-      'Gurgaon',
-    ];
-
-    final List<String>? results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MultiSelect(items: _items);
-      },
-    );
-
-    // Update UI
-    if (results != null) {
-      setState(() {
-        _selectedItems = results;
-      });
-    }
-  }
-
-  void _showMultiSelectcity() async {
-    // a list of selectable items
-    // these items can be hard-coded or dynamically fetched from a database/API
-    final List<String> _items = [
-      'Roorkee',
-      'Dehradun',
-      'Saharanpur',
-      'Patna',
-      'Agra',
-    ];
-
-    final List<String>? results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MultiSelectcity(items: _items);
-      },
-    );
-
-    // Update UI
-    if (results != null) {
-      setState(() {
-        _selectedItemscity = results;
-      });
-    }
-  }
-
-  @override
-  initState() {
-    super.initState();
-    print('>>>>>>>>>> $_checkbox');
-    print(widget.user);
-    //getSkills();
-    getQualification();
-    getBank();
-    getdata();
-    getExperience();
-    getStates();
-    getVendorComapnyType();
-    getUSERALLDETAILS();
-
-    //controller.getSubjectData();
-    controller.getSkills();
-    controllercity.getCity();
-  }
-
-  var number;
-  var token;
-  var user_id;
   void getdata() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-   setState(() {
-     if(widget.user_status == "0"){
-     _activeCurrentStep = 0;
-     }else if(widget.user_status == "1"){
-       _activeCurrentStep = 1;
-     }else if(widget.user_status == "2"){
-       _activeCurrentStep = 2;
-     }
-     number = sharedPreferneces.getString('number');
-     token = sharedPreferneces.getString('token');
-     user_id = sharedPreferneces.getString('user_id');
-   });
-  }
-  List<dynamic> _items =<dynamic>[];
-  void _showMultiSelectskill() async {
-    // a list of selectable items
-    // these items can be hard-coded or dynamically fetched from a database/API
-    // _items  = [
-    //   'Computer Network',
-    //   'Flutter',
-    //   'Developer',
-    //   'Web Developer',
-    // ];
-
-     List results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MultiSelectskill(items: _items);
-      },
-    );
-
-    // Update UI
-    if (results != null) {
-      setState(() {
-        _selectedItemsskill = results;
-      });
-    }
-  }
-
-  DateTime selectedDate = DateTime.now();
-  _selectDate(BuildContext context) async {
-    DatePickerMode initialDatePickerMode1 = DatePickerMode.day;
-    final DateTime? picked = await showDatePicker(
-      initialDatePickerMode: initialDatePickerMode1,
-      context: context,
-      initialDate: DateTime(1997), // Refer step 1
-      firstDate: DateTime(1970),
-      lastDate: DateTime(2004),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-        var formattedDate = dateFormat.format(selectedDate);
-        dob.text = formattedDate.toString();
-      });
-    }
+    setState(() {
+      if (widget.user_status == "0") {
+        _activeCurrentStep = 0;
+      } else if (widget.user_status == "1") {
+        _activeCurrentStep = 1;
+      } else if (widget.user_status == "2") {
+        _activeCurrentStep = 2;
+      }
+      number = sharedPreferneces.getString('number');
+      token = sharedPreferneces.getString('token');
+      user_id = sharedPreferneces.getString('user_id');
+    });
   }
 
   List<Step> stepList() => [
@@ -421,8 +392,8 @@ var skill;
           state:
               _activeCurrentStep <= 0 ? StepState.editing : StepState.complete,
           isActive: _activeCurrentStep >= 0,
-          
-          title:  Text(widget.user == "1" ?'Vendor' : 'Personal'),
+
+          title: Text(widget.user == "1" ? 'Vendor' : 'Personal'),
           //subtitle: const Text('Personal Details'),
           content: SingleChildScrollView(
             child: Form(
@@ -431,7 +402,6 @@ var skill;
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  
                   TextFormField(
                     controller: widget.user == "2" ? firstName : company_name,
                     decoration: InputDecoration(
@@ -635,7 +605,7 @@ var skill;
                           ),
                         )
                       : Container(),
-  widget.user == "1"
+                  widget.user == "1"
                       ? ListTile(
                           visualDensity: const VisualDensity(
                             horizontal: VisualDensity.minimumDensity,
@@ -735,27 +705,26 @@ var skill;
                           height: 8,
                         )
                       : Container(),
- widget.user == "2"?
-                  SWANWidget.enabledTextFormField2(
-                  
-                      email ,
-                      'Email id',
-                      TextInputType.emailAddress,
-                      [UpperCaseTextFormatter()],
-                      (value) {
-                    String pattern =
-                        r"^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]"
-                        r"{0,253}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]"
-                        r"{0,253}[a-z0-9])?)*$";
-                    RegExp regex = RegExp(pattern);
-                    if (value == null ||
-                        value.isEmpty ||
-                        !regex.hasMatch(value)) {
-                      return 'Enter a valid email address';
-                    } else {
-                      return null;
-                    }
-                  }, 250,TextCapitalization.none):Container(),
+                  widget.user == "2"
+                      ? SWANWidget.enabledTextFormField2(
+                          email,
+                          'Email id',
+                          TextInputType.emailAddress,
+                          [UpperCaseTextFormatter()], (value) {
+                          String pattern =
+                              r"^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]"
+                              r"{0,253}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]"
+                              r"{0,253}[a-z0-9])?)*$";
+                          RegExp regex = RegExp(pattern);
+                          if (value == null ||
+                              value.isEmpty ||
+                              !regex.hasMatch(value)) {
+                            return 'Enter a valid email address';
+                          } else {
+                            return null;
+                          }
+                        }, 250, TextCapitalization.none)
+                      : Container(),
                   const SizedBox(
                     height: 8,
                   ),
@@ -1022,8 +991,8 @@ var skill;
 
                   // const SizedBox(
                   //   height: 8,
-                  // ), 
-                   widget.user == "1"
+                  // ),
+                  widget.user == "1"
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: DropdownButtonFormField<String>(
@@ -1042,7 +1011,7 @@ var skill;
                               ),
                             ),
                             value: vendor_state,
-                           
+
                             dropdownColor: Colors.white,
                             isExpanded: true,
                             iconSize: 20,
@@ -1075,12 +1044,12 @@ var skill;
                           ),
                         )
                       : Container(),
-                     const SizedBox(height:8),
+                  const SizedBox(height: 8),
                   widget.user == "1"
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: DropdownButtonFormField<String>(
-                            decoration: const InputDecoration( 
+                            decoration: const InputDecoration(
                               labelText: 'City',
                               isDense: true, // Added this
                               contentPadding: EdgeInsets.symmetric(
@@ -1116,11 +1085,13 @@ var skill;
                             // }).toList(),
                             onChanged: (salutation) {
                               setState(() {
-                                vendor_city = salutation!;
+                                // getVendorCity(vendor_state);
+                                vendor_city = salutation;
                               });
                             },
+
                             //value: dropdownProject,
-                           
+
                             validator: (value) =>
                                 value == null ? 'field required' : null,
                           ),
@@ -1129,7 +1100,7 @@ var skill;
                   const SizedBox(
                     height: 8,
                   ),
-                
+
                   const SizedBox(
                     height: 8,
                   ),
@@ -1137,14 +1108,14 @@ var skill;
                       ? SWANWidget.enabledTextFormField(
                           pincode,
                           'Pincode',
-                          TextInputType.text,
+                          TextInputType.number,
                           [FilteringTextInputFormatter.digitsOnly], (value) {
                           if (value.isEmpty) {
                             return 'Enter pincode';
                           } else {
                             return null;
                           }
-                        }, 250)
+                        }, 6)
                       : Container(),
                   const SizedBox(
                     height: 8,
@@ -1153,14 +1124,14 @@ var skill;
                       ? SWANWidget.enabledTextFormField(
                           phone,
                           'Phone Number',
-                          TextInputType.text,
+                          TextInputType.number,
                           [FilteringTextInputFormatter.digitsOnly], (value) {
                           if (value.isEmpty) {
                             return 'Enter phone number';
                           } else {
                             return null;
                           }
-                        }, 250)
+                        }, 10)
                       : Container(),
                   const SizedBox(
                     height: 8,
@@ -1168,15 +1139,15 @@ var skill;
                   widget.user == "1"
                       ? SWANWidget.enabledTextFormField(
                           turnover,
-                          'Actual Turnover',
-                          TextInputType.text,
+                          'Actual Turnover in (Cr)',
+                          TextInputType.number,
                           [FilteringTextInputFormatter.digitsOnly], (value) {
                           if (value.isEmpty) {
                             return 'Enter turnover number';
                           } else {
                             return null;
                           }
-                        }, 250)
+                        }, 10)
                       : Container(),
                   const SizedBox(
                     height: 8,
@@ -1291,27 +1262,30 @@ var skill;
                           }
                         }, 250)
                       : Container(),
-                       const SizedBox(height: 8,),
-                       widget.user == "1" ?
-                  SWANWidget.enabledTextFormField(
-                      company_email,
-                       'Contact Email id',
-                      TextInputType.text,
-                      [FilteringTextInputFormatter.singleLineFormatter],
-                      (value) {
-                    String pattern =
-                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                        r"{0,253}[a-zA-Z0-9])?)*$";
-                    RegExp regex = RegExp(pattern);
-                    if (value == null ||
-                        value.isEmpty ||
-                        !regex.hasMatch(value)) {
-                      return 'Enter a valid email address';
-                    } else {
-                      return null;
-                    }
-                  }, 250):Container(),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  widget.user == "1"
+                      ? SWANWidget.enabledTextFormField(
+                          company_email,
+                          'Contact Email id',
+                          TextInputType.text,
+                          [FilteringTextInputFormatter.singleLineFormatter],
+                          (value) {
+                          String pattern =
+                              r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                              r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                              r"{0,253}[a-zA-Z0-9])?)*$";
+                          RegExp regex = RegExp(pattern);
+                          if (value == null ||
+                              value.isEmpty ||
+                              !regex.hasMatch(value)) {
+                            return 'Enter a valid email address';
+                          } else {
+                            return null;
+                          }
+                        }, 250)
+                      : Container(),
                   widget.user == "1"
                       ? const SizedBox(
                           height: 8,
@@ -1359,8 +1333,7 @@ var skill;
                           pancard,
                           'PAN Card Number',
                           TextInputType.text,
-                          [Capatalized()],
-                          (value) {
+                          [Capatalized()], (value) {
                           String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
                           RegExp regex = RegExp(pattern);
                           if (value == null ||
@@ -1404,21 +1377,23 @@ var skill;
                                                               source:
                                                                   ImageSource
                                                                       .camera);
-                                                      File
-                                                      compressedFile =
-                                                      await FlutterNativeImage
-                                                          .compressImage(
+                                                      File compressedFile =
+                                                          await FlutterNativeImage
+                                                              .compressImage(
                                                         image1!.path,
                                                         quality: 50,
                                                       );
 
                                                       if (image1 != null) {
                                                         setState(() {
-                                                          final File file = File(
-                                                              compressedFile
-                                                                  .path);
+                                                          final File file =
+                                                              File(
+                                                                  compressedFile
+                                                                      .path);
                                                           //pic = File(image1.path);
-                                                          postImage('id_proof_doc', file.path);
+                                                          postImage(
+                                                              'id_proof_doc',
+                                                              file.path);
                                                           Navigator.pop(
                                                               context);
                                                         });
@@ -1449,11 +1424,12 @@ var skill;
 
                                                       if (image1 != null) {
                                                         setState(() {
-                                                          final File file = File(
-                                                              image1
-                                                                  .path);
+                                                          final File file =
+                                                              File(image1.path);
                                                           //pic = File(image1.path);
-                                                          postImage('id_proof_doc', file.path);
+                                                          postImage(
+                                                              'id_proof_doc',
+                                                              file.path);
                                                           Navigator.pop(
                                                               context);
                                                         });
@@ -1518,10 +1494,9 @@ var skill;
                                                     await _picker.getImage(
                                                         source:
                                                             ImageSource.camera);
-                                                File
-                                                compressedFile =
-                                                await FlutterNativeImage
-                                                    .compressImage(
+                                                File compressedFile =
+                                                    await FlutterNativeImage
+                                                        .compressImage(
                                                   image1!.path,
                                                   quality: 50,
                                                 );
@@ -1529,10 +1504,10 @@ var skill;
                                                 if (image1 != null) {
                                                   setState(() {
                                                     final File file = File(
-                                                        compressedFile
-                                                            .path);
+                                                        compressedFile.path);
                                                     //pic = File(image1.path);
-                                                    postImage('id_proof_doc', file.path);
+                                                    postImage('id_proof_doc',
+                                                        file.path);
                                                     Navigator.pop(context);
                                                   });
                                                 }
@@ -1559,12 +1534,11 @@ var skill;
 
                                                 if (image1 != null) {
                                                   setState(() {
-
-                                                    final File file = File(
-                                                        image1
-                                                            .path);
+                                                    final File file =
+                                                        File(image1.path);
                                                     //pic = File(image1.path);
-                                                    postImage('id_proof_doc', file.path);
+                                                    postImage('id_proof_doc',
+                                                        file.path);
                                                     Navigator.pop(context);
                                                   });
                                                 }
@@ -1676,7 +1650,7 @@ var skill;
                       ? SWANWidget.enabledTextFormField(
                           aadharcard,
                           'Aadhar Card Number',
-                          TextInputType.text,
+                          TextInputType.number,
                           [FilteringTextInputFormatter.digitsOnly], (value) {
                           String pattern =
                               r"^[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
@@ -1901,10 +1875,9 @@ var skill;
                                                       await _picker.getImage(
                                                           source: ImageSource
                                                               .camera);
-                                                  File
-                                                  compressedFile =
-                                                  await FlutterNativeImage
-                                                      .compressImage(
+                                                  File compressedFile =
+                                                      await FlutterNativeImage
+                                                          .compressImage(
                                                     image1!.path,
                                                     quality: 50,
                                                   );
@@ -1912,10 +1885,11 @@ var skill;
                                                   if (image1 != null) {
                                                     setState(() {
                                                       final File file = File(
-                                                          compressedFile
-                                                              .path);
+                                                          compressedFile.path);
                                                       //pic = File(image1.path);
-                                                      postImage('address_proof_doc', file.path);
+                                                      postImage(
+                                                          'address_proof_doc',
+                                                          file.path);
                                                       Navigator.pop(context);
                                                     });
                                                   }
@@ -1943,11 +1917,12 @@ var skill;
 
                                                   if (image1 != null) {
                                                     setState(() {
-                                                      final File file = File(
-                                                          image1
-                                                              .path);
+                                                      final File file =
+                                                          File(image1.path);
                                                       //pic = File(image1.path);
-                                                      postImage('address_proof_doc', file.path);
+                                                      postImage(
+                                                          'address_proof_doc',
+                                                          file.path);
                                                       Navigator.pop(context);
                                                     });
                                                   }
@@ -2008,20 +1983,19 @@ var skill;
                                                 ImagePicker(); //added type ImagePicker
                                             var image1 = await _picker.getImage(
                                                 source: ImageSource.camera);
-                                            File
-                                            compressedFile =
-                                            await FlutterNativeImage
-                                                .compressImage(
+                                            File compressedFile =
+                                                await FlutterNativeImage
+                                                    .compressImage(
                                               image1!.path,
                                               quality: 50,
                                             );
                                             if (image1 != null) {
                                               setState(() {
-                                                final File file = File(
-                                                    compressedFile
-                                                        .path);
+                                                final File file =
+                                                    File(compressedFile.path);
                                                 //pic = File(image1.path);
-                                                postImage('address_proof_doc', file.path);
+                                                postImage('address_proof_doc',
+                                                    file.path);
                                                 Navigator.pop(context);
                                               });
                                             }
@@ -2046,11 +2020,11 @@ var skill;
 
                                             if (image1 != null) {
                                               setState(() {
-                                                final File file = File(
-                                                    image1
-                                                        .path);
+                                                final File file =
+                                                    File(image1.path);
                                                 //pic = File(image1.path);
-                                                postImage('address_proof_doc', file.path);
+                                                postImage('address_proof_doc',
+                                                    file.path);
                                                 Navigator.pop(context);
                                               });
                                             }
@@ -2179,84 +2153,104 @@ var skill;
                         )
                       : Container(),
                   widget.user == "2"
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RichText(
-                            text: const TextSpan(
-                                text: 'Skills',
-                                style: TextStyle(
-                                    color: ColorPalette.themeBlue,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16),
-                                children: [
-                                  TextSpan(
-                                      text: ' *',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14))
-                                ]),
-                            //textScaleFactor: labelTextScale,
-                          ),
+                      ? Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RichText(
+                                text: const TextSpan(
+                                    text: 'Skills',
+                                    style: TextStyle(
+                                        color: ColorPalette.themeBlue,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14))
+                                    ]),
+                                //textScaleFactor: labelTextScale,
+                              ),
+                            ),
+                          ],
                         )
                       : Container(),
 
-                  widget.user == "2" ?
-                  Container(
-                    constraints: const BoxConstraints(
-                      maxHeight: double.infinity,
-                    ),
-                 //  height: 120,
-                    child: GetBuilder<AppDataController>(builder: (controller) {
-                      return MultiSelectDialogField(
-                       dialogHeight: MediaQuery.of(context).size.height/2.5,
-                        items: controller.dropDownData,
-                        title: const Text(
-                          "Select Skills",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        selectedColor: Colors.black,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(
-                                color: ColorPalette.themeBlue, width: 0.5)),
-                        buttonIcon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.blue,
-                        ),
-                        buttonText: const Text(
-                          "Select Skills",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                        onConfirm: (results) {
-                          subjectData = [];
-                          for (var i = 0; i < results.length; i++) {
-                            SubjectModel data = results[i] as SubjectModel;
-                            print(data.subjectId);
-                            print(data.subjectName);
-                            subjectData.add(data.subjectId);
-                          }
-                          print("datalalitbank $subjectData");
-                          multiSkill = subjectData.join(',');
-                          print("afterlist $multiSkill");
+                  widget.user == "2"
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              constraints: const BoxConstraints(
+                                maxHeight: double.infinity,
+                              ),
+                              //  height: 120,
+                              child: GetBuilder<AppDataController>(
+                                  builder: (controller) {
+                                return MultiSelectDialogField(
+                                  dialogHeight:
+                                      MediaQuery.of(context).size.height / 2.5,
+                                  items: controller.dropDownData,
+                                  title: const Text(
+                                    "Select Skills",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  // initialValue: [multiSkill],
+                                  selectedColor: Colors.black,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color: ColorPalette.themeBlue,
+                                          width: 0.5)),
+                                  buttonIcon: const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.blue,
+                                  ),
+                                  buttonText: const Text(
+                                    "Select Skills",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
 
+                                  onConfirm: (results) {
+                                    // subjectData = [];
+                                    // for (var i = 0; i < results.length; i++) {
+                                    //   SubjectModel data = results[i] as SubjectModel;
+                                    //   print(data.subjectId);
+                                    //   print(data.subjectName);
+                                    //   subjectData.add(data.subjectId);
+                                    // }
+                                    // print("datalalitbank $subjectData");
+                                    // multiSkill = subjectData.join(',');
+                                    // print("afterlist $multiSkill");
 
-                          //_selectedAnimals = results;
-                        },
-                        // validator: (value){
-                        //  if(multiSkill == null)
-                        //    return 'Please select skill';
-                        //  return null;
-                        // },
-                      );
-                    }),
-                  ):Container(),
-                  widget.user == "2" ?
-                   const SizedBox(height: 8,):Container(),
+                                    //_selectedAnimals = results;
+                                  },
+                                );
+                              }),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                selectedSkillsList.length,
+                                (index) => Chip(
+                                    label: Text(selectedSkillsList[index])),
+                              ),
+                            )
+                          ],
+                        )
+                      : Container(),
 
+                  widget.user == "2"
+                      ? const SizedBox(
+                          height: 8,
+                        )
+                      : Container(),
 
                   // widget.user == "2"
                   //     ? GestureDetector(
@@ -2360,7 +2354,9 @@ var skill;
                             },
                             //value: dropdownProject,
                             validator: (value) =>
-                                value == null && multiSkill == null ? 'field required' : null,
+                                value == null && multiSkill == null
+                                    ? 'Please Select Skill'
+                                    : null,
                           ),
                         )
                       : Container(),
@@ -2448,45 +2444,157 @@ var skill;
                       value: _checkbox,
                       onChanged: (newValue) {
                         setState(() {
-                          _checkbox = !_checkbox;
-                          if(_checkbox == false){
+                          _checkbox == !_checkbox;
+                          if (_checkbox == false) {
                             _checkboxvalue = 0;
-                          }else{
+                          } else {
                             _checkboxvalue = 1;
                           }
-                          print('checkbox value $_checkboxvalue');
                         });
+                        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                        print(_checkbox);
                       },
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    _checkbox == true ?
-                    SWANWidget.enabledTextFormField(
-                        gstnumber,
-                        'Enter GST number',
-                        TextInputType.text,
-                        [FilteringTextInputFormatter.singleLineFormatter],
-                        (value) {
-                      String pattern =
-                          r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
-                      RegExp regex = RegExp(pattern);
-                      if (value == null ||
-                          value.isEmpty ||
-                          !regex.hasMatch(value)) {
-                        return 'Enter a valid GST number';
-                      } else {
-                        return null;
-                      }
-                    }, 250):Container(),
+                    _checkbox == true
+                        ? SWANWidget.enabledTextFormField(
+                            gstnumber,
+                            'Enter GST number',
+                            TextInputType.text,
+                            [FilteringTextInputFormatter.singleLineFormatter],
+                            (value) {
+                            String pattern =
+                                r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+                            RegExp regex = RegExp(pattern);
+                            if (value == null ||
+                                value.isEmpty ||
+                                !regex.hasMatch(value)) {
+                              return 'Enter a valid GST number';
+                            } else {
+                              return null;
+                            }
+                          }, 250)
+                        : Container(),
                     const SizedBox(
                       height: 8,
                     ),
-                    _checkbox == true ?
-                    Column(
-                      children: [
-                        gst != null
-                            ? GestureDetector(
+                    _checkbox == true
+                        ? Column(
+                            children: [
+                              gst != null
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                content: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    final ImagePicker _picker =
+                                                        ImagePicker(); //added type ImagePicker
+                                                    var image1 =
+                                                        await _picker.getImage(
+                                                            source: ImageSource
+                                                                .camera);
+                                                    File compressedFile =
+                                                        await FlutterNativeImage
+                                                            .compressImage(
+                                                      image1!.path,
+                                                      quality: 50,
+                                                    );
+                                                    if (image1 != null) {
+                                                      setState(() {
+                                                        final File file = File(
+                                                            compressedFile
+                                                                .path);
+                                                        //pic = File(image1.path);
+                                                        postImage('gst_doc',
+                                                            file.path);
+                                                        Navigator.pop(context);
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Image.asset(
+                                                        'assets/images/camera.png',
+                                                        scale: 2.5,
+                                                      ),
+                                                      const Text('Camera')
+                                                    ],
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    final ImagePicker _picker =
+                                                        ImagePicker(); //added type ImagePicker
+                                                    var image1 =
+                                                        await _picker.getImage(
+                                                            source: ImageSource
+                                                                .gallery);
+
+                                                    if (image1 != null) {
+                                                      setState(() {
+                                                        final File file =
+                                                            File(image1.path);
+                                                        //pic = File(image1.path);
+                                                        postImage('gst_doc',
+                                                            file.path);
+                                                        Navigator.pop(context);
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Image.asset(
+                                                        'assets/images/gallery.png',
+                                                        scale: 2.5,
+                                                      ),
+                                                      const Text('Gallery')
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ));
+                                          },
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 130,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.5,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: ColorPalette.textGrey)),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.network(
+                                            '${APIUrls.BASE_URL_IMAGE}$gst',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              GestureDetector(
                                 onTap: () async {
                                   showDialog(
                                     context: context,
@@ -2505,20 +2613,25 @@ var skill;
                                                   await _picker.getImage(
                                                       source:
                                                           ImageSource.camera);
-                                              File
-                                              compressedFile =
-                                              await FlutterNativeImage
-                                                  .compressImage(
+                                              // File croppedFile =
+                                              // (await ImageCropper()
+                                              //     .cropImage(
+                                              //   sourcePath:
+                                              //   image1!.path,
+                                              // )) as File;
+                                              File compressedFile =
+                                                  await FlutterNativeImage
+                                                      .compressImage(
                                                 image1!.path,
                                                 quality: 50,
                                               );
                                               if (image1 != null) {
                                                 setState(() {
-                                                  final File file = File(
-                                                      compressedFile
-                                                          .path);
+                                                  final File file =
+                                                      File(compressedFile.path);
                                                   //pic = File(image1.path);
-                                                  postImage('gst_doc', file.path);
+                                                  postImage(
+                                                      'gst_doc', file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -2545,11 +2658,11 @@ var skill;
 
                                               if (image1 != null) {
                                                 setState(() {
-                                                  final File file = File(
-                                                      image1
-                                                          .path);
+                                                  final File file =
+                                                      File(image1.path);
                                                   //pic = File(image1.path);
-                                                  postImage('gst_doc', file.path);
+                                                  postImage(
+                                                      'gst_doc', file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -2570,143 +2683,40 @@ var skill;
                                     },
                                   );
                                 },
-                                child: Container(
-                                  height: 130,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: ColorPalette.textGrey)),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      '${APIUrls.BASE_URL_IMAGE}$gst',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final ImagePicker _picker =
-                                            ImagePicker(); //added type ImagePicker
-                                        var image1 = await _picker.getImage(
-                                            source: ImageSource.camera);
-                                        // File croppedFile =
-                                        // (await ImageCropper()
-                                        //     .cropImage(
-                                        //   sourcePath:
-                                        //   image1!.path,
-                                        // )) as File;
-                                        File
-                                        compressedFile =
-                                        await FlutterNativeImage
-                                            .compressImage(
-                                          image1!.path,
-                                          quality: 50,
-                                        );
-                                        if (image1 != null) {
-                                          setState(() {
-                                            final File file = File(
-                                                compressedFile
-                                                    .path);
-                                            //pic = File(image1.path);
-                                            postImage('gst_doc', file.path);
-                                            Navigator.pop(context);
-                                          });
-                                        }
-                                      },
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/camera.png',
-                                            scale: 2.5,
-                                          ),
-                                          const Text('Camera')
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final ImagePicker _picker =
-                                            ImagePicker(); //added type ImagePicker
-                                        var image1 = await _picker.getImage(
-                                            source: ImageSource.gallery);
-
-                                        if (image1 != null) {
-                                          setState(() {
-                                            final File file = File(
-                                                image1
-                                                    .path);
-                                            //pic = File(image1.path);
-                                            postImage('gst_doc', file.path);
-                                            Navigator.pop(context);
-                                          });
-                                        }
-                                      },
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/gallery.png',
-                                            scale: 2.5,
-                                          ),
-                                          const Text('Gallery')
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ));
-                              },
-                            );
-                          },
-                          child: gst == null
-                              ? Container(
-                                  height: 130,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: ColorPalette.textGrey)),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/upload.png',
-                                        scale: 3,
-                                      ),
-                                      Text(
-                                        'Upload GST proof',
-                                        style:
-                                            SWANWidget.subtextRegularTextStyle,
+                                child: gst == null
+                                    ? Container(
+                                        height: 130,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.5,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: ColorPalette.textGrey)),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/upload.png',
+                                              scale: 3,
+                                            ),
+                                            Text(
+                                              'Upload GST proof',
+                                              style: SWANWidget
+                                                  .subtextRegularTextStyle,
+                                            )
+                                          ],
+                                        ),
                                       )
-                                    ],
-                                  ),
-                                )
-                              : Container(),
-                        ),
-                      ],
-                    ):Container(),
+                                    : Container(),
+                              ),
+                            ],
+                          )
+                        : Container(),
                     const SizedBox(
                       height: 8,
                     ),
@@ -2715,8 +2725,7 @@ var skill;
                         businessPanCard,
                         'PAN Card Number',
                         TextInputType.text,
-                        [Capatalized()],
-                        (value) {
+                        [Capatalized()], (value) {
                       String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
                       RegExp regex = RegExp(pattern);
                       if (value == null ||
@@ -2894,9 +2903,11 @@ var skill;
                         maxHeight: double.infinity,
                       ),
                       //  height: 120,
-                      child: GetBuilder<AppDataControllerCIty>(builder: (controller) {
+                      child: GetBuilder<AppDataControllerCIty>(
+                          builder: (controller) {
                         return MultiSelectDialogField(
-                          dialogHeight: MediaQuery.of(context).size.height/2.5,
+                          dialogHeight:
+                              MediaQuery.of(context).size.height / 2.5,
                           items: controller.dropDownDatacity,
                           title: const Text(
                             "Select City",
@@ -2929,23 +2940,15 @@ var skill;
                             print("datalalitbank $subjectDatacity");
                             multiCity = subjectDatacity.join(',');
 
-
                             //_selectedAnimals = results;
                           },
                         );
                       }),
                     ),
-
-
-
-
-
-
-                   
                     Wrap(
                       children: _selectedItemscity
-                          .map((e) => Chip(
-                                label: Text(e),
+                          .map((skill) => Chip(
+                                label: Text(skill),
                               ))
                           .toList(),
                     ),
@@ -3072,7 +3075,6 @@ var skill;
                         onChanged: (salutation) {
                           setState(() {
                             bank = salutation!;
-
                           });
                         },
                         //value: dropdownProject,
@@ -3104,8 +3106,9 @@ var skill;
                       if (value.isEmpty) {
                         return 'The field is mandatory';
                       }
-                      if(value != accNumber.text){
-                        return 'Account number not Match';}
+                      if (value != accNumber.text) {
+                        return 'Account number not Match';
+                      }
                       return null;
                     }, 18),
                     const SizedBox(
@@ -3222,20 +3225,19 @@ var skill;
                                                   await _picker.getImage(
                                                       source:
                                                           ImageSource.camera);
-                                              File
-                                              compressedFile =
-                                              await FlutterNativeImage
-                                                  .compressImage(
+                                              File compressedFile =
+                                                  await FlutterNativeImage
+                                                      .compressImage(
                                                 image1!.path,
                                                 quality: 50,
                                               );
                                               if (image1 != null) {
                                                 setState(() {
-                                                  final File file = File(
-                                                      compressedFile
-                                                          .path);
+                                                  final File file =
+                                                      File(compressedFile.path);
                                                   //pic = File(image1.path);
-                                                  postImage('cancelled_cheque', file.path);
+                                                  postImage('cancelled_cheque',
+                                                      file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -3262,11 +3264,11 @@ var skill;
 
                                               if (image1 != null) {
                                                 setState(() {
-                                                  final File file = File(
-                                                      image1
-                                                          .path);
+                                                  final File file =
+                                                      File(image1.path);
                                                   //pic = File(image1.path);
-                                                  postImage('cancelled_cheque', file.path);
+                                                  postImage('cancelled_cheque',
+                                                      file.path);
                                                   Navigator.pop(context);
                                                 });
                                               }
@@ -3322,20 +3324,19 @@ var skill;
                                             ImagePicker(); //added type ImagePicker
                                         var image1 = await _picker.getImage(
                                             source: ImageSource.camera);
-                                        File
-                                        compressedFile =
-                                        await FlutterNativeImage
-                                            .compressImage(
+                                        File compressedFile =
+                                            await FlutterNativeImage
+                                                .compressImage(
                                           image1!.path,
                                           quality: 50,
                                         );
                                         if (image1 != null) {
                                           setState(() {
-                                            final File file = File(
-                                                compressedFile
-                                                    .path);
+                                            final File file =
+                                                File(compressedFile.path);
                                             //pic = File(image1.path);
-                                            postImage('cancelled_cheque', file.path);
+                                            postImage(
+                                                'cancelled_cheque', file.path);
                                             Navigator.pop(context);
                                           });
                                         }
@@ -3360,11 +3361,10 @@ var skill;
 
                                         if (image1 != null) {
                                           setState(() {
-                                            final File file = File(
-                                                image1
-                                                    .path);
+                                            final File file = File(image1.path);
                                             //pic = File(image1.path);
-                                            postImage('cancelled_cheque', file.path);
+                                            postImage(
+                                                'cancelled_cheque', file.path);
                                             Navigator.pop(context);
                                           });
                                         }
@@ -3421,7 +3421,736 @@ var skill;
             ))
       ];
 
-  final _key = GlobalKey<ScaffoldState>();
+  //personal details api
+  Future<void> add_Personal_Details(
+    name,
+    lastName,
+    email,
+    address,
+    work,
+    dob,
+    gender,
+    qualification,
+    pancard,
+    panfront,
+    aadharcard,
+    aadharfront,
+    multiSkill,
+    experience,
+  ) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "user_type": '${widget.user}',
+          "first_name": '$name',
+          "last_name": '$lastName',
+          "email": '$email',
+          "address": '$address',
+          "work_title": '$work',
+          "dob": '$dob',
+          "gender": '$gender',
+          "highest_qualification": '$qualification',
+          "id_proof_type": '1',
+          "id_proof_no": '$pancard',
+          "id_proof_doc": '$panfront',
+          "address_proof_type": '2',
+          "address_proof_number": '$aadharcard',
+          "address_proof_doc": '$aadharback',
+          "skills": "$multiSkill",
+          "total_experience": '$experience',
+        });
+        //  jsonEncode(<String, String>{
+        //        "phone_number": '$number',
+        //      "user_id": '${sharedPreferneces.getString('user_id')}',
+        //     "user_type": '${widget.user}',
+        //     "first_name": '$name',
+        //     "last_name": '$lastName',
+        //     "email": '$email',
+        //     "address": '$address',
+        //     "work_title": '$work',
+        //     "dob": '$dob',
+        //     "gender": '$gender',
+        //     "highest_qualification": '$qualification',
+        //     "id_proof_type": '1',
+        //     "id_proof_no": '$pancard',
+        //     "id_proof_doc": '$panfront',
+        //     "address_proof_type": '2',
+        //     "address_proof_number": '$aadharcard',
+        //     "address_proof_doc": '$aadharback',
+        //     "skills": "$multiSkill",
+        //     "total_experience": '$experience',
+        //   });
+        print(' personal data >> $body');
+
+        var response = await http.post(Uri.parse(APIUrls.ADD_PERSONAL_DETAILS),
+            headers: {'Authorization': 'Bearer $token'}, body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+            setState(() {
+              sharedPreferneces.setString(
+                  'user_id', '${convertJson['data']['user_id']}');
+              _activeCurrentStep += 1;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            // Get.to(Otp(number: phoneNumber));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  //add business details
+
+  Future<void> add_Business_Details(
+      gstnumber, gst, businessPanCard, multiCity) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = _checkboxvalue == 1
+            ? jsonEncode(<String, String>{
+                "phone_number": '$number',
+                "user_id": '${sharedPreferneces.getString('user_id')}',
+                "have_gst_no": "$_checkboxvalue",
+                "gst_number": "$gstnumber",
+                "gst_doc": "$gst",
+                "pan_number": "$businessPanCard",
+                "service_area": "$multiCity"
+              })
+            : jsonEncode(<String, String>{
+                "phone_number": '$number',
+                "user_id": '${sharedPreferneces.getString('user_id')}',
+                "have_gst_no": "$_checkboxvalue",
+                // "gst_number": "$gstnumber" ,
+                // "gst_doc": "$gst",
+                "pan_number": "$businessPanCard",
+                "service_area": "$multiCity"
+              });
+        print(body);
+        var response = await http.post(Uri.parse(APIUrls.ADD_BUSINESS_DETAILS),
+            headers: {'Authorization': 'Bearer $token'}, body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+            setState(() {
+              _activeCurrentStep += 1;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            // Get.to(Otp(number: phoneNumber));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  //add bank details
+
+  Future<void> add_Bank_Details(bank, accNumber, confirmAccNumber, ifsc,
+      acctype, accHolderName, check) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "bank": "$bank",
+          "account_no": "$accNumber",
+          "ifsc_code": "$ifsc",
+          "account_holder_name": "$accHolderName",
+          "cancel_checque": "$check",
+          "account_type": "$acctype"
+        });
+        print(body);
+
+        var response = await http.post(Uri.parse(APIUrls.ADD_Bank_DETAILS),
+            headers: {'Authorization': 'Bearer $token'}, body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            // Get.to(const Review());
+            // Get.to(Otp(number: phoneNumber));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> add_Vendor_Details(
+      company_name,
+      _selectaccount,
+      _selectvendor,
+      vendor_state,
+      vendor_city,
+      pincode,
+      phone,
+      turnover,
+      vendor_company,
+      c_firstName,
+      c_lastName,
+      company_email,
+      c_position,
+      c_phone) async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "company_name": "$company_name",
+          "account_group": "$_selectaccount",
+          "vendor_required_for": "$_selectvendor",
+          "vendor_state": "$vendor_state",
+          "vendor_city": "$vendor_city",
+          "vendor_pin": "$pincode",
+          "vendor_phone": "$phone",
+          "turnover": "$turnover",
+          "vendor_company_type": "$vendor_company",
+          "contact_first_name": "$c_firstName",
+          "contact_last_name": "$c_lastName",
+          "contact_phone_number": "$c_phone",
+          "contact_email": "$company_email",
+          "user_type": "1",
+          "contact_position": "$c_position",
+        });
+        //   jsonEncode(<String, String>{
+        //   "phone_number": '$number',
+        //   "user_id": '${sharedPreferneces.getString('user_id')}',
+        //   "company_name": "$companyname",
+        //   "account_group": "$_selectaccount",
+        //   "vendor_required_for": "$_selectvendor",
+        //   "vendor_state": "$vendor_state",
+        //   "vendor_city": "$vendor_city",
+        //   "vendor_pin": "$pincode",
+        //   "vendor_phone": "$phone",
+        //   "turnover": "$turnover",
+        //   "vendor_company_type": "$vendor_company",
+        //   "contact_first_name":"$c_firstName",
+        //   "contact_last_name":"$c_lastName",
+        //   "contact_phone_number": "$c_phone",
+        //   "contact_email": "$email",
+        //   "user_type":"1",
+        //   "contact_position": "$c_position",
+        // });
+        print(body);
+
+        var response = await http.post(Uri.parse(APIUrls.ADD_VENDOR_DETAILS),
+            headers: {'Authorization': 'Bearer $token'}, body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['success_msg']}'),
+            ));
+            setState(() {
+              _activeCurrentStep += 1;
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> getQualification() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_QUALIFICATION}",
+                queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          // print(' qualification >> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              qualificationData = convertJson['data']['qualifications'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> getStates() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_STATE}", queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          // print(' qualification >> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              stateData = convertJson['data']['states'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> getVendorComapnyType() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_VENDOR_COMAPNY_TYPE}",
+                queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          // print(' qualification >> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              vendorCompanyTypeData = convertJson['data']['company_type'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> getVendorCity(String id) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+          "state_id": "$id",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          // print(' qualification >> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              vendorCityData = convertJson['data']['cities'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> getBank() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_BANK}", queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          //print(' bank >>> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              bankData = convertJson['data']['banks'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> getExperience() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "$number",
+        };
+        var response = await http.get(
+            Uri.http(
+                "${APIUrls.DOMAIN}", "${APIUrls.GET_EXPERIENCE}", queryParams),
+            headers: {'Authorization': 'Bearer $token'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          //print(' experince >> $convertJson');
+          if (convertJson["status"]) {
+            setState(() {
+              experinceData = convertJson['data']['work_exp'];
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${convertJson['error_msg']}'),
+            ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  Future<void> postImage(imageName, file) async {
+    print(imageName);
+    print(file);
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var request =
+            http.MultipartRequest('POST', Uri.parse("${APIUrls.POST_IMAGES}"));
+        request.files.add(await http.MultipartFile.fromPath('img', file));
+        request.fields['phone_number'] = '$number';
+        request.fields['img_name'] = '$imageName';
+        request.headers['Authorization'] = 'Bearer $token';
+        // print("In upload photo");
+        var res = await request.send();
+        print(res);
+        try {
+          // var convertJson = jsonDecode(res.body);
+          //print(convertJson);
+          print(res.statusCode);
+          if (res.statusCode == 200) {
+            var responseBody = await http.Response.fromStream(res);
+            var myData = json.decode(responseBody.body);
+            print(myData);
+            if (myData['status']) {
+              setState(() {
+                print(myData['data']['file_path']);
+                if (imageName == "photo") {
+                  pic = myData['data']['file_path'];
+                } else if (imageName == "id_proof_doc") {
+                  panfront = myData['data']['file_path'];
+                } else if (imageName == "address_proof_doc") {
+                  aadharback = myData['data']['file_path'];
+                } else if (imageName == "gst_doc") {
+                  gst = myData['data']['file_path'];
+                } else if (imageName == "cancelled_cheque") {
+                  check = myData['data']['file_path'];
+                }
+              });
+            }
+            // setState(() {
+            //   bankData = convertJson['data']['banks'];
+            // });
+          } else {
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //   content: Text('${convertJson['error_msg']}'),
+            // ));
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Something went wrong, try again later'),
+          ));
+        }
+      }
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+            'No internet connection. Connect to the internet and try again.'),
+      ));
+    }
+  }
+
+  void _showMultiSelect() async {
+    // a list of selectable items
+    // these items can be hard-coded or dynamically fetched from a database/API
+    final List<String> _items = [
+      'Delhi',
+      'Mumbai',
+      'Bangalore',
+      'Noida',
+      'Gurgaon',
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItems = results;
+      });
+    }
+  }
+
+  void _showMultiSelectcity() async {
+    // a list of selectable items
+    // these items can be hard-coded or dynamically fetched from a database/API
+    final List<String> _items = [
+      'Roorkee',
+      'Dehradun',
+      'Saharanpur',
+      'Patna',
+      'Agra',
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelectcity(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItemscity = results;
+      });
+    }
+  }
+
+  void _showMultiSelectskill() async {
+    // a list of selectable items
+    // these items can be hard-coded or dynamically fetched from a database/API
+    // _items  = [
+    //   'Computer Network',
+    //   'Flutter',
+    //   'Developer',
+    //   'Web Developer',
+    // ];
+
+    List results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelectskill(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItemsskill = results;
+      });
+    }
+  }
+
+  _selectDate(BuildContext context) async {
+    DatePickerMode initialDatePickerMode1 = DatePickerMode.day;
+    final DateTime? picked = await showDatePicker(
+      initialDatePickerMode: initialDatePickerMode1,
+      context: context,
+      initialDate: DateTime(1997), // Refer step 1
+      firstDate: DateTime(1970),
+      lastDate: DateTime(2004),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+        var formattedDate = dateFormat.format(selectedDate);
+        dob.text = formattedDate.toString();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -3450,7 +4179,7 @@ var skill;
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
-                    height:MediaQuery.of(context).size.height/4,
+                    height: MediaQuery.of(context).size.height / 4,
                     width: double.infinity,
                     child: Stack(children: [
                       Positioned(
@@ -3487,7 +4216,7 @@ var skill;
                                 width: 130,
                                 child: pic != null
                                     ? Image.network(
-                                  '${APIUrls.BASE_URL_IMAGE}$pic',
+                                        '${APIUrls.BASE_URL_IMAGE}$pic',
                                         fit: BoxFit.cover,
                                       )
                                     : Image.asset('assets/images/user.png')),
@@ -3500,18 +4229,15 @@ var skill;
                                         ImagePicker(); //added type ImagePicker
                                     var image1 = await _picker.getImage(
                                         source: ImageSource.camera);
-                                    File
-                                    compressedFile =
-                                    await FlutterNativeImage
-                                        .compressImage(
+                                    File compressedFile =
+                                        await FlutterNativeImage.compressImage(
                                       image1!.path,
                                       quality: 50,
                                     );
                                     if (image1 != null) {
                                       setState(() {
-                                        final File file = File(
-                                            compressedFile
-                                                .path);
+                                        final File file =
+                                            File(compressedFile.path);
                                         //pic = File(image1.path);
                                         postImage('photo', file.path);
                                       });
@@ -3537,7 +4263,6 @@ var skill;
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                           
                             Text(
                               '$name $sr',
                               style: const TextStyle(
@@ -3545,7 +4270,6 @@ var skill;
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                           
                             widget.user == "2"
                                 ? const SizedBox(height: 5)
                                 : Container(),
@@ -3565,20 +4289,17 @@ var skill;
                             const SizedBox(height: 5),
                             SizedBox(
                               height: 60,
-                              width:MediaQuery.of(context).size.width/2.1,
+                              width: MediaQuery.of(context).size.width / 2.1,
                               child: SingleChildScrollView(
-
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    
                                     Text(addr,
                                         style: const TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold,
                                         )),
-                                       
                                   ],
                                 ),
                               ),
@@ -3589,6 +4310,7 @@ var skill;
                     ])),
               ),
             ),
+
             // SizedBox(
             //   height: 170,
             //   child: Card(
@@ -3754,71 +4476,66 @@ var skill;
                       // if (formKeys[_activeCurrentStep]
                       //     .currentState!
                       //     .validate()) {
-                        if (_activeCurrentStep == 0) {
+                      if (_activeCurrentStep == 0) {
+                        //_selectedItemsskill.join(",");
 
+                        // if(pic !=null && panfront !=null && aadharback != null){
 
-                          //_selectedItemsskill.join(",");
+                        // if(multiSkill!.isEmpty) {
 
-                       // if(pic !=null && panfront !=null && aadharback != null){
-
-                          if(multiSkill != null) {
-
-                            if (widget.user == "2") {
-                              add_Personal_Details(
-                                firstName.text,
-                                lastName.text,
-                                email.text.toLowerCase(),
-                                address.text,
-                                work.text,
-                                dob.text,
-                                gender,
-                                qualification,
-                                pancard.text,
-                                panfront,
-                                aadharcard.text,
-                                aadharback,
-                                multiSkill,
-                                experience,
-                              );
-                            }
-                            else {
-                              add_Vendor_Details(
-                                  company_name.text,
-                                  _selectaccount,
-                                  _selectvendor,
-                                  vendor_state,
-                                  vendor_city,
-                                  pincode.text,
-                                  phone.text,
-                                  turnover.text,
-                                  vendor_company,
-                                  c_firstName.text,
-                                  c_lastName.text,
-                                 company_email.text,
-                                  c_position.text,
-                                  c_phone.text
-                              );
-                            }
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                  content: Text('Please select skill'),
-                                ));
-                          }
-                        // }else{
-                        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        //     content: Text('Please upload files'),
-                        //   ));
-                        // }
-                         // _activeCurrentStep += 1;
-                        } else if (_activeCurrentStep == 1) {
-                          add_Business_Details(
-                            gstnumber.text,
-                            gst,
-                            businessPanCard.text,
-                            multiCity
+                        if (widget.user == "2") {
+                          add_Personal_Details(
+                            firstName.text,
+                            lastName.text,
+                            email.text.toLowerCase(),
+                            address.text,
+                            work.text,
+                            dob.text,
+                            gender,
+                            qualification,
+                            pancard.text,
+                            panfront,
+                            aadharcard.text,
+                            aadharback,
+                            multiSkill,
+                            experience,
                           );
+                        } else {
+                          add_Vendor_Details(
+                              company_name.text,
+                              _selectaccount,
+                              _selectvendor,
+                              vendor_state,
+                              vendor_city,
+                              pincode.text,
+                              phone.text,
+                              turnover.text,
+                              vendor_company,
+                              c_firstName.text,
+                              c_lastName.text,
+                              company_email.text,
+                              c_position.text,
+                              c_phone.text);
                         }
-                        // Get.to(const Dashboard());
+                      }
+
+                      // else{
+                      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      //         content: Text('Please select skill'),
+                      //       ));
+                      // }
+                      // }else{
+                      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      //     content: Text('Please upload files'),
+                      //   ));
+                      // }
+                      // _activeCurrentStep += 1;
+                      // }
+                      else if (_activeCurrentStep == 1) {
+                        add_Business_Details(gstnumber.text, gst,
+                            businessPanCard.text, multiCity);
+                      }
+                      // Get.to(const Dashboard());
                       //}
                     });
                   } else {
@@ -3828,14 +4545,12 @@ var skill;
                           .validate()) {
                         add_Bank_Details(
                             bank,
-                          accNumber.text,
-                          confirmAccNumber.text,
-                          ifsc.text,
-                          acctype,
-                          accHolderName.text,
-                          check
-
-                        );
+                            accNumber.text,
+                            confirmAccNumber.text,
+                            ifsc.text,
+                            acctype,
+                            accHolderName.text,
+                            check);
                         //_activeCurrentStep += 1;
 
                       }
@@ -3865,722 +4580,28 @@ var skill;
       ),
     );
   }
-
-  List<String> reportList = [
-    'Computer Network',
-    'Mobile Application',
-    'Computers & Others',
-    'Digital Display Services',
-    'Flutter',
-    'Developement',
-  ];
-
-  List<String> selectedReportList = [];
-
-  List<String> location = [
-    'Delhi',
-    'Mumbai',
-    'Bangelore',
-    'Gurgaon',
-    'Ahmedabad',
-    'Noida',
-  ];
-
-  List<String> selectedlocation = [];
-
-  //personal details api
-  Future<void> add_Personal_Details(
-    name,
-    lastName,
-    email,
-    address,
-    work,
-    dob,
-    gender,
-    qualification,
-    pancard,
-    panfront,
-    aadharcard,
-    aadharfront,
-    multiSkill,
-    experience,
-  ) async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body =
-     
-        jsonEncode(<String, String>{
-   
-              "phone_number": '$number',
-               "user_id": '${sharedPreferneces.getString('user_id')}',
-          "user_type": '${widget.user}',
-          "first_name": '$name',
-          "last_name": '$lastName',
-          "email": '$email',
-          "address": '$address',
-          "work_title": '$work',
-          "dob": '$dob',
-          "gender": '$gender',
-          "highest_qualification": '$qualification',
-          "id_proof_type": '1',
-          "id_proof_no": '$pancard',
-          "id_proof_doc": '$panfront',
-          "address_proof_type": '2',
-          "address_proof_number": '$aadharcard',
-          "address_proof_doc": '$aadharback',
-          "skills": "$multiSkill",
-          "total_experience": '$experience',
-        });
-      //  jsonEncode(<String, String>{
-      //        "phone_number": '$number',
-      //      "user_id": '${sharedPreferneces.getString('user_id')}',
-      //     "user_type": '${widget.user}',
-      //     "first_name": '$name',
-      //     "last_name": '$lastName',
-      //     "email": '$email',
-      //     "address": '$address',
-      //     "work_title": '$work',
-      //     "dob": '$dob',
-      //     "gender": '$gender',
-      //     "highest_qualification": '$qualification',
-      //     "id_proof_type": '1',
-      //     "id_proof_no": '$pancard',
-      //     "id_proof_doc": '$panfront',
-      //     "address_proof_type": '2',
-      //     "address_proof_number": '$aadharcard',
-      //     "address_proof_doc": '$aadharback',
-      //     "skills": "$multiSkill",
-      //     "total_experience": '$experience',
-      //   });
-        print(' personal data >> $body');
-
-        var response = await http.post(Uri.parse(APIUrls.ADD_PERSONAL_DETAILS),
-            headers: {'Authorization': 'Bearer $token'},
-            body: body);
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          print(convertJson);
-          if (convertJson["status"]) {
-
-            setState(() {
-              sharedPreferneces.setString('user_id','${convertJson['data']['user_id']}');
-              _activeCurrentStep += 1;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
-            // Get.to(Otp(number: phoneNumber));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
-  //add business details
-
-  Future<void> add_Business_Details(
-  gstnumber,
-  gst,
-  businessPanCard,
-      multiCity
-      ) async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      
-        var body =
-        _checkboxvalue == 1 ?
-        jsonEncode(<String, String>{
-           
-           "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "have_gst_no": "$_checkboxvalue",
-          // "gst_number": "$gstnumber" ,
-          // "gst_doc": "$gst",
-          "pan_number": "$businessPanCard",
-          "service_area": "$multiCity"
-   
-        }):
-        jsonEncode(<String, String>{
-         "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "have_gst_no": "$_checkboxvalue",
-          "gst_number": "$gstnumber" ,
-          "gst_doc": "$gst",
-          "pan_number": "$businessPanCard",
-          "service_area": "$multiCity"
-       
-        });
-        print(body);
-        var response = await http.post(Uri.parse(APIUrls.ADD_BUSINESS_DETAILS),
-            headers: {'Authorization': 'Bearer $token'},
-            body: body);
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          print(convertJson);
-          if (convertJson["status"]) {
-            setState(() {
-              _activeCurrentStep += 1;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
-            // Get.to(Otp(number: phoneNumber));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  
-  //add bank details
-  
-  Future<void> add_Bank_Details(
-  bank,
-  accNumber,
-  confirmAccNumber,
-  ifsc,
-  acctype,
-  accHolderName,
-  check
-      ) async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "bank": "$bank",
-          "account_no": "$accNumber",
-          "ifsc_code": "$ifsc",
-          "account_holder_name": "$accHolderName",
-          "cancel_checque":"$check",
-          "account_type":"$acctype"
-        });
-        print(body);
-
-        var response = await http.post(Uri.parse(APIUrls.ADD_Bank_DETAILS),
-            headers: {'Authorization': 'Bearer $token'},
-            body: body);
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          print(convertJson);
-          if (convertJson["status"]) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
-            Get.to(const Review());
-            // Get.to(Otp(number: phoneNumber));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
-  Future<void> add_Vendor_Details(
-  company_name,
-  _selectaccount,
-  _selectvendor,
-  vendor_state,
-  vendor_city,
-  pincode,
-  phone,
-  turnover,
-  vendor_company,
-  c_firstName,
-  c_lastName,
- company_email,
-  c_position,
-  c_phone
-      ) async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = 
-         jsonEncode(<String, String>{
-          "phone_number": '$number',
-           "user_id": '${sharedPreferneces.getString('user_id')}',
-          "company_name": "$company_name",
-          "account_group": "$_selectaccount",
-          "vendor_required_for": "$_selectvendor",
-          "vendor_state": "$vendor_state",
-          "vendor_city": "$vendor_city",
-          "vendor_pin": "$pincode",
-          "vendor_phone": "$phone",
-          "turnover": "$turnover",
-          "vendor_company_type": "$vendor_company",
-          "contact_first_name":"$c_firstName",
-          "contact_last_name":"$c_lastName",
-          "contact_phone_number": "$c_phone",
-          "contact_email": "$company_email",
-          "user_type":"1",
-          "contact_position": "$c_position",
-        });
-        //   jsonEncode(<String, String>{
-        //   "phone_number": '$number',
-        //   "user_id": '${sharedPreferneces.getString('user_id')}',
-        //   "company_name": "$companyname",
-        //   "account_group": "$_selectaccount",
-        //   "vendor_required_for": "$_selectvendor",
-        //   "vendor_state": "$vendor_state",
-        //   "vendor_city": "$vendor_city",
-        //   "vendor_pin": "$pincode",
-        //   "vendor_phone": "$phone",
-        //   "turnover": "$turnover",
-        //   "vendor_company_type": "$vendor_company",
-        //   "contact_first_name":"$c_firstName",
-        //   "contact_last_name":"$c_lastName",
-        //   "contact_phone_number": "$c_phone",
-        //   "contact_email": "$email",
-        //   "user_type":"1",
-        //   "contact_position": "$c_position",
-        // });
-        print(body);
-
-        var response = await http.post(Uri.parse(APIUrls.ADD_VENDOR_DETAILS),
-            headers: {'Authorization': 'Bearer $token'},
-            body: body);
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          print(convertJson);
-          if (convertJson["status"]) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
-            setState(() {
-              _activeCurrentStep += 1;
-            });
-
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
-  // get qualification
-
-  List qualificationData = [];
-  Future<void> getQualification() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_QUALIFICATION}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-         // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-          setState(() {
-            qualificationData = convertJson['data']['qualifications'];
-          });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  List stateData = [];
-  Future<void> getStates() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_STATE}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              stateData = convertJson['data']['states'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  List vendorCompanyTypeData = [];
-  Future<void> getVendorComapnyType() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_VENDOR_COMAPNY_TYPE}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              vendorCompanyTypeData = convertJson['data']['company_type'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
-  List vendorCityData = [];
-  Future<void> getVendorCity(String id) async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-          "state_id": "$id",
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          // print(' qualification >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              vendorCityData = convertJson['data']['cities'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  List bankData = [];
-  Future<void> getBank() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_BANK}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          //print(' bank >>> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              bankData = convertJson['data']['banks'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-  List experinceData = [];
-  Future<void> getExperience() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-
-        };
-        var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_EXPERIENCE}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-
-        try {
-          var convertJson = jsonDecode(response.body);
-          //print(' experince >> $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              experinceData = convertJson['data']['work_exp'];
-            });
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
-
-  Future<void> postImage(imageName, file) async {
-    print(imageName);
-    print(file);
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var request = http.MultipartRequest(
-            'POST', Uri.parse("${APIUrls.POST_IMAGES}"));
-        request.files.add(await http.MultipartFile.fromPath('img', file));
-        request.fields['phone_number'] = '$number';
-        request.fields['img_name'] = '$imageName';
-        request.headers['Authorization'] = 'Bearer $token';
-        // print("In upload photo");
-        var res = await request.send();
-        print(res);
-        try {
-         // var convertJson = jsonDecode(res.body);
-          //print(convertJson);
-          print(res.statusCode);
-          if (res.statusCode == 200){
-            var responseBody = await http.Response.fromStream(res);
-            var myData = json.decode(responseBody.body);
-            print(myData);
-            if (myData['status']) {
-              setState(() {
-                print(myData['data']['file_path']);
-                if(imageName == "photo") {
-                  pic = myData['data']['file_path'];
-                }else if(imageName == "id_proof_doc"){
-                  panfront = myData['data']['file_path'];
-                }else if(imageName == "address_proof_doc"){
-                  aadharback = myData['data']['file_path'];
-                }else if(imageName == "gst_doc"){
-                  gst = myData['data']['file_path'];
-                }else if(imageName == "cancelled_cheque"){
-                  check = myData['data']['file_path'];
-                }
-              });
-            }
-            // setState(() {
-            //   bankData = convertJson['data']['banks'];
-            // });
-          } else {
-            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            //   content: Text('${convertJson['error_msg']}'),
-            // ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
-
 }
+
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: capitalize(newValue.text),
       selection: newValue.selection,
     );
   }
 }
+
 String capitalize(String value) {
-  if(value.trim().isEmpty) return "";
+  if (value.trim().isEmpty) return "";
   return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
 }
+
 class Capatalized extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text.toUpperCase(),
       selection: newValue.selection,

@@ -9,10 +9,12 @@ class HeaderWidgetText extends StatefulWidget {
   final bool _showText;
   var _text;
 
-   HeaderWidgetText(this._height, this._showText, this._text, {Key? key}) : super(key: key);
+  HeaderWidgetText(this._height, this._showText, this._text, {Key? key})
+      : super(key: key);
 
   @override
-  _HeaderWidgetTextState createState() => _HeaderWidgetTextState(_height, _showText, _text);
+  _HeaderWidgetTextState createState() =>
+      _HeaderWidgetTextState(_height, _showText, _text);
 }
 
 class _HeaderWidgetTextState extends State<HeaderWidgetText> {
@@ -24,41 +26,14 @@ class _HeaderWidgetTextState extends State<HeaderWidgetText> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double width = MediaQuery.of(context).size.width;
 
     return Container(
       child: Stack(
         children: [
           ClipPath(
             child: Container(
-              decoration:  BoxDecoration(
-                gradient:  LinearGradient(
-                    colors: [
-                      Theme.of(context).primaryColor.withOpacity(0.4),
-                      Theme.of(context).accentColor.withOpacity(0.4),
-                    ],
-                    begin: const FractionalOffset(0.0, 0.0),
-                    end: const FractionalOffset(1.0, 0.0),
-                    stops: const [0.0, 1.0],
-                    tileMode: TileMode.clamp
-                ),
-              ),
-            ),
-            clipper:  ShapeClipper(
-                [
-                  Offset(width / 5, _height),
-                  Offset(width / 10 * 5, _height - 60),
-                  Offset(width / 5 * 4, _height + 20),
-                  Offset(width, _height - 18)
-                ]
-            ),
-          ),
-          ClipPath(
-            child: Container(
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [
                       Theme.of(context).primaryColor.withOpacity(0.4),
@@ -67,23 +42,41 @@ class _HeaderWidgetTextState extends State<HeaderWidgetText> {
                     begin: const FractionalOffset(0.0, 0.0),
                     end: const FractionalOffset(1.0, 0.0),
                     stops: const [0.0, 1.0],
-                    tileMode: TileMode.clamp
-                ),
+                    tileMode: TileMode.clamp),
               ),
             ),
-            clipper: ShapeClipper(
-                [
-                  Offset(width / 3, _height + 20),
-                  Offset(width / 10 * 8, _height - 60),
-                  Offset(width / 5 * 4, _height - 60),
-                  Offset(width, _height - 20)
-                ]
-            ),
+            clipper: ShapeClipper([
+              Offset(width / 5, _height),
+              Offset(width / 10 * 5, _height - 60),
+              Offset(width / 5 * 4, _height + 20),
+              Offset(width, _height - 18)
+            ]),
           ),
           ClipPath(
             child: Container(
-              decoration:  BoxDecoration(
-                gradient:  LinearGradient(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).primaryColor.withOpacity(0.4),
+                      Theme.of(context).accentColor.withOpacity(0.4),
+                    ],
+                    begin: const FractionalOffset(0.0, 0.0),
+                    end: const FractionalOffset(1.0, 0.0),
+                    stops: const [0.0, 1.0],
+                    tileMode: TileMode.clamp),
+              ),
+            ),
+            clipper: ShapeClipper([
+              Offset(width / 3, _height + 20),
+              Offset(width / 10 * 8, _height - 60),
+              Offset(width / 5 * 4, _height - 60),
+              Offset(width, _height - 20)
+            ]),
+          ),
+          ClipPath(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
                     colors: [
                       Theme.of(context).primaryColor,
                       Theme.of(context).accentColor,
@@ -91,18 +84,15 @@ class _HeaderWidgetTextState extends State<HeaderWidgetText> {
                     begin: const FractionalOffset(0.0, 0.0),
                     end: const FractionalOffset(1.0, 0.0),
                     stops: const [0.0, 1.0],
-                    tileMode: TileMode.clamp
-                ),
+                    tileMode: TileMode.clamp),
               ),
             ),
-            clipper:  ShapeClipper(
-                [
-                  Offset(width / 5, _height),
-                  Offset(width / 2, _height - 40),
-                  Offset(width / 5 * 4, _height - 80),
-                  Offset(width, _height - 20)
-                ]
-            ),
+            clipper: ShapeClipper([
+              Offset(width / 5, _height),
+              Offset(width / 2, _height - 40),
+              Offset(width / 5 * 4, _height - 80),
+              Offset(width, _height - 20)
+            ]),
           ),
           Visibility(
             visible: _showText,
@@ -117,16 +107,20 @@ class _HeaderWidgetTextState extends State<HeaderWidgetText> {
                     right: 5.0,
                     bottom: 20.0,
                   ),
-
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(_text,style:const TextStyle(fontSize: 27,color: Colors.white,fontWeight: FontWeight.bold),),
+                    child: Text(
+                      _text,
+                      style: const TextStyle(
+                          fontSize: 27,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -140,18 +134,19 @@ class ShapeClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = Path();
 
-    path.lineTo(0.0, size.height-20);
+    path.lineTo(0.0, size.height - 20);
 
     // path.quadraticBezierTo(size.width/5, size.height, size.width/2, size.height-40);
     // path.quadraticBezierTo(size.width/5*4, size.height-80, size.width, size.height-20);
 
-    path.quadraticBezierTo(_offsets[0].dx, _offsets[0].dy, _offsets[1].dx,_offsets[1].dy);
-    path.quadraticBezierTo(_offsets[2].dx, _offsets[2].dy, _offsets[3].dx,_offsets[3].dy);
+    path.quadraticBezierTo(
+        _offsets[0].dx, _offsets[0].dy, _offsets[1].dx, _offsets[1].dy);
+    path.quadraticBezierTo(
+        _offsets[2].dx, _offsets[2].dy, _offsets[3].dx, _offsets[3].dy);
 
     // path.lineTo(size.width, size.height-20);
     path.lineTo(size.width, 0.0);
     path.close();
-
 
     return path;
   }

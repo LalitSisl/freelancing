@@ -5,7 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/header_widget.dart';
 import 'package:freelancing/Authentication/headerwidget1.dart';
+import 'package:freelancing/Controller/profile_controller.dart';
+import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Screens/review.dart';
+import 'package:freelancing/Screens/profile_copy.dart';
 import 'package:http/http.dart' as http;
 import '../Profile/profile.dart';
 import 'package:get/get.dart';
@@ -15,7 +18,8 @@ import '../Utils/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  Register({Key? key}) : super(key: key);
+  profile_controller controller = Get.put(profile_controller());
 
   @override
   State<Register> createState() => _RegisterState();
@@ -23,10 +27,9 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   // ignore: prefer_typing_uninitialized_variables
-  var _selectUser;
- double _headerHeight = 250;
-var isLoading =false;
-
+  var selectUser;
+  double _headerHeight = 250;
+  var isLoading = false;
 
   @override
   initState() {
@@ -48,17 +51,18 @@ var isLoading =false;
   Future<void> register() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     setState(() {
-      isLoading=true;
+      isLoading = true;
     });
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var queryParams = {
           "phone_number": "$number",
-          "user_type": "$_selectUser"
+          "user_type": "$selectUser"
         };
         var response = await http.get(
-            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.REGISTER_AS}", queryParams),
+            Uri.http(
+                "${APIUrls.DOMAIN}", "${APIUrls.REGISTER_AS}", queryParams),
             headers: {'Authorization': 'Bearer $token'});
         // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
         //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
@@ -66,7 +70,6 @@ var isLoading =false;
           var convertJson = jsonDecode(response.body);
           print('   lalit $convertJson');
           if (convertJson["status"]) {
-
             setState(() {
               isLoading = false;
             });
@@ -74,19 +77,21 @@ var isLoading =false;
               content: Text('${convertJson['success_msg']}'),
             ));
             setState(() {
-              sharedPreferneces.setString('user_id','${convertJson['data']['user_id']}');
+              sharedPreferneces.setString(
+                  'user_id', '${convertJson['data']['user_id']}');
             });
             print(convertJson['data']['user_status']);
-            if(convertJson['data']['user_status'] != "3") {
-              Get.to(Profile(user: _selectUser,
-                  user_status: convertJson['data']['user_status'].toString()));
+            if (convertJson['data']['user_status'] != "3") {
+              Get.to(() => profile_copy());
+              // Get.to(() =>Profile(
+              //     user: _selectUser,
+              //     user_status: convertJson['data']['user_status'].toString()));
               print('user status ${convertJson['data']['user_status']}');
-            }else {
+            } else {
               // Get.to(Profile(user: _selectUser,
               //     user_status: convertJson['data']['user_status'].toString()));
-              Get.to(Review());
+              Get.to(profile_copy());
             }
-
           } else {
             setState(() {
               isLoading = false;
@@ -118,7 +123,6 @@ var isLoading =false;
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -133,11 +137,9 @@ var isLoading =false;
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                Container(
-                      height: _headerHeight,
-                      child:HeaderWidgetText(_headerHeight, true,"Proceed as" )
-                    ),
-
+              Container(
+                  height: _headerHeight,
+                  child: HeaderWidgetText(_headerHeight, true, "Proceed as")),
               const SizedBox(
                 height: 60,
               ),
@@ -154,10 +156,10 @@ var isLoading =false;
                 ),
                 trailing: Radio(
                   value: '2',
-                  groupValue: _selectUser,
+                  groupValue: selectUser,
                   onChanged: (value) {
                     setState(() {
-                      _selectUser = value!;
+                      selectUser = value!;
                     });
                   },
                 ),
@@ -180,10 +182,10 @@ var isLoading =false;
                   ),
                   trailing: Radio(
                     value: '1',
-                    groupValue: _selectUser,
+                    groupValue: selectUser,
                     onChanged: (value) {
                       setState(() {
-                        _selectUser = value!;
+                        selectUser = value!;
                       });
                     },
                   ),
@@ -194,26 +196,27 @@ var isLoading =false;
               ),
               Align(
                 alignment: Alignment.center,
-                child:
-                isLoading ? CircularProgressIndicator():
-                ElevatedButton(
-                  onPressed: () {
-                    print('$_selectUser');
-                    if(_selectUser == null){
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                            'Please select User Type'),
-                      ));
-                    }else{
-                      register();
-                    }
-                    //Get.to(Profile(user: _selectUser));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    child: Text('Continue'),
-                  ),
-                ),
+                child: isLoading
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: () {
+                          print("object&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                          print('$selectUser');
+                          if (selectUser == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Please select User Type'),
+                            ));
+                          } else {
+                            register();
+                          }
+                          //Get.to(Profile(user: _selectUser));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          child: Text('Continue'),
+                        ),
+                      ),
               ),
             ],
           )),
