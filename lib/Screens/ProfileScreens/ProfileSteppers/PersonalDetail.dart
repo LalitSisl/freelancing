@@ -1,18 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
-import 'package:freelancing/Model/experienceModal.dart';
-import 'package:freelancing/Model/qualificationModal.dart';
-import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:get/get.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:multiselect_formfield/multiselect_dialog.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import '../../../Model/skillModel.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class PersonalDetail extends StatelessWidget {
@@ -116,7 +107,7 @@ class PersonalDetail extends StatelessWidget {
 
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'The field is mandatory';
+                          return 'Please provide date of birth';
                         }
                         return null;
                       },
@@ -344,7 +335,7 @@ class PersonalDetail extends StatelessWidget {
                                   .skillName),
                     ),
                   ),
-                  SizedBox(
+               const   SizedBox(
                     height: 40,
                   ),
                   Label("Total Experience"),

@@ -13,6 +13,7 @@ import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetai
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/bank.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/business.dart';
 import 'package:freelancing/Screens/profile_copy.dart';
+import 'package:freelancing/Screens/review.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
 import 'package:get/get.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -27,6 +28,7 @@ class profile_controller extends GetxController {
   int activeCurrentStep = 0;
   final formKey = GlobalKey<FormState>();
    final businessformKey = GlobalKey<FormState>();
+    final bankformKey = GlobalKey<FormState>();
 
 // List<UserSkill> skillsList = [];
 
@@ -88,6 +90,8 @@ class profile_controller extends GetxController {
   var selectedGenderOne;
   var selectedqualificationOne;
   var selectedexperienceOne;
+  var selectedbankOne;
+  var selectedAccountType;
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
   File? adharImage;
@@ -128,6 +132,12 @@ class profile_controller extends GetxController {
   selectBanks(bank) {
     bankId = bank;
     bankController = TextEditingController(text: bank);
+    selectedbankOne = bank;
+    update();
+  }
+    selectAccount(type) {
+    accountTypeController = TextEditingController(text: type);
+    selectedAccountType = type;
     update();
   }
 
@@ -150,6 +160,7 @@ class profile_controller extends GetxController {
             isActive: true,
             title: const Text("Bank"),
             content: BankDetail()),
+
       ];
 
   List genderList = ['M', "F"];
@@ -267,6 +278,7 @@ class profile_controller extends GetxController {
           },
         );
         update();
+        // ==========================Business Details==============================
         gstNumberController = TextEditingController(
             text: userDetail!.data!.userDetails!.businessDetails?.gstNumber ??"" );
         businessPanController = TextEditingController(
@@ -278,16 +290,18 @@ class profile_controller extends GetxController {
             selectedCity.add(element.serviceAreaName);
           },
         );
+
+        // ==============================Bank Details Data===============================
         accountController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
+            cAccountController = TextEditingController(text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
         ifscController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.ifscCode);
         accountHolder = TextEditingController(
             text:
                 userDetail!.data!.userDetails!.bankDetails?.accountHolderName);
         check = userDetail!.data!.userDetails!.bankDetails?.cancelChecque;
-        bankController = TextEditingController(
-            text: userDetail!.data!.userDetails!.bankDetails?.bankName);
+        selectedbankOne = userDetail!.data!.userDetails!.bankDetails?.bankName;
         accountTypeController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountType);
       }
@@ -387,7 +401,7 @@ class profile_controller extends GetxController {
             //   content: Text('${convertJson['success_msg']}'),
             // ));
             // Get.to(Otp(number: phoneNumber));
-            Get.snackbar("Data Submitted", convertJson['success_msg'],
+            Get.snackbar("Data Submitted", convertJson['success_msg'], duration:const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
 
             activeCurrentStep += 1;
@@ -516,31 +530,28 @@ class profile_controller extends GetxController {
           var convertJson = jsonDecode(response.body);
           print('   lalit $convertJson');
           if (convertJson["status"]) {
-         
-          
-            
-
-
+             Get.snackbar("Data Fetched successfully", convertJson['success_msg'], duration:const Duration(seconds: 1),
+                snackPosition: SnackPosition.BOTTOM);
               sharedPreferneces.setString(
                   'user_id', '${convertJson['data']['user_id']}');
-
-                   activeCurrentStep  = int.parse(convertJson['data']['user_status']);
-
+                  
+             
                   update();
-                    Get.to(() => profile_copy());
+                
           
-            // print(convertJson['data']['user_status']);
-            // if (convertJson['data']['user_status'] != "3") {
-            //   Get.to(() => profile_copy());
-            //   // Get.to(() =>Profile(
-            //   //     user: _selectUser,
-            //   //     user_status: convertJson['data']['user_status'].toString()));
-            //   print('user status ${convertJson['data']['user_status']}');
-            // } else {
-            //   // Get.to(Profile(user: _selectUser,
-            //   //     user_status: convertJson['data']['user_status'].toString()));
-            //   Get.to(profile_copy());
-            // }
+             print(convertJson['data']['user_status']);
+            if (convertJson['data']['user_status'] != "3") {
+                    activeCurrentStep  = int.parse(convertJson['data']['user_status']);
+              Get.to(() => profile_copy());
+              // Get.to(() =>Profile(
+              //     user: _selectUser,
+              //     user_status: convertJson['data']['user_status'].toString()));
+              print('user status ${convertJson['data']['user_status']}');
+            } else {
+              // Get.to(Profile(user: _selectUser,
+              //     user_status: convertJson['data']['user_status'].toString()));
+              Get.to(const Review());
+            }
           } else {
             Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);
@@ -612,7 +623,7 @@ class profile_controller extends GetxController {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-            Get.snackbar("Business Details ", convertJson['success_msg'],
+            Get.snackbar("Business Details ", convertJson['success_msg'], duration:const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
             activeCurrentStep += 1;
             update();
@@ -651,7 +662,7 @@ class profile_controller extends GetxController {
         var body = jsonEncode(<String, String>{
           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
-          "bank": bankController.text,
+          "bank": selectedbankOne,
           "account_no": accountController.text,
           "ifsc_code": ifscController.text,
           "account_holder_name": accountHolder.text,
@@ -667,11 +678,11 @@ class profile_controller extends GetxController {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-            Get.snackbar("Bank Details ", convertJson['success_msg'],
+            Get.snackbar("Bank Details ", convertJson['success_msg'], duration:const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
-            activeCurrentStep += 1;
+             Get.to(const Review());
             update();
-            // Get.to(const Review());
+           
             // Get.to(Otp(number: phoneNumber));
           } else {
             Get.snackbar("Error", convertJson['error_msg'],

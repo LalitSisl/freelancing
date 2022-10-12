@@ -45,17 +45,18 @@ class _LoginState extends State<Login> {
             setState(() {
               isLoading = false;
             });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
+              Get.snackbar("Success", convertJson['success_msg'],
+              duration:const Duration(seconds: 1),
+                snackPosition: SnackPosition.BOTTOM);
+        
             Get.to(Otp(number: phoneNumber));
           } else {
             setState(() {
               isLoading = false;
             });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
+               Get.snackbar("Error", convertJson['error_msg'],
+                snackPosition: SnackPosition.BOTTOM);
+          
           }
         } catch (e) {
           if (kDebugMode) {
@@ -64,6 +65,7 @@ class _LoginState extends State<Login> {
           setState(() {
             isLoading = false;
           });
+          
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Something went wrong, try again later'),
           ));
@@ -84,7 +86,7 @@ class _LoginState extends State<Login> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _phoneController = TextEditingController(text: "8295019701");
+    // _phoneController = TextEditingController(text: "8295019701");
   }
 
   @override

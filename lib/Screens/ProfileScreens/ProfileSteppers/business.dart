@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Model/city.dart';
+import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:get/get.dart';
 
@@ -44,13 +45,18 @@ class BusinessDetail extends StatelessWidget {
                                 persnolDetailTextField(
                                     controller.gstNumberController,
                                     "Enter GST Number", (value) {
-                                  if (value == null || value.isBlank) {
-                                    return "Please enter First Name";
-                                  }
-                                  return null;
+                            String pattern =
+                                r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+                            RegExp regex = RegExp(pattern);
+                            if (value == null ||
+                                value.isEmpty ||
+                                !regex.hasMatch(value)) {
+                              return 'Enter a valid GST number';
+                            } else {
+                              return null;
+                            }
                                 }, TextInputType.text, 30, [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp('[a-zA-Z]'))
+                                  FilteringTextInputFormatter.singleLineFormatter
                                 ]),
                                 const SizedBox(
                                   height: 15,
@@ -119,13 +125,18 @@ class BusinessDetail extends StatelessWidget {
                           : Container(),
                       persnolDetailTextField(
                           controller.businessPanController, "Business PAN Number",
-                          (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter First Name";
-                        }
-                        return null;
+                       (value) {
+                          String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
+                          RegExp regex = RegExp(pattern);
+                          if (value == null ||
+                              value.isEmpty ||
+                              !regex.hasMatch(value)) {
+                            return 'Enter a valid pan number';
+                          } else {
+                            return null;
+                          }
                       }, TextInputType.text, 50, [
-                        FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                       Capatalized()
                       ]),
                       Label("Service Area"),
                       Padding(
@@ -133,15 +144,15 @@ class BusinessDetail extends StatelessWidget {
                         child: DropdownSearch.multiSelection(
                           dropdownDecoratorProps: const DropDownDecoratorProps(
                             dropdownSearchDecoration: InputDecoration(
-                              border: const OutlineInputBorder(
+                              border:  OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
-                              enabledBorder: const OutlineInputBorder(
+                              enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
-                              errorBorder: const OutlineInputBorder(
+                              errorBorder:  OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorPalette.red, width: 0.5),
                               ),

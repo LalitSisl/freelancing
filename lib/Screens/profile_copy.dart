@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
+import 'package:freelancing/Screens/review.dart';
 import 'package:get/get.dart';
 
 class profile_copy extends StatefulWidget {
@@ -186,20 +187,18 @@ class _profile_copyState extends State<profile_copy> {
                         // final isLastStep = controller.activeCurrentStep ==
                         //     controller.stepsList().length - 1;
                         if (controller.formKey.currentState!.validate() &&
-                            controller.activeCurrentStep <= 0) {
+                            controller.activeCurrentStep == 0) {
                           controller.add_Personal_Details();
 
                           //   controller.add_Personal_Details();
                         } else if ( controller.activeCurrentStep == 1 && controller.businessformKey.currentState!.validate() ) {
-
                          // print("==================================================6666666");
                           controller.add_Business_Details();
-                        } else if (controller.activeCurrentStep  == 2) {
+                        } else{ if ( controller.bankformKey.currentState!.validate()) {
                           controller.add_Bank_Details();
-                        } else {
-                          //  controller.add_Personal_Details();
-                          print("incomplit");
-                        }
+                             Get.to(()=> Review());
+                          
+                        } }
                       },
                       onStepCancel: () {
                         controller.activeCurrentStep == 0
@@ -212,7 +211,9 @@ class _profile_copyState extends State<profile_copy> {
                         setState(() {
                           controller.activeCurrentStep = index;
                         });
+
                       },
+                      
                     ),
                   ),
                 ),

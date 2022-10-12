@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Model/city.dart';
 import 'package:freelancing/Model/experienceModal.dart';
@@ -66,6 +65,7 @@ class ApiHelper {
       //       'No internet connection. Connect to the internet and try again.'),
       // ));
     }
+ 
   }
 
   Future<SkillModelClass?> getSkills() async {
