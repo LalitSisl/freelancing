@@ -12,6 +12,7 @@ import '../Utils/APIURLs.dart';
 import 'otp.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _LoginState extends State<Login> {
   var isLoading = false;
 
   Future<void> sendOTP(phoneNumber) async {
+      
     print(phoneNumber);
     setState(() {
       isLoading = true;
@@ -44,6 +46,7 @@ class _LoginState extends State<Login> {
           if (convertJson["status"]) {
             setState(() {
               isLoading = false;
+             
             });
             Get.snackbar("Success", convertJson['success_msg'],
                 duration: const Duration(seconds: 1),
@@ -53,6 +56,7 @@ class _LoginState extends State<Login> {
           } else {
             setState(() {
               isLoading = false;
+            
             });
             Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);

@@ -1,3 +1,4 @@
+import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/global.dart';
 import 'package:get/get.dart';
@@ -37,6 +38,7 @@ class registerController extends GetxController {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
     //  var usertype = selectUser;
+    
     var token = sharedPreferneces.getString('token');
 
     try {
@@ -72,10 +74,11 @@ class registerController extends GetxController {
               print("==========vendor===============");
               update();
 
-                  controller.activeCurrentStep  = int.parse(convertJson['data']['user_status']);
+                 
               Get.to(
                 profile_copy(),
               );
+            controller.activeCurrentStep  = int.parse(convertJson['data']['user_status']);
               // Get.to(() =>Profile(
               //     user: _selectUser,
               //     user_status: convertJson['data']['user_status'].toString()));
@@ -93,8 +96,8 @@ class registerController extends GetxController {
           if (kDebugMode) {
             print(e.toString());
           }
-          Get.snackbar("Error", "Something went wrong, try again later",
-              snackPosition: SnackPosition.BOTTOM);
+          // Get.snackbar("Error", "Something went wrong, try again later",
+          //     snackPosition: SnackPosition.BOTTOM);
         }
       }
     } on SocketException catch (_) {

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Model/city.dart';
 import 'package:freelancing/Model/experienceModal.dart';

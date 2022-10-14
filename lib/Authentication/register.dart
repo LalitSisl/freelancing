@@ -18,7 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Utils/APIURLs.dart';
 import '../Utils/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+var selectUser;
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
 
@@ -162,6 +162,7 @@ class _RegisterState extends State<Register> {
                   onChanged: (value) {
                     setState(() {
                       selectUser = value!;
+                      print(selectUser.runtimeType);
                     });
                   },
                 ),
@@ -188,6 +189,7 @@ class _RegisterState extends State<Register> {
                     onChanged: (value) {
                       setState(() {
                         selectUser = value!;
+                        print(selectUser.runtimeType);
                       });
                     },
                   ),

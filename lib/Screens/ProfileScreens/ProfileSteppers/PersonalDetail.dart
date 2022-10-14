@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:freelancing/global.dart';
@@ -31,7 +32,7 @@ class PersonalDetail extends StatelessWidget {
                   selectUser == "2"
                       ? Column(
                           children: [
-                            persnolDetailTextField(
+                            ProfilenameWidget(
                                 controller.firstNameController, "First Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -422,7 +423,7 @@ class PersonalDetail extends StatelessWidget {
                         )
                       : Column(
                           children: [
-                            persnolDetailTextField(
+                            ProfilenameWidget(
                                 controller.companyName, "Company Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -719,7 +720,7 @@ class PersonalDetail extends StatelessWidget {
                             }, TextInputType.text, 50, [
                              UpperCaseTextFormatter()
                             ]),
-                            persnolDetailTextField(
+                            ProfilenameWidget1(
                                 controller.contactPosition, "Contact Position",
                                 (value) {
                               if (value == null || value.isEmpty) {

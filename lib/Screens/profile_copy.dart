@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Controller/registercontroller.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:freelancing/global.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class profile_copy extends StatefulWidget {
   profile_copy({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class profile_copy extends StatefulWidget {
 
 class _profile_copyState extends State<profile_copy> {
   profile_controller controller = Get.put(profile_controller());
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -125,20 +128,23 @@ class _profile_copyState extends State<profile_copy> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                '[Name]',
+                                controller.profileName == null ?
+                                '[Name]' :controller.profileName,
                                 style: const TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Container(),
-                              Text('[Profile]',
+                              Text( controller.designation==null?
+                                
+                                '[Profile]':controller.designation,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   )),
                               const SizedBox(height: 5),
-                              Text('8787578868',
+                              Text(controller.loginNumber ,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -188,7 +194,7 @@ class _profile_copyState extends State<profile_copy> {
                         //     controller.stepsList().length - 1;
 
                         if (controller.formKey.currentState!.validate() &&
-                            controller.activeCurrentStep == 0) {
+                           controller. activeCurrentStep == 0) {
                           if (selectUser == "2") {
                             controller.add_Personal_Details();
                           } else {
@@ -209,10 +215,10 @@ class _profile_copyState extends State<profile_copy> {
                         }
                       },
                       onStepCancel: () {
-                        controller.activeCurrentStep == 0
+                       controller.activeCurrentStep == 0
                             ? null
                             : setState(() {
-                                controller.activeCurrentStep -= 1;
+                              controller.activeCurrentStep -= 1;
                               });
                       },
                       onStepTapped: (int index) {

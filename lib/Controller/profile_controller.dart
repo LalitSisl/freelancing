@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelancing/ApiHelper.dart';
+import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/registercontroller.dart';
 import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Model/city.dart';
@@ -35,6 +36,8 @@ class profile_controller extends GetxController {
   final formKey = GlobalKey<FormState>();
   final businessformKey = GlobalKey<FormState>();
   final bankformKey = GlobalKey<FormState>();
+
+  var profileName;
 
 // List<UserSkill> skillsList = [];
 
@@ -126,6 +129,8 @@ class profile_controller extends GetxController {
   var selectedCityone;
 var selectedcompanytype;
   var vendorType;
+  var designation;
+  var loginNumber;
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
   File? adharImage;
@@ -146,8 +151,8 @@ var selectedcompanytype;
     getBanksData();
      getcitiesDatarepeat();
        getcompanytypes();
-    print(selectUser);
-    print(selectUser);
+    // print(selectUser);
+    // print(selectUser);
 
     print(")))))))))))))))))))))))))))))))))))))))))))))))");
   }
@@ -157,6 +162,14 @@ var selectedcompanytype;
     update();
   }
 
+  changeProfileName(var name){
+    profileName = name;
+    update();
+  }
+  changeProfileName1(var name){
+    designation = name;
+    update();
+  }
   selectCity(item) {
     selectedCity = item;
     update();
@@ -319,6 +332,7 @@ var selectedcompanytype;
     selectedCityone = data;
     update();
   }
+  var userNumber;
 selectcompanytype(data) {
     //   = data.id.toString();
     // experinceId = data;
@@ -327,7 +341,10 @@ selectcompanytype(data) {
     update();
   }
   getuserDetail() async {
+     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     userDetail = await ApiHelper().getFrelencer();
+     userNumber = sharedPreferneces.getString("phone");
+     loginNumber = userNumber;
     update();
   // print(userDetail!.status);
     print("mainData fetch");
@@ -339,6 +356,7 @@ selectcompanytype(data) {
         // ==============================Vendor details=======================
         companyName = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
+
         selectedAccountGroup =
             userDetail!.data!.userDetails!.vendorDetails?.accountGroup;
         selectedVendor =
@@ -427,7 +445,7 @@ selectcompanytype(data) {
             selectedCity.add(element.serviceAreaName);
           },
         );
-        userDetail!.data!.userDetails!.businessDetails?.gstNumber != null?checkbox==true:checkbox==false;
+        // userDetail!.data!.userDetails!.businessDetails?.gstNumber != null?checkbox==true:checkbox==false;
         // ==============================Bank Details Data===============================
         accountController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
@@ -478,6 +496,7 @@ selectcompanytype(data) {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body = jsonEncode(<String, dynamic>{
+
           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '2',
