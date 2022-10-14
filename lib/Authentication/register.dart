@@ -1,21 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:freelancing/Authentication/header_widget.dart';
 import 'package:freelancing/Authentication/headerwidget1.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Controller/registercontroller.dart';
-import 'package:freelancing/Model/BankModel.dart';
-import 'package:freelancing/Screens/review.dart';
-import 'package:freelancing/Screens/profile_copy.dart';
-import 'package:freelancing/global.dart';
-import 'package:http/http.dart' as http;
-import '../Profile/profile.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Utils/APIURLs.dart';
 import '../Utils/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 var selectUser;

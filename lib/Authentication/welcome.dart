@@ -4,8 +4,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/intro_screen.dart';
 import 'package:get/get.dart';
-import 'package:introduction_screen/introduction_screen.dart';
-import 'login.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unnecessary_string_interpolations
 
 import 'dart:convert';
 import 'dart:io';
@@ -14,7 +14,6 @@ import 'package:freelancing/Model/stateModel.dart';
 import 'package:freelancing/Model/typeofcompanymodel.dart';
 import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
-import 'package:freelancing/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -72,6 +71,7 @@ class ApiHelper {
       //       'No internet connection. Connect to the internet and try again.'),
       // ));
     }
+    return null;
   }
 
   Future<SkillModelClass?> getSkills() async {

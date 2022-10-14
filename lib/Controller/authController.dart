@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../Utils/APIURLs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {

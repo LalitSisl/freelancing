@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelancing/ApiHelper.dart';
 import 'package:freelancing/Authentication/register.dart';
-import 'package:freelancing/Controller/registercontroller.dart';
 import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Model/city.dart';
 import 'package:freelancing/Model/experienceModal.dart';
