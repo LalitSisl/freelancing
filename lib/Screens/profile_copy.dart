@@ -189,9 +189,9 @@ class _profile_copyState extends State<profile_copy> {
 
                         if (controller.formKey.currentState!.validate() &&
                             controller.activeCurrentStep == 0) {
-                          if (selectUser == 2) {
+                          if (selectUser == "2") {
                             controller.add_Personal_Details();
-                          }else{
+                          } else {
                             controller.add_Vendor_Details();
                           }
 

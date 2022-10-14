@@ -426,13 +426,12 @@ class PersonalDetail extends StatelessWidget {
                                 controller.companyName, "Company Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Please enter company name';
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                            }, TextInputType.text, 100, [
+                            UpperCaseTextFormatter()
                             ]),
                             Label2("Account Group"),
                             ListTile(
@@ -563,7 +562,7 @@ class PersonalDetail extends StatelessWidget {
                             persnolDetailTextField(
                                 controller.companyEmail, "Email", (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Enter a valid email address';
                               } else {
                                 return null;
                               }
@@ -573,14 +572,14 @@ class PersonalDetail extends StatelessWidget {
                             const SizedBox(
                               height: 15,
                             ),
-                              Label2("State"),
+                            Label2("State"),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: DropdownButton(
                                   hint: const Text("Select State"),
                                   isDense: true,
                                   isExpanded: true,
-                                  value: controller.selectedStateOne,
+                                   value: controller.selectedStateOne,
                                   items: List.generate(
                                       controller
                                           .getallStates!.data!.states!.length,
@@ -595,9 +594,9 @@ class PersonalDetail extends StatelessWidget {
                                                 .toString(),
                                           )),
                                   onChanged: ((newValue) {
+                                    
                                     controller.selectVendorstate(newValue);
-                                    controller.selectedCityone ==null;
-                                    controller.selectedStateOne = newValue!;
+                                     controller.selectedStateOne = newValue!;  
                                     controller.getcitiesData();
                                     print(newValue);
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -606,14 +605,14 @@ class PersonalDetail extends StatelessWidget {
                             const SizedBox(
                               height: 15,
                             ),
-                              Label2("City"),
+                            Label2("City"),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: DropdownButton(
                                   hint: const Text("Select City"),
                                   isDense: true,
                                   isExpanded: true,
-                                  value: controller.selectedCityone,
+                                   value: controller.selectedCityone ,
                                   items: List.generate(
                                       controller
                                           .getallcities!.data!.cities!.length,
@@ -629,121 +628,118 @@ class PersonalDetail extends StatelessWidget {
                                           )),
                                   onChanged: ((newValue) {
                                     controller.selectVendorcity(newValue);
-                                    controller.selectedCityone = newValue;
+                                    controller.selectedCityone = newValue!;
 
                                     print(newValue);
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                                   })),
                             ),
-                            //      persnolDetailTextField(
-                            //     controller.comapnyState, "State",
-                            //     (value) {
-
-                            //   if (value == null ||
-                            //       value.isEmpty
-                            //       ) {
-                            //     return 'Enter a valid Aadhar number';
-                            //   } else {
-                            //     return null;
-                            //   }
-                            // }, TextInputType.text, 50,
-                            //     [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))]),
+                     
                             const SizedBox(
                               height: 15,
                             ),
                             persnolDetailTextField(
                                 controller.companyPincode, "Pincode", (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Enter a valid pincode';
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                            }, TextInputType.number, 6, [
+                              FilteringTextInputFormatter.digitsOnly
                             ]),
                             persnolDetailTextField(
                                 controller.companyPhone, "Phone Number",
                                 (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Enter a valid phone number';
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                            }, TextInputType.number, 10, [
+                              FilteringTextInputFormatter.digitsOnly
                             ]),
                             persnolDetailTextField(controller.autualTurnover,
                                 "Actual Turnover (in Cr)", (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Please enter actual turnover';
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                            }, TextInputType.number, 5, [
+                              FilteringTextInputFormatter.digitsOnly
                             ]),
-                            persnolDetailTextField(
-                                controller.typeOfCompany, "Type of Company",
-                                (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
-                              } else {
-                                return null;
-                              }
-                            }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
-                            ]),
+
+                             Label2("Company Type"),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: DropdownButton(
+                                  hint: const Text("Select Company Type"),
+                                  isDense: true,
+                                  isExpanded: true,
+                                   value: controller.selectedcompanytype ,
+                                  items: List.generate(
+                                      controller
+                                          .getallcompanytypes!.data!.companyType!.length,
+                                      (index) => DropdownMenuItem(
+                                            child: Text(controller
+                                                .getallcompanytypes!.data!.companyType![index].name!),
+                                            value: controller.getallcompanytypes!
+                                                .data!.companyType![index].id
+                                                .toString(),
+                                          )),
+                                  onChanged: ((newValue) {
+                                    controller.selectcompanytype(newValue);
+                                    controller.selectedcompanytype = newValue!;
+
+                                    print(newValue);
+                                    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                  })),
+                            ),
+                         SizedBox(height: 15,),
                             Label("Vendor Contact Information"),
                             persnolDetailTextField(controller.contactFirstname,
                                 "Contact First Name", (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Please enter first name';
                               } else {
                                 return null;
                               }
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                             UpperCaseTextFormatter()
                             ]),
                             persnolDetailTextField(
                                 controller.contactLastname, "Contact Last Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Please enter last name';
                               } else {
                                 return null;
                               }
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                             UpperCaseTextFormatter()
                             ]),
                             persnolDetailTextField(
                                 controller.contactPosition, "Contact Position",
                                 (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Please enter your Designation/Position';
                               } else {
                                 return null;
                               }
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                             UpperCaseTextFormatter()
                             ]),
                             persnolDetailTextField(
                                 controller.contactPhonenumber,
                                 "Contact Phone Number", (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter a valid Aadhar number';
+                                return 'Please enter phone number';
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                            }, TextInputType.number, 10, [
+                              FilteringTextInputFormatter.digitsOnly
                             ]),
                           ],
                         )

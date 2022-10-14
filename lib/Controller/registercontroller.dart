@@ -29,7 +29,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class registerController extends GetxController {
-  //  profile_controller controller = Get.put(profile_controller());
+    profile_controller controller = Get.put(profile_controller());
 
   var vendorType;
 
@@ -72,7 +72,7 @@ class registerController extends GetxController {
               print("==========vendor===============");
               update();
 
-              //     controller.activeCurrentStep  = int.parse(convertJson['data']['user_status']);
+                  controller.activeCurrentStep  = int.parse(convertJson['data']['user_status']);
               Get.to(
                 profile_copy(),
               );

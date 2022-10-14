@@ -10,6 +10,7 @@ import 'package:freelancing/Model/experienceModal.dart';
 import 'package:freelancing/Model/qualificationModal.dart';
 import 'package:freelancing/Model/skillModel.dart';
 import 'package:freelancing/Model/stateModel.dart';
+import 'package:freelancing/Model/typeofcompanymodel.dart';
 import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/bank.dart';
@@ -42,8 +43,10 @@ class profile_controller extends GetxController {
   GetQualificationModal? getQualification;
   GetExperienceModal? getExperience;
   CityDetailModelClass? getallcities;
+    CityDetailModelClass? getallcitiesrepeat;
   BankModelClass? getallBanks;
   StateModelClass? getallStates;
+   TypeofcompanyModel? getallcompanytypes;
   // Qualification? selectedQuelification;
   WorkExp? selectedExperience;
   // String? qualification;
@@ -91,6 +94,7 @@ class profile_controller extends GetxController {
   TextEditingController contactPhonenumber = TextEditingController();
 
   bool checkbox = false;
+  
 
   // List<ValueItem> selectedSkill = [];
   List selectedSkill = [];
@@ -120,7 +124,7 @@ class profile_controller extends GetxController {
   var selectedVendor;
   var selectedStateOne;
   var selectedCityone;
-
+var selectedcompanytype;
   var vendorType;
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
@@ -140,6 +144,8 @@ class profile_controller extends GetxController {
     getcitiesData();
     getStatesData();
     getBanksData();
+     getcitiesDatarepeat();
+       getcompanytypes();
     print(selectUser);
     print(selectUser);
 
@@ -228,39 +234,54 @@ class profile_controller extends GetxController {
 
   getskilldata() async {
     getSkill = await ApiHelper().getSkills();
-    print(getSkill!.status);
-    print("@@@@@@@@@@@@@@@@");
+    // print(getSkill!.status);
+    // print("@@@@@@@@@@@@@@@@");
     update();
   }
 
   getcitiesData() async {
     getallcities = await ApiHelper().getCities(selectedStateOne);
-    print(getallcities!.status);
-    print(
-        "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    // print(getallcities!.status);
+    // print(
+    //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    update();
+  }
+    getcitiesDatarepeat() async {
+    getallcitiesrepeat = await ApiHelper().getallCitiesrepeat();
+    // print(getallcities!.status);
+    // print(
+    //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     update();
   }
 
+
   getStatesData() async {
     getallStates = await ApiHelper().getStates();
-    print(getallStates!.status);
-    print(
-        "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<States<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    // print(getallStates!.status);
+    // print(
+    //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<States<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     update();
   }
 
   getBanksData() async {
     getallBanks = await ApiHelper().getBanksList();
-    print(getallBanks!.status);
-    print(
-        "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<&&&&&&&&&&&&&&&&&");
+    // print(getallBanks!.status);
+    // print(
+    //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<&&&&&&&&&&&&&&&&&");
+    update();
+  }
+   getcompanytypes() async {
+    getallcompanytypes = await ApiHelper().getVendorComapnyType();
+    // print(getallBanks!.status);
+    // print(
+    //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<&&&&&&&&&&&&&&&&&");
     update();
   }
 
   getExperienceData() async {
     getExperience = await ApiHelper().getExperience();
-    print(getExperience!.status);
-    print("&&&&&&&&&&&&&&&&&&&&&");
+    // print(getExperience!.status);
+    // print("&&&&&&&&&&&&&&&&&&&&&");
   }
 
   gstNumberCheckBox(bool value) {
@@ -298,43 +319,86 @@ class profile_controller extends GetxController {
     selectedCityone = data;
     update();
   }
-
+selectcompanytype(data) {
+    //   = data.id.toString();
+    // experinceId = data;
+    typeOfCompany = TextEditingController(text: data);
+    selectedcompanytype = data;
+    update();
+  }
   getuserDetail() async {
     userDetail = await ApiHelper().getFrelencer();
     update();
+  // print(userDetail!.status);
     print("mainData fetch");
     // genderController.clear();
     update();
     if (userDetail != null) {
       if (userDetail!.status == true) {
+        
+        // ==============================Vendor details=======================
+        companyName = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
+        selectedAccountGroup =
+            userDetail!.data!.userDetails!.vendorDetails?.accountGroup;
+        selectedVendor =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorRequiredFor;
+        companyEmail = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.contactEmail);
+        selectedStateOne =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorState;
+        selectedCityone =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorCity;
+            selectedcompanytype = userDetail!.data!.userDetails!.vendorDetails?.vendorCompanyType;
+        companyPincode = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.vendorPin);
+        companyPhone = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.phoneNumber);
+        autualTurnover = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.turnover);
+        contactFirstname = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.vendorDetails?.contactFirstName);
+        contactLastname = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.vendorDetails?.contactLastName);
+        contactPosition = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.vendorDetails?.contactPosition);
+        contactPhonenumber = TextEditingController(
+            text: userDetail!
+                .data!.userDetails!.vendorDetails?.contactPhoneNumber);
+           print(contactPhonenumber);
+           print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################"); 
+        // =================================================
         firstNameController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.firstName!);
+            text: userDetail!.data!.userDetails!.profileDetails?.firstName!);
         lastNameController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.lastName!);
+            text: userDetail!.data!.userDetails!.profileDetails?.lastName!);
         emailidController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.email!);
+            text: userDetail!.data!.userDetails!.profileDetails?.email!);
         profileController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.workTitle!);
+            text: userDetail!.data!.userDetails!.profileDetails?.workTitle!);
         addressController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.address!);
+            text: userDetail!.data!.userDetails!.profileDetails?.address!);
         dobController = TextEditingController(
-            text: userDetail!.data!.userDetails!.profileDetails!.dob!);
+            text: userDetail!.data!.userDetails!.profileDetails?.dob!);
         selectedGenderOne =
-            userDetail!.data!.userDetails!.profileDetails!.gender;
+            userDetail!.data!.userDetails!.profileDetails?.gender;
         update();
         selectedqualificationOne = userDetail!
-            .data!.userDetails!.profileDetails!.highestQualification!;
+            .data!.userDetails!.profileDetails?.highestQualification!;
         pancardController = TextEditingController(
             text: userDetail!
-                .data!.userDetails!.profileDetails!.addressProofNumber!);
+                .data!.userDetails!.profileDetails?.addressProofNumber!);
         aadharController = TextEditingController(
             text:
-                userDetail!.data!.userDetails!.profileDetails!.idProofNumber!);
+                userDetail!.data!.userDetails!.profileDetails?.idProofNumber!);
         panfront =
-            userDetail!.data!.userDetails!.profileDetails!.addressProofDoc;
-        aadharback = userDetail!.data!.userDetails!.profileDetails!.idProofDoc;
+            userDetail!.data!.userDetails!.profileDetails?.addressProofDoc;
+        aadharback = userDetail!.data!.userDetails!.profileDetails?.idProofDoc;
         selectedexperienceOne =
-            userDetail!.data!.userDetails!.profileDetails!.experience;
+            userDetail!.data!.userDetails!.profileDetails?.experience;
         print(experienceController.text);
         print("---------------8888-------------------------");
         // selectedQuelification = Qualification(
@@ -343,8 +407,8 @@ class profile_controller extends GetxController {
         //  qualificationName: userDetail!.data!.userDetails!.profileDetails!.highestQualificationName
         //     );
         selectedExperience = WorkExp(
-            name: userDetail!.data!.userDetails!.profileDetails!.experience!);
-        userDetail!.data!.userDetails!.profileDetails!.skills!.forEach(
+            name: userDetail!.data!.userDetails!.profileDetails?.experience!);
+        userDetail!.data!.userDetails!.profileDetails?.skills!.forEach(
           (element) {
             selectedSkill.add(element.skillName);
           },
@@ -363,7 +427,7 @@ class profile_controller extends GetxController {
             selectedCity.add(element.serviceAreaName);
           },
         );
-
+        userDetail!.data!.userDetails!.businessDetails?.gstNumber != null?checkbox==true:checkbox==false;
         // ==============================Bank Details Data===============================
         accountController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
@@ -378,6 +442,8 @@ class profile_controller extends GetxController {
         selectedbankOne = userDetail!.data!.userDetails!.bankDetails?.bankName;
         accountTypeController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountType);
+    
+        update();
       }
     }
     update();
@@ -503,7 +569,8 @@ class profile_controller extends GetxController {
       // ));
     }
   }
-Future<void> add_Vendor_Details() async {
+
+  Future<void> add_Vendor_Details() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
     var token = sharedPreferneces.getString('token');
@@ -522,7 +589,7 @@ Future<void> add_Vendor_Details() async {
           "vendor_pin": companyPincode.text,
           "vendor_phone": companyPhone.text,
           "turnover": autualTurnover.text,
-          "vendor_company_type": autualTurnover.text,
+          "vendor_company_type": "1",
           "contact_first_name": contactFirstname.text,
           "contact_last_name": contactLastname.text,
           "contact_phone_number": contactPhonenumber.text,
@@ -558,31 +625,32 @@ Future<void> add_Vendor_Details() async {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-                Get.snackbar("Data Submitted", convertJson['success_msg'],
+            Get.snackbar("Data Submitted", convertJson['success_msg'],
                 duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
-            
-              activeCurrentStep += 1;
+
+            activeCurrentStep += 1;
             update();
           } else {
-             Get.snackbar("Error", convertJson['error_msg'],
+            Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);
           }
         } catch (e) {
           if (kDebugMode) {
             print(e.toString());
           }
-  Get.snackbar("Error",'Something went wrong, try again later',
-                snackPosition: SnackPosition.BOTTOM);
-         update();
+          Get.snackbar("Error", 'Something went wrong, try again later',
+              snackPosition: SnackPosition.BOTTOM);
+          update();
         }
       }
     } on SocketException catch (_) {
-        Get.snackbar("Error", 'No internet connection. Connect to the internet and try again.',
-                snackPosition: SnackPosition.BOTTOM);
-     
+      Get.snackbar("Error",
+          'No internet connection. Connect to the internet and try again.',
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
+
   Future<void> postImage(imageName, file) async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
@@ -686,7 +754,7 @@ Future<void> add_Vendor_Details() async {
                 "gst_number": gstNumberController.text,
                 "gst_doc": "$gst",
                 "pan_number": businessPanController.text,
-                "service_area": data,
+                "service_area":  "$data",
               })
             : jsonEncode(<String, String>{
                 "phone_number": '$number',

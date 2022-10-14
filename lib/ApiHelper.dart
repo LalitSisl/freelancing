@@ -10,8 +10,10 @@ import 'package:freelancing/Model/experienceModal.dart';
 import 'package:freelancing/Model/qualificationModal.dart';
 import 'package:freelancing/Model/skillModel.dart';
 import 'package:freelancing/Model/stateModel.dart';
+import 'package:freelancing/Model/typeofcompanymodel.dart';
 import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
+import 'package:freelancing/global.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,8 +42,11 @@ class ApiHelper {
           print(convertJson);
           print("-------------------------------------------------------");
           if (convertJson["status"]) {
+            selectUser=="2"?
             sharedPreferneces.setString('user_id',
-                '${convertJson['data']['user_details']['profile_details']['id']}');
+                '${convertJson['data']['user_details']['profile_details']['id']}'):
+                            sharedPreferneces.setString('user_id',
+                '${convertJson['data']['user_details']['vendor_details']['id']}');
             var data = UserDetailModelClass();
             data = UserDetailModelClass.fromJson(convertJson);
             return data;
@@ -192,6 +197,37 @@ class ApiHelper {
     } on SocketException catch (_) {}
   }
 
+
+  Future<CityDetailModelClass?> getallCitiesrepeat() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "${sharedPreferneces.getString('number')}",
+        
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(
+              "@@@@@@@@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~~~~~~~~~~~~~~~#################");
+          print(convertJson);
+          if (convertJson["status"]) {
+            var data = CityDetailModelClass();
+            data = CityDetailModelClass.fromJson(convertJson);
+            return data;
+          } else {}
+        } catch (e) {}
+      }
+    } on SocketException catch (_) {}
+  }
   Future<StateModelClass?> getStates() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
 
@@ -251,4 +287,35 @@ class ApiHelper {
       }
     } on SocketException catch (_) {}
   }
+  Future<TypeofcompanyModel?> getVendorComapnyType() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "${sharedPreferneces.getString('number')}",
+        };
+        var response = await http.get(
+               Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_VENDOR_COMAPNY_TYPE}",
+                queryParams),
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(
+              "@@@@@@@@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~~~~~~~~~~~~~~~#################");
+          print(convertJson);
+          if (convertJson["status"]) {
+            var data = TypeofcompanyModel();
+            data = TypeofcompanyModel.fromJson(convertJson);
+            return data;
+          } else {}
+        } catch (e) {}
+      }
+    } on SocketException catch (_) {}
+  }
+
 }

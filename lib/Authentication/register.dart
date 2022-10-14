@@ -211,6 +211,7 @@ class _RegisterState extends State<Register> {
                             ));
                           } else {
                             controller.register();
+                            
                           }
                           //Get.to(Profile(user: _selectUser));
                         },
