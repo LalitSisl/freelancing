@@ -55,7 +55,7 @@ class BankDetail extends StatelessWidget {
                       hint: const Text("Select Account Type"),
                       isDense: true,
                       isExpanded: true,
-                       value: controller.selectedAccountType,
+                      value: controller.selectedAccountType,
                       items: [
                         'Saving',
                         'Current',
@@ -67,8 +67,8 @@ class BankDetail extends StatelessWidget {
                         );
                       }).toList(),
                       onChanged: ((newValue) {
-                      controller.selectAccount(newValue);
-                            controller.selectedAccountType= newValue;
+                        controller.selectAccount(newValue);
+                        controller.selectedAccountType = newValue;
                         print(newValue);
                         print(
                             "~~~~~~~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~");
@@ -88,13 +88,13 @@ class BankDetail extends StatelessWidget {
                 persnolDetailTextField(
                     controller.cAccountController, "Confirm Account Number",
                     (value) {
-                        if (value.isEmpty) {
-                          return 'Please confirm your account number';
-                        }
-                        if (value != controller.accountController.text) {
-                          return 'Account number and confirm account number should same';
-                        }
-                        return null;
+                  if (value.isEmpty) {
+                    return 'Please confirm your account number';
+                  }
+                  if (value != controller.accountController.text) {
+                    return 'Account number and confirm account number should same';
+                  }
+                  return null;
                 }, TextInputType.number, 50,
                     [FilteringTextInputFormatter.digitsOnly]),
                 persnolDetailTextField(controller.ifscController, "IFSC Code",

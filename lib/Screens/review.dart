@@ -30,7 +30,6 @@ class _ReviewState extends State<Review> {
       child: Scaffold(
         backgroundColor: ColorPalette.white,
         body: Column(children: [
-         
           Expanded(
             child: Center(
               child: Image.asset(

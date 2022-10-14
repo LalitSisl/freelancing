@@ -45,18 +45,17 @@ class _LoginState extends State<Login> {
             setState(() {
               isLoading = false;
             });
-              Get.snackbar("Success", convertJson['success_msg'],
-              duration:const Duration(seconds: 1),
+            Get.snackbar("Success", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
-        
+
             Get.to(Otp(number: phoneNumber));
           } else {
             setState(() {
               isLoading = false;
             });
-               Get.snackbar("Error", convertJson['error_msg'],
+            Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);
-          
           }
         } catch (e) {
           if (kDebugMode) {
@@ -65,7 +64,7 @@ class _LoginState extends State<Login> {
           setState(() {
             isLoading = false;
           });
-          
+
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Something went wrong, try again later'),
           ));

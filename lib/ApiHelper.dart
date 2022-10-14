@@ -9,6 +9,7 @@ import 'package:freelancing/Model/city.dart';
 import 'package:freelancing/Model/experienceModal.dart';
 import 'package:freelancing/Model/qualificationModal.dart';
 import 'package:freelancing/Model/skillModel.dart';
+import 'package:freelancing/Model/stateModel.dart';
 import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,7 +66,6 @@ class ApiHelper {
       //       'No internet connection. Connect to the internet and try again.'),
       // ));
     }
- 
   }
 
   Future<SkillModelClass?> getSkills() async {
@@ -161,7 +161,7 @@ class ApiHelper {
     } on SocketException catch (_) {}
   }
 
-  Future<CityDetailModelClass?> getCities() async {
+  Future<CityDetailModelClass?> getCities(var stateid) async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
 
     try {
@@ -169,6 +169,7 @@ class ApiHelper {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var queryParams = {
           "phone_number": "${sharedPreferneces.getString('number')}",
+          "state_id": stateid
         };
         var response = await http.get(
             Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
@@ -184,6 +185,36 @@ class ApiHelper {
           if (convertJson["status"]) {
             var data = CityDetailModelClass();
             data = CityDetailModelClass.fromJson(convertJson);
+            return data;
+          } else {}
+        } catch (e) {}
+      }
+    } on SocketException catch (_) {}
+  }
+
+  Future<StateModelClass?> getStates() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "${sharedPreferneces.getString('number')}",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_STATE}", queryParams),
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(
+              "@@@@@@@@@@@@@@@@@@@@@@@@@@~~~~~~~~~~~~~~~~~~~~~~~~~#################");
+          print(convertJson);
+          if (convertJson["status"]) {
+            var data = StateModelClass();
+            data = StateModelClass.fromJson(convertJson);
             return data;
           } else {}
         } catch (e) {}

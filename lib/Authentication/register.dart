@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/header_widget.dart';
 import 'package:freelancing/Authentication/headerwidget1.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
+import 'package:freelancing/Controller/registercontroller.dart';
 import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:freelancing/Screens/profile_copy.dart';
+import 'package:freelancing/global.dart';
 import 'package:http/http.dart' as http;
 import '../Profile/profile.dart';
 import 'package:get/get.dart';
@@ -20,22 +22,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
 
-
   @override
   State<Register> createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-    profile_controller controller = Get.put(profile_controller());
-  // ignore: prefer_typing_uninitialized_variables
-  var selectUser;
+  registerController controller = Get.put(registerController());
+  profile_controller Profilecontroller = Get.put(profile_controller());
+
   double _headerHeight = 250;
   var isLoading = false;
 
   @override
   initState() {
     super.initState();
-
     getdata();
   }
 
@@ -49,80 +49,81 @@ class _RegisterState extends State<Register> {
     });
   }
 
-  Future<void> register() async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-          "user_type": "$selectUser"
-        };
-        var response = await http.get(
-            Uri.http(
-                "${APIUrls.DOMAIN}", "${APIUrls.REGISTER_AS}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-        // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
-        //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
-        try {
-          var convertJson = jsonDecode(response.body);
-          print('   lalit $convertJson');
-          if (convertJson["status"]) {
-            setState(() {
-              isLoading = false;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['success_msg']}'),
-            ));
-            setState(() {
-              sharedPreferneces.setString(
-                  'user_id', '${convertJson['data']['user_id']}');
-            });
-            print(convertJson['data']['user_status']);
-            if (convertJson['data']['user_status'] != "3") {
-              Get.to(() => profile_copy());
-              // Get.to(() =>Profile(
-              //     user: _selectUser,
-              //     user_status: convertJson['data']['user_status'].toString()));
-              print('user status ${convertJson['data']['user_status']}');
-            } else {
-              // Get.to(Profile(user: _selectUser,
-              //     user_status: convertJson['data']['user_status'].toString()));
-              Get.to(profile_copy());
-            }
-          } else {
-            setState(() {
-              isLoading = false;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('${convertJson['error_msg']}'),
-            ));
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Something went wrong, try again later'),
-          ));
-        }
-      }
-    } on SocketException catch (_) {
-      setState(() {
-        isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'No internet connection. Connect to the internet and try again.'),
-      ));
-    }
-  }
+  // Future<void> register() async {
+  //   SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     final result = await InternetAddress.lookup('google.com');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       var queryParams = {
+  //         "phone_number": "$number",
+  //         // "user_type": "$selectUser",
+  //            "user_type": controller.selectUser.toString()
+  //       };
+  //       var response = await http.get(
+  //           Uri.http(
+  //               "${APIUrls.DOMAIN}", "${APIUrls.REGISTER_AS}", queryParams),
+  //           headers: {'Authorization': 'Bearer $token'});
+  //       // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
+  //       //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
+  //       try {
+  //         var convertJson = jsonDecode(response.body);
+  //         print('   lalit $convertJson');
+  //         if (convertJson["status"]) {
+  //           setState(() {
+  //             isLoading = false;
+  //           });
+  //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //             content: Text('${convertJson['success_msg']}'),
+  //           ));
+  //           setState(() {
+  //             sharedPreferneces.setString(
+  //                 'user_id', '${convertJson['data']['user_id']}');
+  //           });
+  //           print(convertJson['data']['user_status']);
+  //           if (convertJson['data']['user_status'] != "3") {
+  //             Get.to(() => profile_copy());
+  //             // Get.to(() =>Profile(
+  //             //     user: _selectUser,
+  //             //     user_status: convertJson['data']['user_status'].toString()));
+  //             print('user status ${convertJson['data']['user_status']}');
+  //           } else {
+  //             // Get.to(Profile(user: _selectUser,
+  //             //     user_status: convertJson['data']['user_status'].toString()));
+  //             Get.to(profile_copy());
+  //           }
+  //         } else {
+  //           setState(() {
+  //             isLoading = false;
+  //           });
+  //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //             content: Text('${convertJson['error_msg']}'),
+  //           ));
+  //         }
+  //       } catch (e) {
+  //         if (kDebugMode) {
+  //           print(e.toString());
+  //         }
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           content: Text('Something went wrong, try again later'),
+  //         ));
+  //       }
+  //     }
+  //   } on SocketException catch (_) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //       content: Text(
+  //           'No internet connection. Connect to the internet and try again.'),
+  //     ));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -202,14 +203,14 @@ class _RegisterState extends State<Register> {
                     : ElevatedButton(
                         onPressed: () {
                           print("object&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-                          print('$selectUser');
+                          print(selectUser);
                           if (selectUser == null) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text('Please select User Type'),
                             ));
                           } else {
-                          controller.register(selectUser);
+                            controller.register();
                           }
                           //Get.to(Profile(user: _selectUser));
                         },

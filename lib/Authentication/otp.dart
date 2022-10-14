@@ -93,9 +93,9 @@ class _OtpState extends State<Otp> {
             setState(() {
               isLoading = false;
             });
- Get.snackbar("Success", convertJson['success_msg'], duration:const Duration(seconds: 1),
+            Get.snackbar("Success", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
-          
 
             setState(() {
               sharedPreferneces.setString('number', '${widget.number}');
@@ -107,9 +107,8 @@ class _OtpState extends State<Otp> {
             setState(() {
               isLoading = false;
             });
-             Get.snackbar("Error", convertJson['error_msg'],
+            Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);
-          
           }
         } catch (e) {
           if (kDebugMode) {

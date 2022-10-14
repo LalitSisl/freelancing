@@ -502,6 +502,33 @@ Widget persnolDetailTextField1(
   );
 }
 
+Widget Label2(title) {
+  return Padding(
+    padding: const EdgeInsets.all(5.0),
+    child: Row(
+      children: [
+        RichText(
+          text: TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: ColorPalette.themeBlue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13),
+              children: const [
+                TextSpan(
+                    text: ' *',
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 10))
+              ]),
+          //textScaleFactor: labelTextScale,
+        ),
+      ],
+    ),
+  );
+}
+
 Widget Label(title) {
   return Padding(
     padding: const EdgeInsets.all(5.0),
@@ -528,9 +555,7 @@ Widget Label(title) {
     ),
   );
 }
-
 Widget UplaodContainer(text, BuildContext context, image, name) {
-  
   return Container(
     height: 130,
     width: MediaQuery.of(context).size.width / 1.4,

@@ -3,18 +3,22 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelancing/ApiHelper.dart';
+import 'package:freelancing/Controller/registercontroller.dart';
 import 'package:freelancing/Model/BankModel.dart';
 import 'package:freelancing/Model/city.dart';
 import 'package:freelancing/Model/experienceModal.dart';
 import 'package:freelancing/Model/qualificationModal.dart';
 import 'package:freelancing/Model/skillModel.dart';
+import 'package:freelancing/Model/stateModel.dart';
 import 'package:freelancing/Model/userModelClass.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/bank.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/business.dart';
+import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/vendorDetails.dart';
 import 'package:freelancing/Screens/profile_copy.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
+import 'package:freelancing/global.dart';
 import 'package:get/get.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,10 +29,11 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class profile_controller extends GetxController {
+  // registerController controllerRegister = Get.put(registerController());
   int activeCurrentStep = 0;
   final formKey = GlobalKey<FormState>();
-   final businessformKey = GlobalKey<FormState>();
-    final bankformKey = GlobalKey<FormState>();
+  final businessformKey = GlobalKey<FormState>();
+  final bankformKey = GlobalKey<FormState>();
 
 // List<UserSkill> skillsList = [];
 
@@ -38,12 +43,13 @@ class profile_controller extends GetxController {
   GetExperienceModal? getExperience;
   CityDetailModelClass? getallcities;
   BankModelClass? getallBanks;
+  StateModelClass? getallStates;
   // Qualification? selectedQuelification;
   WorkExp? selectedExperience;
   // String? qualification;
   String? experience;
   List<Qualification> highestQuelificationList = [];
-
+// ============================Personal Details=========================
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailidController = TextEditingController();
@@ -56,15 +62,33 @@ class profile_controller extends GetxController {
   TextEditingController aadharController = TextEditingController();
   TextEditingController skillsController = TextEditingController();
   TextEditingController experienceController = TextEditingController();
+  // ==============================Business Details=================
   TextEditingController gstNumberController = TextEditingController();
   TextEditingController businessPanController = TextEditingController();
   TextEditingController businessCity = TextEditingController();
+  // =============================Bank Details======================
   TextEditingController bankController = TextEditingController();
   TextEditingController accountController = TextEditingController();
   TextEditingController cAccountController = TextEditingController();
   TextEditingController ifscController = TextEditingController();
   TextEditingController accountTypeController = TextEditingController();
   TextEditingController accountHolder = TextEditingController();
+// ===========================Vendor Deatils=====================
+
+  TextEditingController companyName = TextEditingController();
+  TextEditingController accountGroup = TextEditingController();
+  TextEditingController vendorRequired = TextEditingController();
+  TextEditingController companyEmail = TextEditingController();
+  TextEditingController comapnyState = TextEditingController();
+  TextEditingController comapnyCity = TextEditingController();
+  TextEditingController companyPincode = TextEditingController();
+  TextEditingController companyPhone = TextEditingController();
+  TextEditingController autualTurnover = TextEditingController();
+  TextEditingController typeOfCompany = TextEditingController();
+  TextEditingController contactFirstname = TextEditingController();
+  TextEditingController contactLastname = TextEditingController();
+  TextEditingController contactPosition = TextEditingController();
+  TextEditingController contactPhonenumber = TextEditingController();
 
   bool checkbox = false;
 
@@ -92,6 +116,12 @@ class profile_controller extends GetxController {
   var selectedexperienceOne;
   var selectedbankOne;
   var selectedAccountType;
+  var selectedAccountGroup;
+  var selectedVendor;
+  var selectedStateOne;
+  var selectedCityone;
+
+  var vendorType;
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
   File? adharImage;
@@ -108,8 +138,12 @@ class profile_controller extends GetxController {
     getQualificationData();
     getExperienceData();
     getcitiesData();
+    getStatesData();
     getBanksData();
+    print(selectUser);
+    print(selectUser);
 
+    print(")))))))))))))))))))))))))))))))))))))))))))))))");
   }
 
   selectSkill(item) {
@@ -135,9 +169,22 @@ class profile_controller extends GetxController {
     selectedbankOne = bank;
     update();
   }
-    selectAccount(type) {
+
+  selectAccount(type) {
     accountTypeController = TextEditingController(text: type);
     selectedAccountType = type;
+    update();
+  }
+
+  selectAccountgroup(group) {
+    accountGroup = TextEditingController(text: group);
+    selectedAccountGroup = group;
+    update();
+  }
+
+  selectVendorrequired(required) {
+    vendorRequired = TextEditingController(text: required);
+    selectedVendor = required;
     update();
   }
 
@@ -146,7 +193,7 @@ class profile_controller extends GetxController {
             state:
                 activeCurrentStep > 0 ? StepState.complete : StepState.indexed,
             isActive: true,
-            title: const Text("Personal"),
+            title: Text(selectUser == "2" ? "Personal" : "Vendor"),
             content: PersonalDetail()),
         Step(
             state:
@@ -160,7 +207,6 @@ class profile_controller extends GetxController {
             isActive: true,
             title: const Text("Bank"),
             content: BankDetail()),
-
       ];
 
   List genderList = ['M', "F"];
@@ -188,10 +234,18 @@ class profile_controller extends GetxController {
   }
 
   getcitiesData() async {
-    getallcities = await ApiHelper().getCities();
+    getallcities = await ApiHelper().getCities(selectedStateOne);
     print(getallcities!.status);
     print(
         "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    update();
+  }
+
+  getStatesData() async {
+    getallStates = await ApiHelper().getStates();
+    print(getallStates!.status);
+    print(
+        "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<States<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     update();
   }
 
@@ -208,6 +262,7 @@ class profile_controller extends GetxController {
     print(getExperience!.status);
     print("&&&&&&&&&&&&&&&&&&&&&");
   }
+
   gstNumberCheckBox(bool value) {
     checkbox = value;
     print(checkbox);
@@ -216,16 +271,34 @@ class profile_controller extends GetxController {
 
   selectGender(gender) {
     genderController = TextEditingController(text: gender);
-    selectedGenderOne= gender;
+    selectedGenderOne = gender;
     update();
   }
-    selectExperience(data) {
+
+  selectExperience(data) {
     //   = data.id.toString();
     experinceId = data;
     experienceController = TextEditingController(text: data);
     selectedexperienceOne = data;
     update();
   }
+
+  selectVendorstate(data) {
+    //   = data.id.toString();
+    // experinceId = data;
+    comapnyState = TextEditingController(text: data);
+    selectedStateOne = data;
+    update();
+  }
+
+  selectVendorcity(data) {
+    //   = data.id.toString();
+    // experinceId = data;
+    comapnyCity = TextEditingController(text: data);
+    selectedCityone = data;
+    update();
+  }
+
   getuserDetail() async {
     userDetail = await ApiHelper().getFrelencer();
     update();
@@ -246,12 +319,11 @@ class profile_controller extends GetxController {
             text: userDetail!.data!.userDetails!.profileDetails!.address!);
         dobController = TextEditingController(
             text: userDetail!.data!.userDetails!.profileDetails!.dob!);
-        selectedGenderOne = 
-             userDetail!.data!.userDetails!.profileDetails!.gender;
+        selectedGenderOne =
+            userDetail!.data!.userDetails!.profileDetails!.gender;
         update();
-        selectedqualificationOne = 
-           userDetail!
-                .data!.userDetails!.profileDetails!.highestQualification!;
+        selectedqualificationOne = userDetail!
+            .data!.userDetails!.profileDetails!.highestQualification!;
         pancardController = TextEditingController(
             text: userDetail!
                 .data!.userDetails!.profileDetails!.addressProofNumber!);
@@ -261,8 +333,8 @@ class profile_controller extends GetxController {
         panfront =
             userDetail!.data!.userDetails!.profileDetails!.addressProofDoc;
         aadharback = userDetail!.data!.userDetails!.profileDetails!.idProofDoc;
-        selectedexperienceOne = 
-           userDetail!.data!.userDetails!.profileDetails!.experience;
+        selectedexperienceOne =
+            userDetail!.data!.userDetails!.profileDetails!.experience;
         print(experienceController.text);
         print("---------------8888-------------------------");
         // selectedQuelification = Qualification(
@@ -280,7 +352,8 @@ class profile_controller extends GetxController {
         update();
         // ==========================Business Details==============================
         gstNumberController = TextEditingController(
-            text: userDetail!.data!.userDetails!.businessDetails?.gstNumber ??"" );
+            text: userDetail!.data!.userDetails!.businessDetails?.gstNumber ??
+                "");
         businessPanController = TextEditingController(
             text: userDetail!.data!.userDetails!.businessDetails?.panNumber);
         gst = userDetail!.data!.userDetails!.businessDetails?.gstDoc;
@@ -294,7 +367,8 @@ class profile_controller extends GetxController {
         // ==============================Bank Details Data===============================
         accountController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
-            cAccountController = TextEditingController(text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
+        cAccountController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
         ifscController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.ifscCode);
         accountHolder = TextEditingController(
@@ -309,8 +383,6 @@ class profile_controller extends GetxController {
     update();
   }
 
-
-
   // selectqulificationr(Qualification data) {
   //    qualification = data.id;
   //   highestqualController = TextEditingController(text: data.qualificationName);
@@ -318,8 +390,6 @@ class profile_controller extends GetxController {
 
   //   update();
   // }
-
-
 
   Future<void> add_Personal_Details() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
@@ -351,7 +421,7 @@ class profile_controller extends GetxController {
           "address": addressController.text,
           "work_title": profileController.text,
           "dob": dobController.text,
-          "gender":selectedGenderOne,
+          "gender": selectedGenderOne,
           "highest_qualification": selectedqualificationOne,
           "id_proof_type": '1',
           "id_proof_no": aadharController.text,
@@ -401,7 +471,8 @@ class profile_controller extends GetxController {
             //   content: Text('${convertJson['success_msg']}'),
             // ));
             // Get.to(Otp(number: phoneNumber));
-            Get.snackbar("Data Submitted", convertJson['success_msg'], duration:const Duration(seconds: 1),
+            Get.snackbar("Data Submitted", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
 
             activeCurrentStep += 1;
@@ -432,7 +503,86 @@ class profile_controller extends GetxController {
       // ));
     }
   }
+Future<void> add_Vendor_Details() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    var number = sharedPreferneces.getString('number');
+    var token = sharedPreferneces.getString('token');
+    var user_id = sharedPreferneces.getString('user_id');
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body = jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "company_name": companyName.text,
+          "account_group": "$selectedAccountGroup",
+          "vendor_required_for": "$selectedVendor",
+          "vendor_state": "$selectedStateOne",
+          "vendor_city": "$selectedCityone",
+          "vendor_pin": companyPincode.text,
+          "vendor_phone": companyPhone.text,
+          "turnover": autualTurnover.text,
+          "vendor_company_type": autualTurnover.text,
+          "contact_first_name": contactFirstname.text,
+          "contact_last_name": contactLastname.text,
+          "contact_phone_number": contactPhonenumber.text,
+          "contact_email": companyEmail.text,
+          "user_type": "1",
+          "contact_position": contactPosition.text,
+        });
+        //   jsonEncode(<String, String>{
+        //   "phone_number": '$number',
+        //   "user_id": '${sharedPreferneces.getString('user_id')}',
+        //   "company_name": "$companyname",
+        //   "account_group": "$_selectaccount",
+        //   "vendor_required_for": "$_selectvendor",
+        //   "vendor_state": "$vendor_state",
+        //   "vendor_city": "$vendor_city",
+        //   "vendor_pin": "$pincode",
+        //   "vendor_phone": "$phone",
+        //   "turnover": "$turnover",
+        //   "vendor_company_type": "$vendor_company",
+        //   "contact_first_name":"$c_firstName",
+        //   "contact_last_name":"$c_lastName",
+        //   "contact_phone_number": "$c_phone",
+        //   "contact_email": "$email",
+        //   "user_type":"1",
+        //   "contact_position": "$c_position",
+        // });
+        print(body);
 
+        var response = await http.post(Uri.parse(APIUrls.ADD_VENDOR_DETAILS),
+            headers: {'Authorization': 'Bearer $token'}, body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+                Get.snackbar("Data Submitted", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
+                snackPosition: SnackPosition.BOTTOM);
+            
+              activeCurrentStep += 1;
+            update();
+          } else {
+             Get.snackbar("Error", convertJson['error_msg'],
+                snackPosition: SnackPosition.BOTTOM);
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+  Get.snackbar("Error",'Something went wrong, try again later',
+                snackPosition: SnackPosition.BOTTOM);
+         update();
+        }
+      }
+    } on SocketException catch (_) {
+        Get.snackbar("Error", 'No internet connection. Connect to the internet and try again.',
+                snackPosition: SnackPosition.BOTTOM);
+     
+    }
+  }
   Future<void> postImage(imageName, file) async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
@@ -508,74 +658,6 @@ class profile_controller extends GetxController {
   }
 // ========================add business details=====================
 
-  Future<void> register( var usertype) async {
-    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-        var number = sharedPreferneces.getString('number');
-    var token = sharedPreferneces.getString('token');
-   
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var queryParams = {
-          "phone_number": "$number",
-          "user_type": usertype,
-        };
-        var response = await http.get(
-            Uri.http(
-                "${APIUrls.DOMAIN}", "${APIUrls.REGISTER_AS}", queryParams),
-            headers: {'Authorization': 'Bearer $token'});
-        // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
-        //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
-        try {
-          var convertJson = jsonDecode(response.body);
-          print('   lalit $convertJson');
-          if (convertJson["status"]) {
-             Get.snackbar("Data Fetched successfully", convertJson['success_msg'], duration:const Duration(seconds: 1),
-                snackPosition: SnackPosition.BOTTOM);
-              sharedPreferneces.setString(
-                  'user_id', '${convertJson['data']['user_id']}');
-                  
-             
-                  update();
-                
-          
-             print(convertJson['data']['user_status']);
-            if (convertJson['data']['user_status'] != "3") {
-                    activeCurrentStep  = int.parse(convertJson['data']['user_status']);
-              Get.to(() => profile_copy());
-              // Get.to(() =>Profile(
-              //     user: _selectUser,
-              //     user_status: convertJson['data']['user_status'].toString()));
-              print('user status ${convertJson['data']['user_status']}');
-            } else {
-              // Get.to(Profile(user: _selectUser,
-              //     user_status: convertJson['data']['user_status'].toString()));
-              Get.to(const Review());
-            }
-          } else {
-            Get.snackbar("Error", convertJson['error_msg'],
-                snackPosition: SnackPosition.BOTTOM);
-         
-          }
-        } catch (e) {
-          if (kDebugMode) {
-            print(e.toString());
-          }
-         Get.snackbar("Error","Something went wrong, try again later",
-                snackPosition: SnackPosition.BOTTOM);
-       
-        }
-      }
-    } on SocketException catch (_) {
-        Get.snackbar("Error"," 'No internet connection. Connect to the internet and try again.",
-                snackPosition: SnackPosition.BOTTOM);
- 
-    }
-  }
-
-
-
-
   Future<void> add_Business_Details() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
@@ -623,7 +705,8 @@ class profile_controller extends GetxController {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-            Get.snackbar("Business Details ", convertJson['success_msg'], duration:const Duration(seconds: 1),
+            Get.snackbar("Business Details ", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
             activeCurrentStep += 1;
             update();
@@ -678,11 +761,12 @@ class profile_controller extends GetxController {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-            Get.snackbar("Bank Details ", convertJson['success_msg'], duration:const Duration(seconds: 1),
+            Get.snackbar("Bank Details ", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
-             Get.to(const Review());
+            Get.to(const Review());
             update();
-           
+
             // Get.to(Otp(number: phoneNumber));
           } else {
             Get.snackbar("Error", convertJson['error_msg'],

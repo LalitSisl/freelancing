@@ -29,8 +29,8 @@ class BusinessDetail extends StatelessWidget {
                     children: [
                       Label("Business Details"),
                       CheckboxListTile(
-                        title:
-                            const Text("Do you have GST number"), //    <-- label
+                        title: const Text(
+                            "Do you have GST number"), //    <-- label
                         value: controller.checkbox,
                         onChanged: (newValue) {
                           print(newValue);
@@ -45,25 +45,26 @@ class BusinessDetail extends StatelessWidget {
                                 persnolDetailTextField(
                                     controller.gstNumberController,
                                     "Enter GST Number", (value) {
-                            String pattern =
-                                r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
-                            RegExp regex = RegExp(pattern);
-                            if (value == null ||
-                                value.isEmpty ||
-                                !regex.hasMatch(value)) {
-                              return 'Enter a valid GST number';
-                            } else {
-                              return null;
-                            }
+                                  String pattern =
+                                      r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+                                  RegExp regex = RegExp(pattern);
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      !regex.hasMatch(value)) {
+                                    return 'Enter a valid GST number';
+                                  } else {
+                                    return null;
+                                  }
                                 }, TextInputType.text, 30, [
-                                  FilteringTextInputFormatter.singleLineFormatter
+                                  FilteringTextInputFormatter
+                                      .singleLineFormatter
                                 ]),
                                 const SizedBox(
                                   height: 15,
                                 ),
                                 GestureDetector(
                                     onTap: () {
-                            showDialog(
+                                      showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
@@ -76,8 +77,8 @@ class BusinessDetail extends StatelessWidget {
                                                     children: [
                                                   GestureDetector(
                                                     onTap: () async {
-                                                      print( controller.gst);
-                                                    controller.imggstdoc();
+                                                      print(controller.gst);
+                                                      controller.imggstdoc();
                                                     },
                                                     child: Column(
                                                       mainAxisSize:
@@ -93,7 +94,8 @@ class BusinessDetail extends StatelessWidget {
                                                   ),
                                                   GestureDetector(
                                                     onTap: () async {
-                                                      controller.imggallerygst();
+                                                      controller
+                                                          .imggallerygst();
                                                     },
                                                     child: Column(
                                                       mainAxisSize:
@@ -109,8 +111,6 @@ class BusinessDetail extends StatelessWidget {
                                                   ),
                                                 ]));
                                           });
-                                  
-                                  
                                     },
                                     child: UplaodContainer(
                                         "Upload GST Proof",
@@ -123,28 +123,25 @@ class BusinessDetail extends StatelessWidget {
                               ],
                             )
                           : Container(),
-                      persnolDetailTextField(
-                          controller.businessPanController, "Business PAN Number",
-                       (value) {
-                          String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
-                          RegExp regex = RegExp(pattern);
-                          if (value == null ||
-                              value.isEmpty ||
-                              !regex.hasMatch(value)) {
-                            return 'Enter a valid pan number';
-                          } else {
-                            return null;
-                          }
-                      }, TextInputType.text, 50, [
-                       Capatalized()
-                      ]),
+                      persnolDetailTextField(controller.businessPanController,
+                          "Business PAN Number", (value) {
+                        String pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}";
+                        RegExp regex = RegExp(pattern);
+                        if (value == null ||
+                            value.isEmpty ||
+                            !regex.hasMatch(value)) {
+                          return 'Enter a valid pan number';
+                        } else {
+                          return null;
+                        }
+                      }, TextInputType.text, 50, [Capatalized()]),
                       Label("Service Area"),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: DropdownSearch.multiSelection(
                           dropdownDecoratorProps: const DropDownDecoratorProps(
                             dropdownSearchDecoration: InputDecoration(
-                              border:  OutlineInputBorder(
+                              border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
@@ -152,7 +149,7 @@ class BusinessDetail extends StatelessWidget {
                                 borderSide: BorderSide(
                                     color: ColorPalette.themeBlue, width: 0.5),
                               ),
-                              errorBorder:  OutlineInputBorder(
+                              errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorPalette.red, width: 0.5),
                               ),
@@ -169,10 +166,11 @@ class BusinessDetail extends StatelessWidget {
                             print(value);
                             controller.selectCity(value);
                             // print(controller.selectedSkill);
-                            print("object~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            print(
+                                "object~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                           },
-                          selectedItems: controller.userDetail?.data!.userDetails!
-                                      .businessDetails ==
+                          selectedItems: controller.userDetail?.data!
+                                      .userDetails!.businessDetails ==
                                   null
                               ? []
                               : List.generate(
