@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -6,11 +8,15 @@ import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Controller/registercontroller.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
+import 'package:freelancing/Screens/ProfileScreens/termandConditions.dart';
 import 'package:freelancing/Screens/review.dart';
+import 'package:freelancing/Utils/APIURLs.dart';
 import 'package:freelancing/global.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:image_picker/image_picker.dart';
+var pic;
 class profile_copy extends StatefulWidget {
   profile_copy({Key? key}) : super(key: key);
 
@@ -74,38 +80,38 @@ class _profile_copyState extends State<profile_copy> {
                                   height: 130,
                                   width: 130,
                                   child:
-                                      //  pic != null
-                                      //     ? Image.network(
-                                      //   '${APIUrls.BASE_URL_IMAGE}$pic',
-                                      //         fit: BoxFit.cover,
-                                      //       )
-                                      // :
+                                       pic != null
+                                          ? Image.network(
+                                        '${APIUrls.BASE_URL_IMAGE}$pic',
+                                              fit: BoxFit.cover,
+                                            )
+                                      :
                                       Image.asset('assets/images/user.png')),
                               Positioned(
                                   bottom: -5,
                                   right: -25,
                                   child: RawMaterialButton(
                                     onPressed: () async {
-                                      // final ImagePicker _picker =
-                                      //     ImagePicker(); //added type ImagePicker
-                                      // var image1 = await _picker.getImage(
-                                      //     source: ImageSource.camera);
-                                      // File
-                                      // compressedFile =
-                                      // await FlutterNativeImage
-                                      //     .compressImage(
-                                      //   image1!.path,
-                                      //   quality: 50,
-                                      // );
-                                      // if (image1 != null) {
-                                      //   setState(() {
-                                      //     final File file = File(
-                                      //         compressedFile
-                                      //             .path);
-                                      //     //pic = File(image1.path);
-                                      //     postImage('photo', file.path);
-                                      //   });
-                                      // }
+                                      final ImagePicker _picker =
+                                          ImagePicker(); //added type ImagePicker
+                                      var profile = await _picker.getImage(
+                                          source: ImageSource.camera);
+                                      File
+                                      compressedFile =
+                                      await FlutterNativeImage
+                                          .compressImage(
+                                        profile!.path,
+                                        quality: 50,
+                                      );
+                                      if (profile != null) {
+                                        setState(() {
+                                          final File file = File(
+                                              compressedFile
+                                                  .path);
+                                          pic = File(profile.path);
+                                          controller.postImage('photo', file.path);
+                                        });
+                                      }
                                     },
                                     elevation: 2.0,
                                     fillColor: const Color(0xFFF5F6F9),
@@ -144,7 +150,7 @@ class _profile_copyState extends State<profile_copy> {
                                     fontWeight: FontWeight.bold,
                                   )),
                               const SizedBox(height: 5),
-                              Text(controller.loginNumber ,
+                              Text(controller.loginNumber.toString() ,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -210,7 +216,7 @@ class _profile_copyState extends State<profile_copy> {
                         } else {
                           if (controller.bankformKey.currentState!.validate()) {
                             controller.add_Bank_Details();
-                            Get.to(() => Review());
+                            Get.to(() => Conditions());
                           }
                         }
                       },

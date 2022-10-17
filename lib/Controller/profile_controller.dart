@@ -183,8 +183,10 @@ var selectedcompanytype;
 
   selectBanks(bank) {
     bankId = bank;
+    
     bankController = TextEditingController(text: bank);
-    selectedbankOne = bank;
+      selectedbankOne = bank;
+  
     update();
   }
 
@@ -355,7 +357,8 @@ selectcompanytype(data) {
         // ==============================Vendor details=======================
         companyName = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
-
+            designation = userDetail!.data!.userDetails!.vendorDetails?.contactPosition;
+profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
         selectedAccountGroup =
             userDetail!.data!.userDetails!.vendorDetails?.accountGroup;
         selectedVendor =
@@ -456,7 +459,7 @@ selectcompanytype(data) {
             text:
                 userDetail!.data!.userDetails!.bankDetails?.accountHolderName);
         check = userDetail!.data!.userDetails!.bankDetails?.cancelChecque;
-        selectedbankOne = userDetail!.data!.userDetails!.bankDetails?.bankName;
+        selectedbankOne = userDetail!.data!.userDetails!.bankDetails?.bank;
         accountTypeController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountType);
     
@@ -850,7 +853,7 @@ selectcompanytype(data) {
             Get.snackbar("Bank Details ", convertJson['success_msg'],
                 duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
-            Get.to(const Review());
+            // Get.to(const Review());
             update();
 
             // Get.to(Otp(number: phoneNumber));

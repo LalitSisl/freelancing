@@ -1,5 +1,6 @@
 import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
+import 'package:freelancing/Screens/ProfileScreens/termandConditions.dart';
 import 'package:freelancing/global.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
@@ -38,7 +39,7 @@ class registerController extends GetxController {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
     //  var usertype = selectUser;
-    
+
     var token = sharedPreferneces.getString('token');
 
     try {
@@ -86,7 +87,9 @@ class registerController extends GetxController {
             } else {
               // Get.to(Profile(user: _selectUser,
               //     user_status: convertJson['data']['user_status'].toString()));
+             
               Get.to(const Review());
+                // Get.to(const Conditions());
             }
           } else {
             Get.snackbar("Error", convertJson['error_msg'],
