@@ -159,9 +159,10 @@ class BusinessDetail extends StatelessWidget {
                             ),
                           ),
                           items: List.generate(
-                              controller.getallcitiesrepeat!.data!.cities!.length,
-                              (index) => controller
-                                  .getallcitiesrepeat!.data!.cities![index].cityName),
+                              controller
+                                  .getallcitiesrepeat!.data!.cities!.length,
+                              (index) => controller.getallcitiesrepeat!.data!
+                                  .cities![index].cityName),
                           onChanged: (value) {
                             print(value);
                             controller.selectCity(value);

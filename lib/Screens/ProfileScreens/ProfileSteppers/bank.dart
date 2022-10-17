@@ -32,10 +32,11 @@ class BankDetail extends StatelessWidget {
                       items: List.generate(
                           controller.getallBanks!.data!.banks!.length,
                           (index) => DropdownMenuItem(
-                                child: Text(controller
-                                    .getallBanks!.data!.banks![index].bankName!),
+                                child: Text(controller.getallBanks!.data!
+                                    .banks![index].bankName!),
                                 value: controller
-                                    .getallBanks!.data!.banks![index].id.toString(),
+                                    .getallBanks!.data!.banks![index].id
+                                    .toString(),
                               )),
                       onChanged: ((newValue) {
                         controller.selectBanks(newValue);

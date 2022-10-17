@@ -16,7 +16,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
+
 var pic;
+
 class profile_copy extends StatefulWidget {
   profile_copy({Key? key}) : super(key: key);
 
@@ -26,7 +28,6 @@ class profile_copy extends StatefulWidget {
 
 class _profile_copyState extends State<profile_copy> {
   profile_controller controller = Get.put(profile_controller());
- 
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +80,12 @@ class _profile_copyState extends State<profile_copy> {
                               Container(
                                   height: 130,
                                   width: 130,
-                                  child:
-                                       pic != null
-                                          ? Image.network(
-                                        '${APIUrls.BASE_URL_IMAGE}$pic',
-                                              fit: BoxFit.cover,
-                                            )
-                                      :
-                                      Image.asset('assets/images/user.png')),
+                                  child: pic != null
+                                      ? Image.network(
+                                          '${APIUrls.BASE_URL_IMAGE}$pic',
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset('assets/images/user.png')),
                               Positioned(
                                   bottom: -5,
                                   right: -25,
@@ -96,20 +95,19 @@ class _profile_copyState extends State<profile_copy> {
                                           ImagePicker(); //added type ImagePicker
                                       var profile = await _picker.getImage(
                                           source: ImageSource.camera);
-                                      File
-                                      compressedFile =
-                                      await FlutterNativeImage
-                                          .compressImage(
+                                      File compressedFile =
+                                          await FlutterNativeImage
+                                              .compressImage(
                                         profile!.path,
                                         quality: 50,
                                       );
                                       if (profile != null) {
                                         setState(() {
-                                          final File file = File(
-                                              compressedFile
-                                                  .path);
+                                          final File file =
+                                              File(compressedFile.path);
                                           pic = File(profile.path);
-                                          controller.postImage('photo', file.path);
+                                          controller.postImage(
+                                              'photo', file.path);
                                         });
                                       }
                                     },
@@ -134,23 +132,25 @@ class _profile_copyState extends State<profile_copy> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                controller.profileName == null ?
-                                '[Name]' :controller.profileName,
+                                controller.profileName == null
+                                    ? '[Name]'
+                                    : controller.profileName,
                                 style: const TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Container(),
-                              Text( controller.designation==null?
-                                
-                                '[Profile]':controller.designation,
+                              Text(
+                                  controller.designation == null
+                                      ? '[Profile]'
+                                      : controller.designation,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   )),
                               const SizedBox(height: 5),
-                              Text(controller.loginNumber.toString() ,
+                              Text(controller.loginNumber.toString(),
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -200,7 +200,7 @@ class _profile_copyState extends State<profile_copy> {
                         //     controller.stepsList().length - 1;
 
                         if (controller.formKey.currentState!.validate() &&
-                           controller. activeCurrentStep == 0) {
+                            controller.activeCurrentStep == 0) {
                           if (selectUser == "2") {
                             controller.add_Personal_Details();
                           } else {
@@ -221,10 +221,10 @@ class _profile_copyState extends State<profile_copy> {
                         }
                       },
                       onStepCancel: () {
-                       controller.activeCurrentStep == 0
+                        controller.activeCurrentStep == 0
                             ? null
                             : setState(() {
-                              controller.activeCurrentStep -= 1;
+                                controller.activeCurrentStep -= 1;
                               });
                       },
                       onStepTapped: (int index) {

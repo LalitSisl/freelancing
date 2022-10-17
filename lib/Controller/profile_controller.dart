@@ -45,10 +45,10 @@ class profile_controller extends GetxController {
   GetQualificationModal? getQualification;
   GetExperienceModal? getExperience;
   CityDetailModelClass? getallcities;
-    CityDetailModelClass? getallcitiesrepeat;
+  CityDetailModelClass? getallcitiesrepeat;
   BankModelClass? getallBanks;
   StateModelClass? getallStates;
-   TypeofcompanyModel? getallcompanytypes;
+  TypeofcompanyModel? getallcompanytypes;
   // Qualification? selectedQuelification;
   WorkExp? selectedExperience;
   // String? qualification;
@@ -96,7 +96,6 @@ class profile_controller extends GetxController {
   TextEditingController contactPhonenumber = TextEditingController();
 
   bool checkbox = false;
-  
 
   // List<ValueItem> selectedSkill = [];
   List selectedSkill = [];
@@ -126,7 +125,7 @@ class profile_controller extends GetxController {
   var selectedVendor;
   var selectedStateOne;
   var selectedCityone;
-var selectedcompanytype;
+  var selectedcompanytype;
   var vendorType;
   var designation;
   var loginNumber;
@@ -148,8 +147,8 @@ var selectedcompanytype;
     getcitiesData();
     getStatesData();
     getBanksData();
-     getcitiesDatarepeat();
-       getcompanytypes();
+    getcitiesDatarepeat();
+    getcompanytypes();
     // print(selectUser);
     // print(selectUser);
 
@@ -161,14 +160,16 @@ var selectedcompanytype;
     update();
   }
 
-  changeProfileName(var name){
+  changeProfileName(var name) {
     profileName = name;
     update();
   }
-  changeProfileName1(var name){
+
+  changeProfileName1(var name) {
     designation = name;
     update();
   }
+
   selectCity(item) {
     selectedCity = item;
     update();
@@ -183,10 +184,10 @@ var selectedcompanytype;
 
   selectBanks(bank) {
     bankId = bank;
-    
+
     bankController = TextEditingController(text: bank);
-      selectedbankOne = bank;
-  
+    selectedbankOne = bank;
+
     update();
   }
 
@@ -230,6 +231,21 @@ var selectedcompanytype;
       ];
 
   List genderList = ['M', "F"];
+  List conditionsFreelancer = [
+    '•	All the details given by me to SISL in the previous tabs are absolutely true and correct. My application to work as a service partner with SISL can be rejected if any of the details is found incorrect.',
+    '•	I authorize SISL to do my background verification and SISL reserves all the rights to accept or reject my application.',
+    '•	My application is not entitled for any kind of employment with SISL or its associates. I shall not seek any benefits which employees of SISL would be entitled from SISL.',
+    '•	Any task/project assigned by SISL will be for a specific time period and on certain payment terms as specifically agreed.',
+    '•	I am fully competent of doing tasks assigned by SISL as per declared skills.',
+    '•	I expressly agree to become the freelancer for SISL at the consideration duly agreed, and shall not be entitled to any other benefits from SISL.'
+  ];
+  List conditionsFreelanceradd = [
+    '•	I will represent and perform the work contracted with SISL at the assigned sites.',
+    '•	I will not engage in any assignment with Clients and Competitors of SISL without express permission from SISL.',
+    '•	I will not disclose any professional credentials of Client and Competitors of SISL, and will not share personal contact details with anyone at and off site.',
+    '•	I will not collect any information other than those given in the SOPs from anyone at the site.',
+    '•	I will not disclose the information of any of the projects o SISL to any person including its competitors and acquittances.'
+  ];
   List serviceArea = ['Delhi', 'Mumbai', 'Bangalore', 'Noida', 'Gurgaon'];
   getQualificationData() async {
     getQualification = await ApiHelper().getQualification();
@@ -260,14 +276,14 @@ var selectedcompanytype;
     //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     update();
   }
-    getcitiesDatarepeat() async {
+
+  getcitiesDatarepeat() async {
     getallcitiesrepeat = await ApiHelper().getallCitiesrepeat();
     // print(getallcities!.status);
     // print(
     //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     update();
   }
-
 
   getStatesData() async {
     getallStates = await ApiHelper().getStates();
@@ -284,7 +300,8 @@ var selectedcompanytype;
     //     "@@@@@@@@@@@@@@@@@@@@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<&&&&&&&&&&&&&&&&&");
     update();
   }
-   getcompanytypes() async {
+
+  getcompanytypes() async {
     getallcompanytypes = await ApiHelper().getVendorComapnyType();
     // print(getallBanks!.status);
     // print(
@@ -333,32 +350,34 @@ var selectedcompanytype;
     selectedCityone = data;
     update();
   }
+
   var userNumber;
-selectcompanytype(data) {
+  selectcompanytype(data) {
     //   = data.id.toString();
     // experinceId = data;
     typeOfCompany = TextEditingController(text: data);
     selectedcompanytype = data;
     update();
   }
+
   getuserDetail() async {
-     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     userDetail = await ApiHelper().getFrelencer();
-     userNumber = sharedPreferneces.getString("phone");
-     loginNumber = userNumber;
+    userNumber = sharedPreferneces.getString("phone");
+    loginNumber = userNumber;
     update();
-  // print(userDetail!.status);
+    // print(userDetail!.status);
     print("mainData fetch");
     // genderController.clear();
     update();
     if (userDetail != null) {
       if (userDetail!.status == true) {
-        
         // ==============================Vendor details=======================
         companyName = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
-            designation = userDetail!.data!.userDetails!.vendorDetails?.contactPosition;
-profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
+        designation =
+            userDetail!.data!.userDetails!.vendorDetails?.contactPosition;
+        profileName = userDetail!.data!.userDetails!.vendorDetails?.companyName;
         selectedAccountGroup =
             userDetail!.data!.userDetails!.vendorDetails?.accountGroup;
         selectedVendor =
@@ -369,7 +388,8 @@ profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
             userDetail!.data!.userDetails!.vendorDetails?.vendorState;
         selectedCityone =
             userDetail!.data!.userDetails!.vendorDetails?.vendorCity;
-            selectedcompanytype = userDetail!.data!.userDetails!.vendorDetails?.vendorCompanyType;
+        selectedcompanytype =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorCompanyType;
         companyPincode = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.vendorPin);
         companyPhone = TextEditingController(
@@ -388,8 +408,9 @@ profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
         contactPhonenumber = TextEditingController(
             text: userDetail!
                 .data!.userDetails!.vendorDetails?.contactPhoneNumber);
-           print(contactPhonenumber);
-           print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################"); 
+        print(contactPhonenumber);
+        print(
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################");
         // =================================================
         firstNameController = TextEditingController(
             text: userDetail!.data!.userDetails!.profileDetails?.firstName!);
@@ -462,7 +483,7 @@ profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
         selectedbankOne = userDetail!.data!.userDetails!.bankDetails?.bank;
         accountTypeController = TextEditingController(
             text: userDetail!.data!.userDetails!.bankDetails?.accountType);
-    
+
         update();
       }
     }
@@ -498,7 +519,6 @@ profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var body = jsonEncode(<String, dynamic>{
-
           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
           "user_type": '2',
@@ -775,7 +795,7 @@ profileName= userDetail!.data!.userDetails!.vendorDetails?.companyName;
                 "gst_number": gstNumberController.text,
                 "gst_doc": "$gst",
                 "pan_number": businessPanController.text,
-                "service_area":  "$data",
+                "service_area": "$data",
               })
             : jsonEncode(<String, String>{
                 "phone_number": '$number',

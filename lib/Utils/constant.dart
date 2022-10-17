@@ -439,11 +439,9 @@ class SWANWidget {
       );
 }
 
-
-
 Widget ProfilenameWidget(
     _controller, label, validator, inputType, maxLength, inputFormatters) {
-      profile_controller controller = Get.find();
+  profile_controller controller = Get.find();
   return Padding(
     padding: const EdgeInsets.all(5.0),
     child: TextFormField(
@@ -479,7 +477,7 @@ Widget ProfilenameWidget(
 
 Widget ProfilenameWidget1(
     _controller, label, validator, inputType, maxLength, inputFormatters) {
-      profile_controller controller = Get.find();
+  profile_controller controller = Get.find();
   return Padding(
     padding: const EdgeInsets.all(5.0),
     child: TextFormField(
@@ -515,12 +513,11 @@ Widget ProfilenameWidget1(
 
 Widget persnolDetailTextField(
     _controller, label, validator, inputType, maxLength, inputFormatters) {
-      profile_controller controller = Get.find();
+  profile_controller controller = Get.find();
   return Padding(
     padding: const EdgeInsets.all(5.0),
     child: TextFormField(
       controller: _controller,
-    
       decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),

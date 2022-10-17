@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/headerwidget1.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
@@ -7,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Utils/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 var selectUser;
+
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
 
@@ -202,7 +203,6 @@ class _RegisterState extends State<Register> {
                             ));
                           } else {
                             controller.register();
-                            
                           }
                           //Get.to(Profile(user: _selectUser));
                         },

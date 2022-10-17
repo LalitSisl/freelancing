@@ -28,7 +28,6 @@ class _LoginState extends State<Login> {
   var isLoading = false;
 
   Future<void> sendOTP(phoneNumber) async {
-      
     print(phoneNumber);
     setState(() {
       isLoading = true;
@@ -46,7 +45,6 @@ class _LoginState extends State<Login> {
           if (convertJson["status"]) {
             setState(() {
               isLoading = false;
-             
             });
             Get.snackbar("Success", convertJson['success_msg'],
                 duration: const Duration(seconds: 1),
@@ -56,7 +54,6 @@ class _LoginState extends State<Login> {
           } else {
             setState(() {
               isLoading = false;
-            
             });
             Get.snackbar("Error", convertJson['error_msg'],
                 snackPosition: SnackPosition.BOTTOM);

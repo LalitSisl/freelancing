@@ -42,11 +42,11 @@ class ApiHelper {
           print(convertJson);
           print("-------------------------------------------------------");
           if (convertJson["status"]) {
-            selectUser=="2"?
-            sharedPreferneces.setString('user_id',
-                '${convertJson['data']['user_details']['profile_details']['id']}'):
-                            sharedPreferneces.setString('user_id',
-                '${convertJson['data']['user_details']['vendor_details']['id']}');
+            selectUser == "2"
+                ? sharedPreferneces.setString('user_id',
+                    '${convertJson['data']['user_details']['profile_details']['id']}')
+                : sharedPreferneces.setString('user_id',
+                    '${convertJson['data']['user_details']['vendor_details']['id']}');
             var data = UserDetailModelClass();
             data = UserDetailModelClass.fromJson(convertJson);
             return data;
@@ -198,7 +198,6 @@ class ApiHelper {
     } on SocketException catch (_) {}
   }
 
-
   Future<CityDetailModelClass?> getallCitiesrepeat() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
 
@@ -207,7 +206,6 @@ class ApiHelper {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         var queryParams = {
           "phone_number": "${sharedPreferneces.getString('number')}",
-        
         };
         var response = await http.get(
             Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_CITY}", queryParams),
@@ -229,6 +227,7 @@ class ApiHelper {
       }
     } on SocketException catch (_) {}
   }
+
   Future<StateModelClass?> getStates() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
 
@@ -288,6 +287,7 @@ class ApiHelper {
       }
     } on SocketException catch (_) {}
   }
+
   Future<TypeofcompanyModel?> getVendorComapnyType() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
 
@@ -298,7 +298,7 @@ class ApiHelper {
           "phone_number": "${sharedPreferneces.getString('number')}",
         };
         var response = await http.get(
-               Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_VENDOR_COMAPNY_TYPE}",
+            Uri.http("${APIUrls.DOMAIN}", "${APIUrls.GET_VENDOR_COMAPNY_TYPE}",
                 queryParams),
             headers: {
               'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
@@ -318,5 +318,4 @@ class ApiHelper {
       }
     } on SocketException catch (_) {}
   }
-
 }

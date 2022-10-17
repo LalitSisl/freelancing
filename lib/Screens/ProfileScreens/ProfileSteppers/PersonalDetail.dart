@@ -431,9 +431,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 100, [
-                            UpperCaseTextFormatter()
-                            ]),
+                            }, TextInputType.text, 100,
+                                [UpperCaseTextFormatter()]),
                             Label2("Account Group"),
                             ListTile(
                               visualDensity: const VisualDensity(
@@ -485,7 +484,6 @@ class PersonalDetail extends StatelessWidget {
                                     fontSize: 12, color: Colors.black),
                               ),
                             ),
-
                             Label2("Vendor Required For"),
                             ListTile(
                               visualDensity: const VisualDensity(
@@ -580,7 +578,7 @@ class PersonalDetail extends StatelessWidget {
                                   hint: const Text("Select State"),
                                   isDense: true,
                                   isExpanded: true,
-                                   value: controller.selectedStateOne,
+                                  value: controller.selectedStateOne,
                                   items: List.generate(
                                       controller
                                           .getallStates!.data!.states!.length,
@@ -595,9 +593,8 @@ class PersonalDetail extends StatelessWidget {
                                                 .toString(),
                                           )),
                                   onChanged: ((newValue) {
-                                    
                                     controller.selectVendorstate(newValue);
-                                     controller.selectedStateOne = newValue!;  
+                                    controller.selectedStateOne = newValue!;
                                     controller.getcitiesData();
                                     print(newValue);
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -613,7 +610,7 @@ class PersonalDetail extends StatelessWidget {
                                   hint: const Text("Select City"),
                                   isDense: true,
                                   isExpanded: true,
-                                   value: controller.selectedCityone ,
+                                  value: controller.selectedCityone,
                                   items: List.generate(
                                       controller
                                           .getallcities!.data!.cities!.length,
@@ -635,7 +632,6 @@ class PersonalDetail extends StatelessWidget {
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                                   })),
                             ),
-                     
                             const SizedBox(
                               height: 15,
                             ),
@@ -646,9 +642,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 6, [
-                              FilteringTextInputFormatter.digitsOnly
-                            ]),
+                            }, TextInputType.number, 6,
+                                [FilteringTextInputFormatter.digitsOnly]),
                             persnolDetailTextField(
                                 controller.companyPhone, "Phone Number",
                                 (value) {
@@ -657,9 +652,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 10, [
-                              FilteringTextInputFormatter.digitsOnly
-                            ]),
+                            }, TextInputType.number, 10,
+                                [FilteringTextInputFormatter.digitsOnly]),
                             persnolDetailTextField(controller.autualTurnover,
                                 "Actual Turnover (in Cr)", (value) {
                               if (value == null || value.isEmpty) {
@@ -667,26 +661,30 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 5, [
-                              FilteringTextInputFormatter.digitsOnly
-                            ]),
-
-                             Label2("Company Type"),
+                            }, TextInputType.number, 5,
+                                [FilteringTextInputFormatter.digitsOnly]),
+                            Label2("Company Type"),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: DropdownButton(
                                   hint: const Text("Select Company Type"),
                                   isDense: true,
                                   isExpanded: true,
-                                   value: controller.selectedcompanytype ,
+                                  value: controller.selectedcompanytype,
                                   items: List.generate(
-                                      controller
-                                          .getallcompanytypes!.data!.companyType!.length,
+                                      controller.getallcompanytypes!.data!
+                                          .companyType!.length,
                                       (index) => DropdownMenuItem(
                                             child: Text(controller
-                                                .getallcompanytypes!.data!.companyType![index].name!),
-                                            value: controller.getallcompanytypes!
-                                                .data!.companyType![index].id
+                                                .getallcompanytypes!
+                                                .data!
+                                                .companyType![index]
+                                                .name!),
+                                            value: controller
+                                                .getallcompanytypes!
+                                                .data!
+                                                .companyType![index]
+                                                .id
                                                 .toString(),
                                           )),
                                   onChanged: ((newValue) {
@@ -697,7 +695,9 @@ class PersonalDetail extends StatelessWidget {
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                                   })),
                             ),
-                         SizedBox(height: 15,),
+                            SizedBox(
+                              height: 15,
+                            ),
                             Label("Vendor Contact Information"),
                             persnolDetailTextField(controller.contactFirstname,
                                 "Contact First Name", (value) {
@@ -706,9 +706,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                             UpperCaseTextFormatter()
-                            ]),
+                            }, TextInputType.text, 50,
+                                [UpperCaseTextFormatter()]),
                             persnolDetailTextField(
                                 controller.contactLastname, "Contact Last Name",
                                 (value) {
@@ -717,9 +716,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                             UpperCaseTextFormatter()
-                            ]),
+                            }, TextInputType.text, 50,
+                                [UpperCaseTextFormatter()]),
                             ProfilenameWidget1(
                                 controller.contactPosition, "Contact Position",
                                 (value) {
@@ -728,9 +726,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 50, [
-                             UpperCaseTextFormatter()
-                            ]),
+                            }, TextInputType.text, 50,
+                                [UpperCaseTextFormatter()]),
                             persnolDetailTextField(
                                 controller.contactPhonenumber,
                                 "Contact Phone Number", (value) {
@@ -739,9 +736,8 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 10, [
-                              FilteringTextInputFormatter.digitsOnly
-                            ]),
+                            }, TextInputType.number, 10,
+                                [FilteringTextInputFormatter.digitsOnly]),
                           ],
                         )
                 ],
