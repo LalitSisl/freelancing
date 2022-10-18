@@ -88,8 +88,8 @@ class registerController extends GetxController {
               // Get.to(Profile(user: _selectUser,
               //     user_status: convertJson['data']['user_status'].toString()));
 
-              Get.to(const Review());
-              // Get.to(Conditions());
+              // Get.to(const Review());
+              Get.to(Conditions());
             }
           } else {
             Get.snackbar("Error", convertJson['error_msg'],

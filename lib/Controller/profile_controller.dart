@@ -103,6 +103,7 @@ class profile_controller extends GetxController {
   var qulificationId;
 
   File? panImage;
+  File? profileimage;
   String? panfront;
   String? aadharback;
   String? pic;
@@ -114,6 +115,7 @@ class profile_controller extends GetxController {
   // var imagePan;
   var imagegst;
   var imageaadhar;
+  var profilePic;
   var imagecheque;
   var image1;
   var selectedGenderOne;
@@ -911,6 +913,31 @@ class profile_controller extends GetxController {
     print("image path");
     // print(imagePan);
     panImage = File(image.path);
+    update();
+    Get.back();
+    // this.update_image();
+  }
+
+  imgprofile() async {
+    final XFile? image =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    File compressedFile = await FlutterNativeImage.compressImage(
+      image!.path,
+      quality: 50,
+    );
+    if (image != null) {
+      final File file = File(compressedFile.path);
+      //pic = File(image1.path);
+
+      postImage('photo', file.path);
+      // Get.back();
+    }
+    // address_proof_doc
+    // isLoading = true;
+    profilePic = image.path;
+    print("image path");
+    // print(imagePan);
+    profileimage = File(image.path);
     update();
     Get.back();
     // this.update_image();

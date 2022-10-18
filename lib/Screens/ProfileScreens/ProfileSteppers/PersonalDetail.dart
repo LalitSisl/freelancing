@@ -32,7 +32,7 @@ class PersonalDetail extends StatelessWidget {
                   selectUser == "2"
                       ? Column(
                           children: [
-                            ProfilenameWidget(
+                            persnolDetailTextField(
                                 controller.firstNameController, "First Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -357,6 +357,25 @@ class PersonalDetail extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: DropdownSearch.multiSelection(
+                                 dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.themeBlue, width: 0.5),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.themeBlue, width: 0.5),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ColorPalette.red, width: 0.5),
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              labelText: "Select Skills",
+                              // hintText: "country in menu mode",
+                            ),
+                          ),
                                 items: List.generate(
                                     controller.getSkill!.data!.skills!.length,
                                     (index) => controller

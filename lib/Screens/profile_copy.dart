@@ -80,36 +80,26 @@ class _profile_copyState extends State<profile_copy> {
                               Container(
                                   height: 130,
                                   width: 130,
-                                  child: pic != null
-                                      ? Image.network(
-                                          '${APIUrls.BASE_URL_IMAGE}$pic',
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.asset('assets/images/user.png')),
+                                  child: controller.profileimage == null &&
+                                          controller.pic == null
+                                      ? Image.asset('assets/images/user.png')
+                                      : controller.profileimage != null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Image.file(
+                                                  controller.profileimage!,
+                                                  fit: BoxFit.fill))
+                                          : Image.network(
+                                              '${APIUrls.BASE_URL_IMAGE}$pic',
+                                              fit: BoxFit.cover,
+                                            )),
                               Positioned(
                                   bottom: -5,
                                   right: -25,
                                   child: RawMaterialButton(
                                     onPressed: () async {
-                                      final ImagePicker _picker =
-                                          ImagePicker(); //added type ImagePicker
-                                      var profile = await _picker.getImage(
-                                          source: ImageSource.camera);
-                                      File compressedFile =
-                                          await FlutterNativeImage
-                                              .compressImage(
-                                        profile!.path,
-                                        quality: 50,
-                                      );
-                                      if (profile != null) {
-                                        setState(() {
-                                          final File file =
-                                              File(compressedFile.path);
-                                          pic = File(profile.path);
-                                          controller.postImage(
-                                              'photo', file.path);
-                                        });
-                                      }
+                                      controller.imgprofile();
                                     },
                                     elevation: 2.0,
                                     fillColor: const Color(0xFFF5F6F9),
