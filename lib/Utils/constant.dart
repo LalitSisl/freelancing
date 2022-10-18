@@ -440,15 +440,13 @@ class SWANWidget {
 }
 
 Widget ProfilenameWidget(
-    _controller, label, validator, inputType, maxLength, inputFormatters) {
+    _controller, label, validator, inputType, maxLength, inputFormatters,onchange) {
   profile_controller controller = Get.find();
   return Padding(
     padding: const EdgeInsets.all(5.0),
     child: TextFormField(
       controller: _controller,
-      onChanged: ((value) {
-        controller.changeProfileName(value);
-      }),
+      onChanged: onchange,
       decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -475,41 +473,41 @@ Widget ProfilenameWidget(
   );
 }
 
-Widget ProfilenameWidget1(
-    _controller, label, validator, inputType, maxLength, inputFormatters) {
-  profile_controller controller = Get.find();
-  return Padding(
-    padding: const EdgeInsets.all(5.0),
-    child: TextFormField(
-      controller: _controller,
-      onChanged: ((value) {
-        controller.changeProfileName1(value);
-      }),
-      decoration: InputDecoration(
-          isDense: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          labelText: label,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorPalette.textGrey),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorPalette.textGrey),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
-          ),
-          labelStyle: SWANWidget.fieldLabelTextStyle,
-          counterText: ""),
-      validator: validator,
-      maxLength: maxLength,
-      keyboardType: inputType,
-      inputFormatters: inputFormatters,
-    ),
-  );
-}
+// Widget ProfilenameWidget1(
+//     _controller, label, validator, inputType, maxLength, inputFormatters) {
+//   profile_controller controller = Get.find();
+//   return Padding(
+//     padding: const EdgeInsets.all(5.0),
+//     child: TextFormField(
+//       controller: _controller,
+//       onChanged: ((value) {
+//         controller.changeProfileName1(value);
+//       }),
+//       decoration: InputDecoration(
+//           isDense: true,
+//           contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+//           labelText: label,
+//           border: OutlineInputBorder(
+//             borderSide: BorderSide(color: ColorPalette.textGrey),
+//           ),
+//           errorBorder: OutlineInputBorder(
+//             borderSide: BorderSide(color: ColorPalette.textGrey),
+//           ),
+//           focusedBorder: const OutlineInputBorder(
+//             borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+//           ),
+//           enabledBorder: const OutlineInputBorder(
+//             borderSide: BorderSide(color: ColorPalette.themeBlue, width: 0.5),
+//           ),
+//           labelStyle: SWANWidget.fieldLabelTextStyle,
+//           counterText: ""),
+//       validator: validator,
+//       maxLength: maxLength,
+//       keyboardType: inputType,
+//       inputFormatters: inputFormatters,
+//     ),
+//   );
+// }
 
 Widget persnolDetailTextField(
     _controller, label, validator, inputType, maxLength, inputFormatters) {

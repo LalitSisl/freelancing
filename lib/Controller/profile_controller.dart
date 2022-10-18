@@ -131,6 +131,10 @@ class profile_controller extends GetxController {
   var vendorType;
   var designation;
   var loginNumber;
+  var name = '[Name]';
+  var lastName = '';
+  var profile ='[Profile]';
+  var address = "[Address]";
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
   File? adharImage;
@@ -162,16 +166,23 @@ class profile_controller extends GetxController {
     update();
   }
 
-  changeProfileName(var name) {
-    profileName = name;
+  changeCardName( value) {
+    name = value;
     update();
   }
 
-  changeProfileName1(var name) {
-    designation = name;
+  changeCardLastname(value) {
+    lastName = value;
     update();
   }
-
+changeCardProfile(value){
+  profile = value;
+  update();
+}
+changeCardAddress(value){
+  address = value;
+  update();
+}
   selectCity(item) {
     selectedCity = item;
     update();
@@ -186,10 +197,8 @@ class profile_controller extends GetxController {
 
   selectBanks(bank) {
     bankId = bank;
-
     bankController = TextEditingController(text: bank);
     selectedbankOne = bank;
-
     update();
   }
 
@@ -939,7 +948,7 @@ class profile_controller extends GetxController {
     // print(imagePan);
     profileimage = File(image.path);
     update();
-    Get.back();
+    // Get.back();
     // this.update_image();
   }
 

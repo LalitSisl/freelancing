@@ -32,7 +32,7 @@ class PersonalDetail extends StatelessWidget {
                   selectUser == "2"
                       ? Column(
                           children: [
-                            persnolDetailTextField(
+                            ProfilenameWidget(
                                 controller.firstNameController, "First Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -42,8 +42,13 @@ class PersonalDetail extends StatelessWidget {
                             }, TextInputType.text, 50, [
                               FilteringTextInputFormatter.allow(
                                   RegExp('[a-zA-Z]'))
-                            ]),
-                            persnolDetailTextField(
+                            ],
+                            (value){
+                              controller.changeCardName(value);
+                              
+                            }
+                            ),
+                            ProfilenameWidget(
                                 controller.lastNameController, "Last Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -53,7 +58,12 @@ class PersonalDetail extends StatelessWidget {
                             }, TextInputType.text, 50, [
                               FilteringTextInputFormatter.allow(
                                   RegExp('[a-zA-Z]'))
-                            ]),
+                            ],
+                             (value){
+                              controller.changeCardLastname(value);
+                            }
+                            
+                            ),
                             persnolDetailTextField1(
                               controller.emailidController,
                               "Email Id",
@@ -74,7 +84,7 @@ class PersonalDetail extends StatelessWidget {
                               TextInputType.text,
                               50,
                             ),
-                            persnolDetailTextField(
+                            ProfilenameWidget(
                                 controller.profileController, "Profile",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -84,8 +94,13 @@ class PersonalDetail extends StatelessWidget {
                             }, TextInputType.text, 50, [
                               FilteringTextInputFormatter.allow(
                                   RegExp('[a-zA-Z]'))
-                            ]),
-                            persnolDetailTextField(
+                            ]
+                            ,
+                             (value){
+                              controller.changeCardProfile(value);
+                            }
+                            ),
+                            ProfilenameWidget(
                                 controller.addressController, "Address",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -95,7 +110,12 @@ class PersonalDetail extends StatelessWidget {
                             }, TextInputType.text, 100, [
                               FilteringTextInputFormatter.allow(
                                   RegExp('[a-zA-Z]'))
-                            ]),
+                            ] ,
+                             (value){
+                              controller.changeCardAddress(value);
+                            }
+                            
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: TextFormField(
@@ -442,7 +462,7 @@ class PersonalDetail extends StatelessWidget {
                         )
                       : Column(
                           children: [
-                            ProfilenameWidget(
+                            persnolDetailTextField(
                                 controller.companyName, "Company Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -737,7 +757,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                             }, TextInputType.text, 50,
                                 [UpperCaseTextFormatter()]),
-                            ProfilenameWidget1(
+                            persnolDetailTextField(
                                 controller.contactPosition, "Contact Position",
                                 (value) {
                               if (value == null || value.isEmpty) {

@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:freelancing/Authentication/login.dart';
 import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Controller/registercontroller.dart';
@@ -122,9 +124,7 @@ class _profile_copyState extends State<profile_copy> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                controller.profileName == null
-                                    ? '[Name]'
-                                    : controller.profileName,
+                             '${controller.name} ${controller.lastName}' ,
                                 style: const TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
@@ -132,15 +132,13 @@ class _profile_copyState extends State<profile_copy> {
                               ),
                               Container(),
                               Text(
-                                  controller.designation == null
-                                      ? '[Profile]'
-                                      : controller.designation,
+                                 controller.profile,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   )),
                               const SizedBox(height: 5),
-                              Text(controller.loginNumber.toString(),
+                              Text(loginNumber,
                                   style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
@@ -149,20 +147,12 @@ class _profile_copyState extends State<profile_copy> {
                               SizedBox(
                                 height: 60,
                                 width: MediaQuery.of(context).size.width / 2.1,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("[Address]",
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                    ],
-                                  ),
-                                ),
+                                child: AutoSizeText(controller.address,
+                                maxLines: 3,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    )),
                               ),
                             ],
                           ),

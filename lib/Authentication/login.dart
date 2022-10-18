@@ -13,7 +13,7 @@ import 'otp.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+var loginNumber;
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -23,7 +23,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _phoneController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   var isLoading = false;
 
@@ -214,7 +214,7 @@ class _LoginState extends State<Login> {
                                           color: ColorPalette.textGrey)),
                                   Expanded(
                                     child: TextFormField(
-                                      controller: _phoneController,
+                                      controller: phoneController,
                                       keyboardType: TextInputType.phone,
                                       decoration: InputDecoration(
                                           filled: true,
@@ -287,7 +287,8 @@ class _LoginState extends State<Login> {
                                         onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            sendOTP(_phoneController.text);
+                                            sendOTP(phoneController.text);
+                                       loginNumber= phoneController.text ;
                                           }
                                         },
                                         child: const Text('Send OTP'),
