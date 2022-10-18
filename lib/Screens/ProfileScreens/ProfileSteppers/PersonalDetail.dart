@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelancing/Authentication/register.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Utils/constant.dart';
-import 'package:freelancing/global.dart';
+
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -92,8 +93,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                              FilteringTextInputFormatter.deny(RegExp("[{}0-9]"))
                             ]
                             ,
                              (value){
@@ -108,8 +108,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 100, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                              FilteringTextInputFormatter.deny(RegExp("[{}]"))
                             ] ,
                              (value){
                               controller.changeCardAddress(value);
@@ -302,7 +301,7 @@ class PersonalDetail extends StatelessWidget {
                             persnolDetailTextField(controller.aadharController,
                                 "Aadhar Card Number", (value) {
                               String pattern =
-                                  r"^[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
+                                  r"^[2-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}$";
                               RegExp regex = RegExp(pattern);
 
                               if (value == null ||
@@ -313,7 +312,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.number, 12, [
-                              FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                              FilteringTextInputFormatter.digitsOnly
                             ]),
                             const SizedBox(
                               height: 15,
@@ -374,9 +373,24 @@ class PersonalDetail extends StatelessWidget {
                               height: 15,
                             ),
                             Label("Skills"),
+
+                         
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:const  EdgeInsets.all(5.0),
                               child: DropdownSearch.multiSelection(
+                              popupProps:const PopupPropsMultiSelection.bottomSheet(
+                                
+                                showSearchBox: true,
+                              
+                                searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Type to search skills ",
+                                ),
+                                 strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)
+                                )
+                              ),
+                                autoValidateMode: AutovalidateMode.always,
+                             
                                  dropdownDecoratorProps: const DropDownDecoratorProps(
                             dropdownSearchDecoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -430,6 +444,7 @@ class PersonalDetail extends StatelessWidget {
                               height: 40,
                             ),
                             Label("Total Experience"),
+                
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: DropdownButton(
@@ -456,7 +471,9 @@ class PersonalDetail extends StatelessWidget {
                                         newValue!;
                                     print(newValue);
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                                  })),
+                                  })
+                                  
+                                  ),
                             ),
                           ],
                         )

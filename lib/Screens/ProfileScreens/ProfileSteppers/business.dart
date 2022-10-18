@@ -139,6 +139,17 @@ class BusinessDetail extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: DropdownSearch.multiSelection(
+                               popupProps:const PopupPropsMultiSelection.bottomSheet(
+                                
+                                showSearchBox: true,
+                              
+                                searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Type to search city ",
+                                ),
+                                 strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)
+                                )
+                              ),
                           dropdownDecoratorProps: const DropDownDecoratorProps(
                             dropdownSearchDecoration: InputDecoration(
                               border: OutlineInputBorder(

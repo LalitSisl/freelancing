@@ -242,21 +242,7 @@ changeCardAddress(value){
       ];
 
   List genderList = ['M', "F"];
-  List conditionsFreelancer = [
-    '•	All the details given by me to SISL in the previous tabs are absolutely true and correct. My application to work as a service partner with SISL can be rejected if any of the details is found incorrect.',
-    '•	I authorize SISL to do my background verification and SISL reserves all the rights to accept or reject my application.',
-    '•	My application is not entitled for any kind of employment with SISL or its associates. I shall not seek any benefits which employees of SISL would be entitled from SISL.',
-    '•	Any task/project assigned by SISL will be for a specific time period and on certain payment terms as specifically agreed.',
-    '•	I am fully competent of doing tasks assigned by SISL as per declared skills.',
-    '•	I expressly agree to become the freelancer for SISL at the consideration duly agreed, and shall not be entitled to any other benefits from SISL.'
-  ];
-  List conditionsFreelanceradd = [
-    '•	I will represent and perform the work contracted with SISL at the assigned sites.',
-    '•	I will not engage in any assignment with Clients and Competitors of SISL without express permission from SISL.',
-    '•	I will not disclose any professional credentials of Client and Competitors of SISL, and will not share personal contact details with anyone at and off site.',
-    '•	I will not collect any information other than those given in the SOPs from anyone at the site.',
-    '•	I will not disclose the information of any of the projects o SISL to any person including its competitors and acquittances.'
-  ];
+
   List serviceArea = ['Delhi', 'Mumbai', 'Bangalore', 'Noida', 'Gurgaon'];
   getQualificationData() async {
     getQualification = await ApiHelper().getQualification();
@@ -423,6 +409,9 @@ changeCardAddress(value){
         print(
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################");
         // =================================================
+        name =userDetail!.data!.userDetails!.profileDetails!.firstName!;  userDetail!.data!.userDetails!.profileDetails!.lastName;
+        profileName = userDetail!.data!.userDetails!.profileDetails?.workTitle;
+        address =userDetail!.data!.userDetails!.profileDetails!.address!;
         firstNameController = TextEditingController(
             text: userDetail!.data!.userDetails!.profileDetails?.firstName!);
         lastNameController = TextEditingController(
@@ -948,6 +937,7 @@ changeCardAddress(value){
     // print(imagePan);
     profileimage = File(image.path);
     update();
+
     // Get.back();
     // this.update_image();
   }
@@ -1117,7 +1107,7 @@ changeCardAddress(value){
       initialDatePickerMode: initialDatePickerMode1,
       context: context,
       initialDate: DateTime(1997), // Refer step 1
-      firstDate: DateTime(1970),
+      firstDate: DateTime(1942),
       lastDate: DateTime(2004),
     );
     if (picked != null && picked != selectedDate) {
