@@ -409,9 +409,9 @@ changeCardAddress(value){
         print(
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################");
         // =================================================
-        name =userDetail!.data!.userDetails!.profileDetails!.firstName!;  userDetail!.data!.userDetails!.profileDetails!.lastName;
+        // name =userDetail!.data!.userDetails!.profileDetails!.firstName!;  userDetail!.data!.userDetails!.profileDetails!.lastName;
         profileName = userDetail!.data!.userDetails!.profileDetails?.workTitle;
-        address =userDetail!.data!.userDetails!.profileDetails!.address!;
+        // address =userDetail!.data!.userDetails!.profileDetails!.address!;
         firstNameController = TextEditingController(
             text: userDetail!.data!.userDetails!.profileDetails?.firstName!);
         lastNameController = TextEditingController(
@@ -454,13 +454,12 @@ changeCardAddress(value){
             selectedSkill.add(element.skillName);
           },
         );
-        update();
+         update();
         // ==========================Business Details==============================
         gstNumberController = TextEditingController(
-            text: userDetail!.data!.userDetails!.businessDetails?.gstNumber ??
-                "");
+            text: userDetail!.data!.userDetails!.businessDetails?.gstNumber!);
         businessPanController = TextEditingController(
-            text: userDetail!.data!.userDetails!.businessDetails?.panNumber);
+            text: userDetail!.data!.userDetails!.businessDetails?.panNumber!);
         gst = userDetail!.data!.userDetails!.businessDetails?.gstDoc;
 
         userDetail!.data!.userDetails!.businessDetails?.serviceAreas!.forEach(

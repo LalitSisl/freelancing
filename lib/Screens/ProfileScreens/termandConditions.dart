@@ -27,7 +27,7 @@ class _ConditionsState extends State<Conditions> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                selectUser == 2
+                selectUser == "2"
                     ? Column(
                         children: [
                           Row(
