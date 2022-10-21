@@ -191,7 +191,7 @@ class _RegisterState extends State<Register> {
               Align(
                 alignment: Alignment.center,
                 child: isLoading
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: () {
                           print("object&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
