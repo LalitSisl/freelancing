@@ -83,7 +83,7 @@ class BankDetail extends StatelessWidget {
                     return "Please enter account number";
                   }
                   return null;
-                }, TextInputType.number, 50,
+                }, TextInputType.number, 18,
                     [FilteringTextInputFormatter.digitsOnly]),
                 persnolDetailTextField(
                     controller.cAccountController, "Confirm Account Number",
@@ -95,15 +95,20 @@ class BankDetail extends StatelessWidget {
                     return 'Account number and confirm account number should same';
                   }
                   return null;
-                }, TextInputType.number, 50,
+                }, TextInputType.number, 18,
                     [FilteringTextInputFormatter.digitsOnly]),
                 persnolDetailTextField(controller.ifscController, "IFSC Code",
                     (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter IFSC code";
-                  }
-                  return null;
-                }, TextInputType.text, 50,
+                     String pattern = "^[A-Z]{4}0[A-Z0-9]{6}";
+                        RegExp regex = RegExp(pattern);
+                        if (value == null ||
+                            value.isEmpty ||
+                            !regex.hasMatch(value)) {
+                          return 'Enter a valid ifsc code';
+                        } else {
+                          return null;
+                        }
+                }, TextInputType.text, 11,
                     [FilteringTextInputFormatter.singleLineFormatter]),
                 // persnolDetailTextField(
                 //     controller.accountTypeController, "Account Type", (value) {

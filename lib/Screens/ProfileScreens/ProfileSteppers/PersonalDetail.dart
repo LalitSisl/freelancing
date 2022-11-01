@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 class PersonalDetail extends StatelessWidget {
   PersonalDetail({Key? key}) : super(key: key);
   profile_controller controller = Get.find();
+  
   final multiSelectKey = GlobalKey<FormFieldState>();
   var gender;
   var option;
@@ -41,8 +42,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                             UpperCaseTextFormatter()
                             ],
                             (value){
                               controller.changeCardName(value);
@@ -57,8 +57,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z]'))
+                              UpperCaseTextFormatter()
                             ],
                              (value){
                               controller.changeCardLastname(value);
@@ -93,7 +92,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                              FilteringTextInputFormatter.deny(RegExp("[{}0-9]"))
+                              UpperCaseTextFormatter()
                             ]
                             ,
                              (value){
@@ -108,7 +107,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 100, [
-                              FilteringTextInputFormatter.deny(RegExp("[{}]"))
+                             UpperCaseTextFormatter()
                             ] ,
                              (value){
                               controller.changeCardAddress(value);
@@ -124,7 +123,7 @@ class PersonalDetail extends StatelessWidget {
                                     suffixIcon: const Icon(
                                         Icons.calendar_month_outlined),
                                     isDense: true,
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 10),
                                     labelText: 'Date of Birth',
                                     focusedBorder: const OutlineInputBorder(
@@ -417,7 +416,7 @@ class PersonalDetail extends StatelessWidget {
                                 onChanged: (value) {
                                   print(value);
                                   controller.selectSkill(value);
-                                  //  print(controller.selectedSkill);
+                                   print(controller.selectedSkill);
                                   print(
                                       "object~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                                 },
@@ -479,7 +478,7 @@ class PersonalDetail extends StatelessWidget {
                         )
                       : Column(
                           children: [
-                            persnolDetailTextField(
+                            ProfilenameWidget(
                                 controller.companyName, "Company Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -487,8 +486,13 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 100,
-                                [UpperCaseTextFormatter()]),
+                            },
+                            TextInputType.text, 100,
+                                [UpperCaseTextFormatter()],
+                                  (value){
+                              controller.changeVendoraddress(value);
+                              
+                            }),
                             Label2("Account Group"),
                             ListTile(
                               visualDensity: const VisualDensity(
@@ -651,6 +655,7 @@ class PersonalDetail extends StatelessWidget {
                                   onChanged: ((newValue) {
                                     controller.selectVendorstate(newValue);
                                     controller.selectedStateOne = newValue!;
+                                    controller.selectedCityone = null;
                                     controller.getcitiesData();
                                     print(newValue);
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -755,7 +760,7 @@ class PersonalDetail extends StatelessWidget {
                               height: 15,
                             ),
                             Label("Vendor Contact Information"),
-                            persnolDetailTextField(controller.contactFirstname,
+                            ProfilenameWidget(controller.contactFirstname,
                                 "Contact First Name", (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter first name';
@@ -763,8 +768,13 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter()]),
-                            persnolDetailTextField(
+                                [UpperCaseTextFormatter()],
+                                 (value){
+                              controller.changeCardName(value);
+                              
+                            }
+                                ),
+                            ProfilenameWidget(
                                 controller.contactLastname, "Contact Last Name",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -773,8 +783,13 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter()]),
-                            persnolDetailTextField(
+                                [UpperCaseTextFormatter()],
+                                  (value){
+                              controller.changeCardLastname(value);
+                            }
+                                
+                                ),
+                            ProfilenameWidget(
                                 controller.contactPosition, "Contact Position",
                                 (value) {
                               if (value == null || value.isEmpty) {
@@ -783,7 +798,11 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter()]),
+                                [UpperCaseTextFormatter()],
+                                 (value){
+                              controller.changeCardProfile(value);
+                            }
+                                ),
                             persnolDetailTextField(
                                 controller.contactPhonenumber,
                                 "Contact Phone Number", (value) {

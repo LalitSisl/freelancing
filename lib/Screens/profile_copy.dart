@@ -188,8 +188,8 @@ class _profile_copyState extends State<profile_copy> {
                           }
 
                           //   controller.add_Personal_Details();
-                        } else if ( controller.businessformKey.currentState!
-                                .validate() &&controller.activeCurrentStep == 1) {
+                        } else if ( controller.activeCurrentStep == 1&&controller.businessformKey.currentState!
+                                .validate() ) {
                           // print("==================================================6666666");
                           controller.add_Business_Details();
                         } else if(controller.activeCurrentStep==2 && controller.bankformKey.currentState!.validate()){

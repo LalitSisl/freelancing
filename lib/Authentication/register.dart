@@ -195,6 +195,13 @@ class _RegisterState extends State<Register> {
                     : ElevatedButton(
                         onPressed: () {
                           print("object&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                          if (selectUser=="2") {
+                            Profilecontroller.getuserDetail();
+                          }else{
+                            Profilecontroller.getvendorDetail();
+                          }
+
+                    
                           print(selectUser);
                           if (selectUser == null) {
                             ScaffoldMessenger.of(context)

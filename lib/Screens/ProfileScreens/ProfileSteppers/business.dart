@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Model/city.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetail.dart';
+import 'package:freelancing/Screens/ProfileScreens/termandConditions.dart';
 import 'package:freelancing/Utils/constant.dart';
 import 'package:get/get.dart';
 
@@ -33,13 +34,14 @@ class BusinessDetail extends StatelessWidget {
                             "Do you have GST number"), //    <-- label
                         value: controller.checkbox,
                         onChanged: (newValue) {
-                          print(newValue);
+                         
+                      
                           print("h");
                           controller.gstNumberCheckBox(newValue!);
                           controller.checkbox = newValue;
                         },
                       ),
-                      controller.checkbox == true
+                      (controller.checkbox==true || controller.userDetail?.data!.userDetails!.businessDetails?.gstNumber !=null)
                           ? Column(
                               children: [
                                 persnolDetailTextField(

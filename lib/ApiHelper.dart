@@ -38,17 +38,76 @@ class ApiHelper {
 
         try {
           var convertJson = jsonDecode(response.body);
-          print("-------------------------------------------------------");
-          print(convertJson);
-          print("-------------------------------------------------------");
+          
           if (convertJson["status"]) {
-            selectUser == "2"
-                ? sharedPreferneces.setString('user_id',
-                    '${convertJson['data']['user_details']['profile_details']['id']}')
-                : sharedPreferneces.setString('user_id',
+                 sharedPreferneces.setString('user_id',
+                    '${convertJson['data']['user_details']['profile_details']['id']}');
+            
+            var data = UserDetailModelClass();
+            data = UserDetailModelClass.fromJson(convertJson);
+            print(data);
+            print("333333333333333333################%%%%%%%%%%%%%%%%%%");
+            print(selectUser);
+            print('${convertJson['data']['user_details']['profile_details']['id']}');
+                print("--------------------888888888888888888888-----------------------------------");
+          print(convertJson);
+          print("-------------------------8888888888888888------------------------------");
+            return data;
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+            print("dsnfjs");
+            return null;
+          }
+          // setState(() {
+          //   isLoading = false;
+          // });
+          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          //   content: Text('Something went wrong, try again later'),
+          // ));
+        }
+      }
+    } on SocketException catch (_) {
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   content: Text(
+      //       'No internet connection. Connect to the internet and try again.'),
+      // ));
+    }
+    return null;
+  }
+   Future<UserDetailModelClass?> getVendor() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var queryParams = {
+          "phone_number": "${sharedPreferneces.getString('number')}",
+        };
+        var response = await http.get(
+            Uri.http("${APIUrls.DOMAIN}",
+                "${APIUrls.GET_USER_COMPLETE_DETAILS}", queryParams),
+            headers: {
+              'Authorization': 'Bearer ${sharedPreferneces.getString('token')}'
+            });
+        // var response = await http.post(Uri.parse(APIUrls.LOG_IN, queryParams),
+        //     headers: {'Authorization': 'Bearer ${SharedPref.token}'});
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          
+          if (convertJson["status"]) {
+             sharedPreferneces.setString('user_id',
                     '${convertJson['data']['user_details']['vendor_details']['id']}');
             var data = UserDetailModelClass();
             data = UserDetailModelClass.fromJson(convertJson);
+            print(data);
+            print("333333333333333333################%%%%%%%%%%%%%%%%%%");
+            print(selectUser);
+            print('${convertJson['data']['user_details']['vendor_details']['id']}');
+                print("--------------------8888888888888*********88888888-----------------------------------");
+          print(convertJson);
+          print("-------------------------8888888888888*******888------------------------------");
             return data;
           }
         } catch (e) {

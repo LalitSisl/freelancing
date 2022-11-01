@@ -96,7 +96,6 @@ class profile_controller extends GetxController {
   TextEditingController contactPhonenumber = TextEditingController();
 
   bool checkbox = false;
-
   // List<ValueItem> selectedSkill = [];
   List selectedSkill = [];
   List selectedCity = [];
@@ -146,7 +145,7 @@ class profile_controller extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    getuserDetail();
+    // getuserDetail();
     getskilldata();
     getQualificationData();
     getExperienceData();
@@ -170,7 +169,10 @@ class profile_controller extends GetxController {
     name = value;
     update();
   }
-
+ changeVendoraddress( value) {
+    address = value;
+    update();
+  }
   changeCardLastname(value) {
     lastName = value;
     update();
@@ -359,22 +361,173 @@ changeCardAddress(value){
 
   getuserDetail() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    
     userDetail = await ApiHelper().getFrelencer();
     userNumber = sharedPreferneces.getString("phone");
     loginNumber = userNumber;
     update();
     // print(userDetail!.status);
     print("mainData fetch");
+      print(userDetail);
+    print(userDetail
+    ?.status);
+  
+  //  print(userDetail?.data!.userDetails!.vendorDetails!.companyName);
     // genderController.clear();
     update();
     if (userDetail != null) {
       if (userDetail!.status == true) {
         // ==============================Vendor details=======================
+      
         companyName = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
         designation =
             userDetail!.data!.userDetails!.vendorDetails?.contactPosition;
-        profileName = userDetail!.data!.userDetails!.vendorDetails?.companyName;
+        // profileName = userDetail!.data!.userDetails!.vendorDetails?.companyName;
+        selectedAccountGroup =
+            userDetail!.data!.userDetails!.vendorDetails?.accountGroup;
+        selectedVendor =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorRequiredFor;
+        companyEmail = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.contactEmail);
+        selectedStateOne =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorState;
+        selectedCityone =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorCity;
+        selectedcompanytype =
+            userDetail!.data!.userDetails!.vendorDetails?.vendorCompanyType;
+        companyPincode = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.vendorPin);
+        companyPhone = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.phoneNumber);
+        autualTurnover = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.turnover);
+        contactFirstname = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.vendorDetails?.contactFirstName);
+        contactLastname = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.vendorDetails?.contactLastName);
+        contactPosition = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.vendorDetails?.contactPosition);
+        contactPhonenumber = TextEditingController(
+            text: userDetail!
+                .data!.userDetails!.vendorDetails?.contactPhoneNumber);
+        print(contactPhonenumber);
+        print(
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################");
+        // =================================================
+         name =userDetail!.data!.userDetails!.profileDetails!.firstName!; 
+        lastName= userDetail!.data!.userDetails!.profileDetails!.lastName!;
+        profile = userDetail!.data!.userDetails!.profileDetails!.workTitle!;
+         address =userDetail!.data!.userDetails!.profileDetails!.address!;
+        firstNameController = TextEditingController(
+            text: userDetail!.data!.userDetails!.profileDetails?.firstName!);
+        lastNameController = TextEditingController(
+            text: userDetail!.data!.userDetails!.profileDetails?.lastName!);
+        emailidController = TextEditingController(
+            text: userDetail!.data!.userDetails!.profileDetails?.email!);
+        profileController = TextEditingController(
+            text: userDetail!.data!.userDetails!.profileDetails?.workTitle!);
+        addressController = TextEditingController(
+            text: userDetail!.data!.userDetails!.profileDetails?.address!);
+        dobController = TextEditingController(
+            text: userDetail!.data!.userDetails!.profileDetails?.dob!);
+        selectedGenderOne =
+            userDetail!.data!.userDetails!.profileDetails?.gender;
+        update();
+        selectedqualificationOne = userDetail!
+            .data!.userDetails!.profileDetails?.highestQualification!;
+        pancardController = TextEditingController(
+            text: userDetail!
+                .data!.userDetails!.profileDetails?.addressProofNumber!);
+        aadharController = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.profileDetails?.idProofNumber!);
+        panfront =
+            userDetail!.data!.userDetails!.profileDetails?.addressProofDoc;
+        aadharback = userDetail!.data!.userDetails!.profileDetails?.idProofDoc;
+        selectedexperienceOne =
+            userDetail!.data!.userDetails!.profileDetails?.experience;
+        print(experienceController.text);
+        print("---------------8888-------------------------");
+        // selectedQuelification = Qualification(
+        //   id: userDetail!
+        //         .data!.userDetails!.profileDetails!.highestQualification!,
+        //  qualificationName: userDetail!.data!.userDetails!.profileDetails!.highestQualificationName
+        //     );
+        selectedExperience = WorkExp(
+            name: userDetail!.data!.userDetails!.profileDetails?.experience!);
+        userDetail!.data!.userDetails!.profileDetails?.skills!.forEach(
+          (element) {
+            selectedSkill.add(element.skillName);
+          },
+        );
+         update();
+        // ==========================Business Details==============================
+        userDetail!.data!.userDetails!.businessDetails!.gstNumber!=null?checkbox=true:checkbox=false;
+        gstNumberController = TextEditingController(
+            text: userDetail!.data!.userDetails!.businessDetails?.gstNumber!);
+        businessPanController = TextEditingController(
+            text: userDetail!.data!.userDetails!.businessDetails?.panNumber!);
+        gst = userDetail!.data!.userDetails!.businessDetails?.gstDoc;
+
+        userDetail!.data!.userDetails!.businessDetails?.serviceAreas!.forEach(
+          (element) {
+            selectedCity.add(element.serviceAreaName);
+          },
+        );
+        // userDetail!.data!.userDetails!.businessDetails?.gstNumber != null?checkbox==true:checkbox==false;
+        // ==============================Bank Details Data===============================
+        accountController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
+        cAccountController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.accountNo);
+        ifscController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.ifscCode);
+        accountHolder = TextEditingController(
+            text:
+                userDetail!.data!.userDetails!.bankDetails?.accountHolderName);
+        check = userDetail!.data!.userDetails!.bankDetails?.cancelChecque;
+        selectedbankOne = userDetail!.data!.userDetails!.bankDetails?.bank;
+        accountTypeController = TextEditingController(
+            text: userDetail!.data!.userDetails!.bankDetails?.accountType);
+
+        update();
+      }
+    }
+    update();
+  }
+
+  
+    getvendorDetail() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    userDetail = await ApiHelper().getVendor();
+    userNumber = sharedPreferneces.getString("phone");
+    loginNumber = userNumber;
+    update();
+    // print(userDetail!.status);
+    print("mainData fetch");
+      print(userDetail);
+    print(userDetail
+    ?.status);
+  
+  //  print(userDetail?.data!.userDetails!.vendorDetails!.companyName);
+    // genderController.clear();
+    update();
+    if (userDetail != null) {
+      if (userDetail!.status == true) {
+        // ==============================Vendor details=======================
+          address = userDetail!.data!.userDetails!.vendorDetails!.companyName!;
+        name = userDetail!.data!.userDetails!.vendorDetails!.contactFirstName!;
+        lastName = userDetail!.data!.userDetails!.vendorDetails!.contactLastName!;
+        profile = userDetail!.data!.userDetails!.vendorDetails!.contactPosition!;
+        companyName = TextEditingController(
+            text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
+        designation =
+            userDetail!.data!.userDetails!.vendorDetails?.contactPosition;
+        // profileName = userDetail!.data!.userDetails!.vendorDetails?.companyName;
         selectedAccountGroup =
             userDetail!.data!.userDetails!.vendorDetails?.accountGroup;
         selectedVendor =
@@ -489,6 +642,7 @@ changeCardAddress(value){
     update();
   }
 
+  
   // selectqulificationr(Qualification data) {
   //    qualification = data.id;
   //   highestqualController = TextEditingController(text: data.qualificationName);
