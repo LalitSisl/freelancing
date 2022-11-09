@@ -32,9 +32,7 @@ import 'package:intl/intl.dart';
 
 class registerController extends GetxController {
   profile_controller controller = Get.put(profile_controller());
-
   var vendorType;
-
   Future<void> register() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
@@ -69,12 +67,11 @@ class registerController extends GetxController {
 
             print(convertJson['data']['user_status']);
             print("================================");
-            if (convertJson['data']['user_status'] != "3") {
+            if (convertJson['data']['user_status'] != "4") {
               vendorType = selectUser;
               print(vendorType);
               print("==========vendor===============");
               update();
-
               Get.to(
                 profile_copy(),
               );

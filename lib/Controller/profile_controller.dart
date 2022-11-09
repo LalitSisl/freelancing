@@ -16,6 +16,7 @@ import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/PersonalDetai
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/bank.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/business.dart';
 import 'package:freelancing/Screens/ProfileScreens/ProfileSteppers/vendorDetails.dart';
+import 'package:freelancing/Screens/ProfileScreens/termandConditions.dart';
 import 'package:freelancing/Screens/profile_copy.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:freelancing/Utils/APIURLs.dart';
@@ -96,6 +97,7 @@ class profile_controller extends GetxController {
   TextEditingController contactPhonenumber = TextEditingController();
 
   bool checkbox = false;
+  bool bankdetails = false;
   // List<ValueItem> selectedSkill = [];
   List selectedSkill = [];
   List selectedCity = [];
@@ -319,7 +321,11 @@ changeCardAddress(value){
     print(checkbox);
     update();
   }
-
+  bankdetailsoptional(bool value) {
+    bankdetails = value;
+    print(bankdetails);
+    update();
+  }
   selectGender(gender) {
     genderController = TextEditingController(text: gender);
     selectedGenderOne = gender;
@@ -1004,19 +1010,72 @@ changeCardAddress(value){
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body = jsonEncode(<String, String>{
+        var body =
+        bankdetails==false?
+         jsonEncode(<String, String>{
           "phone_number": '$number',
           "user_id": '${sharedPreferneces.getString('user_id')}',
+          "skip_bank_details":'0',
           "bank": selectedbankOne,
           "account_no": accountController.text,
           "ifsc_code": ifscController.text,
           "account_holder_name": accountHolder.text,
           "cancel_checque": "$check",
           "account_type": accountTypeController.text
+        }):  jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "skip_bank_details":'1',
         });
         print(body);
-
         var response = await http.post(Uri.parse(APIUrls.ADD_Bank_DETAILS),
+            headers: {'Authorization': 'Bearer $token'}, body: body);
+
+        try {
+          var convertJson = jsonDecode(response.body);
+          print(convertJson);
+          if (convertJson["status"]) {
+            Get.snackbar("Bank Details ", convertJson['success_msg'],
+                duration: const Duration(seconds: 1),
+                snackPosition: SnackPosition.BOTTOM);
+            // Get.to(const Review());
+            update();
+
+            // Get.to(Otp(number: phoneNumber));
+          } else {
+            Get.snackbar("Error", convertJson['error_msg'],
+                snackPosition: SnackPosition.BOTTOM);
+          }
+          update();
+        } catch (e) {
+          if (kDebugMode) {
+            print(e.toString());
+          }
+        }
+      }
+    } on SocketException catch (_) {}
+  }
+ Future<void> agree_term_conditions() async {
+    SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
+    var number = sharedPreferneces.getString('number');
+    var token = sharedPreferneces.getString('token');
+    var user_id = sharedPreferneces.getString('user_id');
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        var body =
+        agree_tnc==false?
+         jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "agree_tnc":'0',
+        }):  jsonEncode(<String, String>{
+          "phone_number": '$number',
+          "user_id": '${sharedPreferneces.getString('user_id')}',
+          "agree_tnc":'1',
+        });
+        print(body);
+        var response = await http.post(Uri.parse(APIUrls.AGREE_TERM_CONDITIONS),
             headers: {'Authorization': 'Bearer $token'}, body: body);
 
         try {

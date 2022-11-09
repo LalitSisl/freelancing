@@ -2,10 +2,11 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:freelancing/Authentication/register.dart';
+import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:freelancing/Screens/review.dart';
 import 'package:get/get.dart';
 
-bool checkbox = false;
+bool agree_tnc = false;
 
 class Conditions extends StatefulWidget {
   const Conditions({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class Conditions extends StatefulWidget {
 }
 
 class _ConditionsState extends State<Conditions> {
+    profile_controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -341,10 +343,10 @@ class _ConditionsState extends State<Conditions> {
                                 "I accept the terms and condition",
                                 style: TextStyle(fontSize: 14),
                               ),
-                              value: checkbox,
+                              value: agree_tnc,
                               onChanged: ((value) {
                                 setState(() {
-                                  checkbox = value!;
+                                  agree_tnc = value!;
                                 });
                               }))
                         ],
@@ -649,10 +651,10 @@ class _ConditionsState extends State<Conditions> {
                                 "I accept the terms and condition",
                                 style: TextStyle(fontSize: 14),
                               ),
-                              value: checkbox,
+                              value: agree_tnc,
                               onChanged: ((value) {
                                 setState(() {
-                                  checkbox = value!;
+                                  agree_tnc = value!;
                                 });
                               }))
                         ],
@@ -667,7 +669,8 @@ class _ConditionsState extends State<Conditions> {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    if (checkbox == true) {
+                    if (agree_tnc == true) {
+                      controller.agree_term_conditions();
                       Get.to(const Review());
                     } else {
                       Get.snackbar(

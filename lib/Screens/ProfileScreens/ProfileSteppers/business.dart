@@ -34,8 +34,6 @@ class BusinessDetail extends StatelessWidget {
                             "Do you have GST number"), //    <-- label
                         value: controller.checkbox,
                         onChanged: (newValue) {
-                         
-                      
                           print("h");
                           controller.gstNumberCheckBox(newValue!);
                           controller.checkbox = newValue;
@@ -136,7 +134,7 @@ class BusinessDetail extends StatelessWidget {
                         } else {
                           return null;
                         }
-                      }, TextInputType.text, 50, [Capatalized()]),
+                      }, TextInputType.text, 11, [Capatalized()]),
                       Label("Service Area"),
                       Padding(
                         padding: const EdgeInsets.all(5.0),

@@ -192,11 +192,14 @@ class _profile_copyState extends State<profile_copy> {
                                 .validate() ) {
                           // print("==================================================6666666");
                           controller.add_Business_Details();
-                        } else if(controller.activeCurrentStep==2 && controller.bankformKey.currentState!.validate()){
+                        } else if(controller.bankdetails == true ){
                             controller.add_Bank_Details();
-                            Get.to(() => Conditions());
-                          
+                            Get.to(() =>const  Conditions());
                         }
+                        else if( controller.activeCurrentStep==2 && controller.bankformKey.currentState!.validate()){
+                           controller.add_Bank_Details();
+                            Get.to(() => const Conditions());}
+                        
                       },
                       onStepCancel: () {
                         controller.activeCurrentStep == 0
