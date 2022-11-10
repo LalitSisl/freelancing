@@ -64,7 +64,6 @@ class registerController extends GetxController {
             sharedPreferneces.setString(
                 'user_id', '${convertJson['data']['user_id']}');
             update();
-
             print(convertJson['data']['user_status']);
             print("================================");
             if (convertJson['data']['user_status'] != "4") {
