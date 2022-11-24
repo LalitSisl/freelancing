@@ -57,7 +57,7 @@ class BusinessDetail extends StatelessWidget {
                                   }
                                 }, TextInputType.text, 30, [
                                   FilteringTextInputFormatter
-                                      .singleLineFormatter
+                                      .singleLineFormatter,FilteringTextInputFormatter.deny(' ')
                                 ]),
                                 const SizedBox(
                                   height: 15,
@@ -134,7 +134,7 @@ class BusinessDetail extends StatelessWidget {
                         } else {
                           return null;
                         }
-                      }, TextInputType.text, 11, [Capatalized()]),
+                      }, TextInputType.text, 10, [Capatalized(),FilteringTextInputFormatter.deny(' ')]),
                       Label("Service Area"),
                       Padding(
                         padding: const EdgeInsets.all(5.0),

@@ -42,7 +42,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                             UpperCaseTextFormatter()
+                             UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
                             ],
                             (value){
                               controller.changeCardName(value);
@@ -57,7 +57,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                              UpperCaseTextFormatter()
+                              UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
                             ],
                              (value){
                               controller.changeCardLastname(value);
@@ -92,7 +92,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 50, [
-                              UpperCaseTextFormatter()
+                              UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
                             ]
                             ,
                              (value){
@@ -107,7 +107,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                               return null;
                             }, TextInputType.text, 100, [
-                             UpperCaseTextFormatter()
+                             UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
                             ] ,
                              (value){
                               controller.changeCardAddress(value);
@@ -238,7 +238,7 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 10, [Capatalized()]),
+                            }, TextInputType.text, 10, [Capatalized(),FilteringTextInputFormatter.deny(' ')]),
                             const SizedBox(
                               height: 15,
                             ),
@@ -311,7 +311,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.number, 12, [
-                              FilteringTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')
                             ]),
                             const SizedBox(
                               height: 15,
@@ -488,7 +488,7 @@ class PersonalDetail extends StatelessWidget {
                               }
                             },
                             TextInputType.text, 100,
-                                [UpperCaseTextFormatter()],
+                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
                                   (value){
                               controller.changeVendoraddress(value);
                               
@@ -626,7 +626,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.emailAddress, 50, [
-                              FilteringTextInputFormatter.singleLineFormatter
+                              FilteringTextInputFormatter.singleLineFormatter,FilteringTextInputFormatter.deny('  ')
                             ]),
                             const SizedBox(
                               height: 15,
@@ -704,7 +704,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.number, 6,
-                                [FilteringTextInputFormatter.digitsOnly]),
+                                [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
                             persnolDetailTextField(
                                 controller.companyPhone, "Phone Number",
                                 (value) {
@@ -714,7 +714,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.number, 10,
-                                [FilteringTextInputFormatter.digitsOnly]),
+                                [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
                             persnolDetailTextField(controller.autualTurnover,
                                 "Actual Turnover (in Cr)", (value) {
                               if (value == null || value.isEmpty) {
@@ -768,7 +768,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter()],
+                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
                                  (value){
                               controller.changeCardName(value);
                               
@@ -783,7 +783,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter()],
+                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
                                   (value){
                               controller.changeCardLastname(value);
                             }
@@ -798,7 +798,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter()],
+                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
                                  (value){
                               controller.changeCardProfile(value);
                             }
@@ -812,7 +812,7 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.number, 10,
-                                [FilteringTextInputFormatter.digitsOnly]),
+                                [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
                           ],
                         )
                 ],

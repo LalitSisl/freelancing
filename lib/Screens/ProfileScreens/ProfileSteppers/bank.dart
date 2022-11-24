@@ -113,7 +113,7 @@ class BankDetail extends StatelessWidget {
                       }
                       return null;
                     }, TextInputType.number, 18,
-                        [FilteringTextInputFormatter.digitsOnly]),
+                        [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
                     persnolDetailTextField(
                         controller.cAccountController, "Confirm Account Number",
                         (value) {
@@ -125,7 +125,7 @@ class BankDetail extends StatelessWidget {
                       }
                       return null;
                     }, TextInputType.number, 18,
-                        [FilteringTextInputFormatter.digitsOnly]),
+                        [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
                     persnolDetailTextField(controller.ifscController, "IFSC Code",
                         (value) {
                          String pattern = "^[A-Z]{4}0[A-Z0-9]{6}";
@@ -138,7 +138,7 @@ class BankDetail extends StatelessWidget {
                               return null;
                             }
                     }, TextInputType.text, 11,
-                        [FilteringTextInputFormatter.singleLineFormatter]),
+                        [FilteringTextInputFormatter.singleLineFormatter,FilteringTextInputFormatter.deny(' ')]),
                     // persnolDetailTextField(
                     //     controller.accountTypeController, "Account Type", (value) {
                     //   if (value == null || value.isBlank) {
@@ -155,7 +155,7 @@ class BankDetail extends StatelessWidget {
                       }
                       return null;
                     }, TextInputType.text, 50,
-                        [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))]),
+                        [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]')),FilteringTextInputFormatter.deny('  ')]),
                     const SizedBox(
                       height: 15,
                     ),

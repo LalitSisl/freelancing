@@ -907,7 +907,7 @@ changeCardAddress(value){
             // ));
           }
           update();
-        } catch (e) {
+        } catch (e) {     
           if (kDebugMode) {
             print(e.toString());
           }
