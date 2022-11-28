@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "751746584438",
+    "project_id": "sisl-swan",
+    "storage_bucket": "sisl-swan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751746584438:android:9cbc8dce97b7583a027457",
+        "android_client_info": {
+          "package_name": "com.example.freelancing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751746584438-kc81mak6j9fbk0alnj5v7rbvua1oc495.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.freelancing",
+            "certificate_hash": "ee5c0de1e046b96b3dec7c5bfb55206cd13aafb0"
+          }
+        },
+        {
+          "client_id": "751746584438-mu4285c5qinusoqti0og5qncohgfr1qh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCJ2rF77cpcru6tghfQurXOGWs5MF3oaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751746584438-mu4285c5qinusoqti0og5qncohgfr1qh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

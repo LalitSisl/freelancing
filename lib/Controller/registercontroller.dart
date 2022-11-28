@@ -106,4 +106,3 @@ class registerController extends GetxController {
     }
   }
 }
-

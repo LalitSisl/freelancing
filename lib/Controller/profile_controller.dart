@@ -134,7 +134,7 @@ class profile_controller extends GetxController {
   var loginNumber;
   var name = '[Name]';
   var lastName = '';
-  var profile ='[Profile]';
+  var profile = '[Profile]';
   var address = "[Address]";
   DateTime selectedDate = DateTime.now();
   File? cameraImage;
@@ -167,26 +167,31 @@ class profile_controller extends GetxController {
     update();
   }
 
-  changeCardName( value) {
+  changeCardName(value) {
     name = value;
     update();
   }
- changeVendoraddress( value) {
+
+  changeVendoraddress(value) {
     address = value;
     update();
   }
+
   changeCardLastname(value) {
     lastName = value;
     update();
   }
-changeCardProfile(value){
-  profile = value;
-  update();
-}
-changeCardAddress(value){
-  address = value;
-  update();
-}
+
+  changeCardProfile(value) {
+    profile = value;
+    update();
+  }
+
+  changeCardAddress(value) {
+    address = value;
+    update();
+  }
+
   selectCity(item) {
     selectedCity = item;
     update();
@@ -321,11 +326,13 @@ changeCardAddress(value){
     print(checkbox);
     update();
   }
+
   bankdetailsoptional(bool value) {
     bankdetails = value;
     print(bankdetails);
     update();
   }
+
   selectGender(gender) {
     genderController = TextEditingController(text: gender);
     selectedGenderOne = gender;
@@ -367,24 +374,23 @@ changeCardAddress(value){
 
   getuserDetail() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
-    
+
     userDetail = await ApiHelper().getFrelencer();
     userNumber = sharedPreferneces.getString("phone");
     loginNumber = userNumber;
     update();
     // print(userDetail!.status);
     print("mainData fetch");
-      print(userDetail);
-    print(userDetail
-    ?.status);
-  
-  //  print(userDetail?.data!.userDetails!.vendorDetails!.companyName);
+    print(userDetail);
+    print(userDetail?.status);
+
+    //  print(userDetail?.data!.userDetails!.vendorDetails!.companyName);
     // genderController.clear();
     update();
     if (userDetail != null) {
       if (userDetail!.status == true) {
         // ==============================Vendor details=======================
-      
+
         companyName = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
         designation =
@@ -405,7 +411,7 @@ changeCardAddress(value){
         companyPincode = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.vendorPin);
         companyPhone = TextEditingController(
-            text: userDetail!.data!.userDetails!.vendorDetails?.phoneNumber);
+            text: userDetail!.data!.userDetails!.vendorDetails?.vendorPhone);
         autualTurnover = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.turnover);
         contactFirstname = TextEditingController(
@@ -424,10 +430,10 @@ changeCardAddress(value){
         print(
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@dfdgdfgdfgdgdgdf######################");
         // =================================================
-         name =userDetail!.data!.userDetails!.profileDetails!.firstName!; 
-        lastName= userDetail!.data!.userDetails!.profileDetails!.lastName!;
+        name = userDetail!.data!.userDetails!.profileDetails!.firstName!;
+        lastName = userDetail!.data!.userDetails!.profileDetails!.lastName!;
         profile = userDetail!.data!.userDetails!.profileDetails!.workTitle!;
-         address =userDetail!.data!.userDetails!.profileDetails!.address!;
+        address = userDetail!.data!.userDetails!.profileDetails!.address!;
         firstNameController = TextEditingController(
             text: userDetail!.data!.userDetails!.profileDetails?.firstName!);
         lastNameController = TextEditingController(
@@ -470,9 +476,11 @@ changeCardAddress(value){
             selectedSkill.add(element.skillName);
           },
         );
-         update();
+        update();
         // ==========================Business Details==============================
-        userDetail!.data!.userDetails!.businessDetails!.gstNumber!=null?checkbox=true:checkbox=false;
+        userDetail!.data!.userDetails!.businessDetails!.gstNumber != null
+            ? checkbox = true
+            : checkbox = false;
         gstNumberController = TextEditingController(
             text: userDetail!.data!.userDetails!.businessDetails?.gstNumber!);
         businessPanController = TextEditingController(
@@ -506,8 +514,7 @@ changeCardAddress(value){
     update();
   }
 
-  
-    getvendorDetail() async {
+  getvendorDetail() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     userDetail = await ApiHelper().getVendor();
     userNumber = sharedPreferneces.getString("phone");
@@ -515,20 +522,21 @@ changeCardAddress(value){
     update();
     // print(userDetail!.status);
     print("mainData fetch");
-      print(userDetail);
-    print(userDetail
-    ?.status);
-  
-  //  print(userDetail?.data!.userDetails!.vendorDetails!.companyName);
+    print(userDetail);
+    print(userDetail?.status);
+
+    //  print(userDetail?.data!.userDetails!.vendorDetails!.companyName);
     // genderController.clear();
     update();
     if (userDetail != null) {
       if (userDetail!.status == true) {
         // ==============================Vendor details=======================
-          address = userDetail!.data!.userDetails!.vendorDetails!.companyName!;
+        address = userDetail!.data!.userDetails!.vendorDetails!.companyName!;
         name = userDetail!.data!.userDetails!.vendorDetails!.contactFirstName!;
-        lastName = userDetail!.data!.userDetails!.vendorDetails!.contactLastName!;
-        profile = userDetail!.data!.userDetails!.vendorDetails!.contactPosition!;
+        lastName =
+            userDetail!.data!.userDetails!.vendorDetails!.contactLastName!;
+        profile =
+            userDetail!.data!.userDetails!.vendorDetails!.contactPosition!;
         companyName = TextEditingController(
             text: userDetail!.data!.userDetails!.vendorDetails?.companyName);
         designation =
@@ -613,7 +621,7 @@ changeCardAddress(value){
             selectedSkill.add(element.skillName);
           },
         );
-         update();
+        update();
         // ==========================Business Details==============================
         gstNumberController = TextEditingController(
             text: userDetail!.data!.userDetails!.businessDetails?.gstNumber!);
@@ -648,7 +656,6 @@ changeCardAddress(value){
     update();
   }
 
-  
   // selectqulificationr(Qualification data) {
   //    qualification = data.id;
   //   highestqualController = TextEditingController(text: data.qualificationName);
@@ -907,7 +914,7 @@ changeCardAddress(value){
             // ));
           }
           update();
-        } catch (e) {     
+        } catch (e) {
           if (kDebugMode) {
             print(e.toString());
           }
@@ -940,6 +947,7 @@ changeCardAddress(value){
       });
     });
     var data = cityList.join(",");
+
     print(data);
     print(
         "++++++++++++++++++++++++++++++++++++&&&&&&&&&&&&&&&&&&+++++++++++++");
@@ -1010,23 +1018,23 @@ changeCardAddress(value){
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body =
-        bankdetails==false?
-         jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "skip_bank_details":'0',
-          "bank": selectedbankOne,
-          "account_no": accountController.text,
-          "ifsc_code": ifscController.text,
-          "account_holder_name": accountHolder.text,
-          "cancel_checque": "$check",
-          "account_type": accountTypeController.text
-        }):  jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "skip_bank_details":'1',
-        });
+        var body = bankdetails == false
+            ? jsonEncode(<String, String>{
+                "phone_number": '$number',
+                "user_id": '${sharedPreferneces.getString('user_id')}',
+                "skip_bank_details": '0',
+                "bank": selectedbankOne,
+                "account_no": accountController.text,
+                "ifsc_code": ifscController.text,
+                "account_holder_name": accountHolder.text,
+                "cancel_checque": "$check",
+                "account_type": accountTypeController.text
+              })
+            : jsonEncode(<String, String>{
+                "phone_number": '$number',
+                "user_id": '${sharedPreferneces.getString('user_id')}',
+                "skip_bank_details": '1',
+              });
         print(body);
         var response = await http.post(Uri.parse(APIUrls.ADD_Bank_DETAILS),
             headers: {'Authorization': 'Bearer $token'}, body: body);
@@ -1055,7 +1063,8 @@ changeCardAddress(value){
       }
     } on SocketException catch (_) {}
   }
- Future<void> agree_term_conditions() async {
+
+  Future<void> agree_term_conditions() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     var number = sharedPreferneces.getString('number');
     var token = sharedPreferneces.getString('token');
@@ -1063,17 +1072,17 @@ changeCardAddress(value){
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        var body =
-        agree_tnc==false?
-         jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "agree_tnc":'0',
-        }):  jsonEncode(<String, String>{
-          "phone_number": '$number',
-          "user_id": '${sharedPreferneces.getString('user_id')}',
-          "agree_tnc":'1',
-        });
+        var body = agree_tnc == false
+            ? jsonEncode(<String, String>{
+                "phone_number": '$number',
+                "user_id": '${sharedPreferneces.getString('user_id')}',
+                "agree_tnc": '0',
+              })
+            : jsonEncode(<String, String>{
+                "phone_number": '$number',
+                "user_id": '${sharedPreferneces.getString('user_id')}',
+                "agree_tnc": '1',
+              });
         print(body);
         var response = await http.post(Uri.parse(APIUrls.AGREE_TERM_CONDITIONS),
             headers: {'Authorization': 'Bearer $token'}, body: body);

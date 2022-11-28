@@ -13,7 +13,9 @@ import 'otp.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 var loginNumber;
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -288,7 +290,7 @@ class _LoginState extends State<Login> {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             sendOTP(phoneController.text);
-                                       loginNumber= phoneController.text ;
+                                            loginNumber = phoneController.text;
                                           }
                                         },
                                         child: const Text('Send OTP'),

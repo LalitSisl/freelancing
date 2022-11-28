@@ -38,20 +38,23 @@ class ApiHelper {
 
         try {
           var convertJson = jsonDecode(response.body);
-          
+
           if (convertJson["status"]) {
-                 sharedPreferneces.setString('user_id',
-                    '${convertJson['data']['user_details']['profile_details']['id']}');
-            
+            sharedPreferneces.setString('user_id',
+                '${convertJson['data']['user_details']['profile_details']['id']}');
+
             var data = UserDetailModelClass();
             data = UserDetailModelClass.fromJson(convertJson);
             print(data);
             print("333333333333333333################%%%%%%%%%%%%%%%%%%");
             print(selectUser);
-            print('${convertJson['data']['user_details']['profile_details']['id']}');
-                print("--------------------888888888888888888888-----------------------------------");
-          print(convertJson);
-          print("-------------------------8888888888888888------------------------------");
+            print(
+                '${convertJson['data']['user_details']['profile_details']['id']}');
+            print(
+                "--------------------888888888888888888888-----------------------------------");
+            print(convertJson);
+            print(
+                "-------------------------8888888888888888------------------------------");
             return data;
           }
         } catch (e) {
@@ -76,7 +79,8 @@ class ApiHelper {
     }
     return null;
   }
-   Future<UserDetailModelClass?> getVendor() async {
+
+  Future<UserDetailModelClass?> getVendor() async {
     SharedPreferences sharedPreferneces = await SharedPreferences.getInstance();
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -95,19 +99,22 @@ class ApiHelper {
 
         try {
           var convertJson = jsonDecode(response.body);
-          
+
           if (convertJson["status"]) {
-             sharedPreferneces.setString('user_id',
-                    '${convertJson['data']['user_details']['vendor_details']['id']}');
+            sharedPreferneces.setString('user_id',
+                '${convertJson['data']['user_details']['vendor_details']['id']}');
             var data = UserDetailModelClass();
             data = UserDetailModelClass.fromJson(convertJson);
             print(data);
             print("333333333333333333################%%%%%%%%%%%%%%%%%%");
             print(selectUser);
-            print('${convertJson['data']['user_details']['vendor_details']['id']}');
-                print("--------------------8888888888888*********88888888-----------------------------------");
-          print(convertJson);
-          print("-------------------------8888888888888*******888------------------------------");
+            print(
+                '${convertJson['data']['user_details']['vendor_details']['id']}');
+            print(
+                "--------------------8888888888888*********88888888-----------------------------------");
+            print(convertJson);
+            print(
+                "-------------------------8888888888888*******888------------------------------");
             return data;
           }
         } catch (e) {

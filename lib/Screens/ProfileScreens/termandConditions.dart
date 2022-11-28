@@ -16,7 +16,7 @@ class Conditions extends StatefulWidget {
 }
 
 class _ConditionsState extends State<Conditions> {
-    profile_controller controller = Get.find();
+  profile_controller controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -39,7 +39,10 @@ class BusinessDetail extends StatelessWidget {
                           controller.checkbox = newValue;
                         },
                       ),
-                      (controller.checkbox==true || controller.userDetail?.data!.userDetails!.businessDetails?.gstNumber !=null)
+                      (controller.checkbox == true ||
+                              controller.userDetail?.data!.userDetails!
+                                      .businessDetails?.gstNumber !=
+                                  null)
                           ? Column(
                               children: [
                                 persnolDetailTextField(
@@ -56,8 +59,8 @@ class BusinessDetail extends StatelessWidget {
                                     return null;
                                   }
                                 }, TextInputType.text, 30, [
-                                  FilteringTextInputFormatter
-                                      .singleLineFormatter,FilteringTextInputFormatter.deny(' ')
+                                  Capatalized(),
+                                  FilteringTextInputFormatter.deny(' ')
                                 ]),
                                 const SizedBox(
                                   height: 15,
@@ -134,22 +137,26 @@ class BusinessDetail extends StatelessWidget {
                         } else {
                           return null;
                         }
-                      }, TextInputType.text, 10, [Capatalized(),FilteringTextInputFormatter.deny(' ')]),
+                      }, TextInputType.text, 10, [
+                        Capatalized(),
+                        FilteringTextInputFormatter.deny(' ')
+                      ]),
                       Label("Service Area"),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: DropdownSearch.multiSelection(
-                               popupProps:const PopupPropsMultiSelection.bottomSheet(
-                                
-                                showSearchBox: true,
-                              
-                                searchFieldProps: TextFieldProps(
-                                decoration: InputDecoration(
-                                  hintText: "Type to search city ",
-                                ),
-                                 strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)
-                                )
-                              ),
+                          autoValidateMode: AutovalidateMode.always,
+                          popupProps:
+                              const PopupPropsMultiSelection.bottomSheet(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        hintText: "Type to search city ",
+                                      ),
+                                      strutStyle: StrutStyle(
+                                        forceStrutHeight: true,
+                                        height: 1,
+                                      ))),
                           dropdownDecoratorProps: const DropDownDecoratorProps(
                             dropdownSearchDecoration: InputDecoration(
                               border: OutlineInputBorder(

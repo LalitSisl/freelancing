@@ -13,7 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 class PersonalDetail extends StatelessWidget {
   PersonalDetail({Key? key}) : super(key: key);
   profile_controller controller = Get.find();
-  
+
   final multiSelectKey = GlobalKey<FormFieldState>();
   var gender;
   var option;
@@ -35,35 +35,41 @@ class PersonalDetail extends StatelessWidget {
                       ? Column(
                           children: [
                             ProfilenameWidget(
-                                controller.firstNameController, "First Name",
+                                controller.firstNameController,
+                                "First Name",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter first name";
-                              }
-                              return null;
-                            }, TextInputType.text, 50, [
-                             UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
-                            ],
-                            (value){
-                              controller.changeCardName(value);
-                              
-                            }
-                            ),
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter first name";
+                                  }
+                                  return null;
+                                },
+                                TextInputType.text,
+                                20,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardName(value);
+                                }),
                             ProfilenameWidget(
-                                controller.lastNameController, "Last Name",
+                                controller.lastNameController,
+                                "Last Name",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter last name";
-                              }
-                              return null;
-                            }, TextInputType.text, 50, [
-                              UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
-                            ],
-                             (value){
-                              controller.changeCardLastname(value);
-                            }
-                            
-                            ),
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter last name";
+                                  }
+                                  return null;
+                                },
+                                TextInputType.text,
+                                50,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardLastname(value);
+                                }),
                             persnolDetailTextField1(
                               controller.emailidController,
                               "Email Id",
@@ -85,35 +91,41 @@ class PersonalDetail extends StatelessWidget {
                               50,
                             ),
                             ProfilenameWidget(
-                                controller.profileController, "Profile",
+                                controller.profileController,
+                                "Profile",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter your profile";
-                              }
-                              return null;
-                            }, TextInputType.text, 50, [
-                              UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
-                            ]
-                            ,
-                             (value){
-                              controller.changeCardProfile(value);
-                            }
-                            ),
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your profile";
+                                  }
+                                  return null;
+                                },
+                                TextInputType.text,
+                                50,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardProfile(value);
+                                }),
                             ProfilenameWidget(
-                                controller.addressController, "Address",
+                                controller.addressController,
+                                "Address",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter your address";
-                              }
-                              return null;
-                            }, TextInputType.text, 100, [
-                             UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')
-                            ] ,
-                             (value){
-                              controller.changeCardAddress(value);
-                            }
-                            
-                            ),
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your address";
+                                  }
+                                  return null;
+                                },
+                                TextInputType.text,
+                                100,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardAddress(value);
+                                }),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: TextFormField(
@@ -238,7 +250,10 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.text, 10, [Capatalized(),FilteringTextInputFormatter.deny(' ')]),
+                            }, TextInputType.text, 10, [
+                              Capatalized(),
+                              FilteringTextInputFormatter.deny(' ')
+                            ]),
                             const SizedBox(
                               height: 15,
                             ),
@@ -311,7 +326,8 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.number, 12, [
-                              FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')
+                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.deny('  ')
                             ]),
                             const SizedBox(
                               height: 15,
@@ -372,43 +388,45 @@ class PersonalDetail extends StatelessWidget {
                               height: 15,
                             ),
                             Label("Skills"),
-
-                         
                             Padding(
-                              padding:const  EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: DropdownSearch.multiSelection(
-                              popupProps:const PopupPropsMultiSelection.bottomSheet(
-                                
-                                showSearchBox: true,
-                              
-                                searchFieldProps: TextFieldProps(
-                                decoration: InputDecoration(
-                                  hintText: "Type to search skills ",
-                                ),
-                                 strutStyle: StrutStyle(forceStrutHeight: true,height: 1,)
-                                )
-                              ),
+                                popupProps:
+                                    const PopupPropsMultiSelection.bottomSheet(
+                                        showSearchBox: true,
+                                        searchFieldProps: TextFieldProps(
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  "Type to search skills ",
+                                            ),
+                                            strutStyle: StrutStyle(
+                                              forceStrutHeight: true,
+                                              height: 1,
+                                            ))),
                                 autoValidateMode: AutovalidateMode.always,
-                             
-                                 dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorPalette.themeBlue, width: 0.5),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorPalette.themeBlue, width: 0.5),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorPalette.red, width: 0.5),
-                              ),
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              labelText: "Select Skills",
-                              // hintText: "country in menu mode",
-                            ),
-                          ),
+                                dropdownDecoratorProps:
+                                    const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: ColorPalette.themeBlue,
+                                          width: 0.5),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: ColorPalette.themeBlue,
+                                          width: 0.5),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: ColorPalette.red, width: 0.5),
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.auto,
+                                    labelText: "Select Skills",
+                                    // hintText: "country in menu mode",
+                                  ),
+                                ),
                                 items: List.generate(
                                     controller.getSkill!.data!.skills!.length,
                                     (index) => controller
@@ -416,7 +434,7 @@ class PersonalDetail extends StatelessWidget {
                                 onChanged: (value) {
                                   print(value);
                                   controller.selectSkill(value);
-                                   print(controller.selectedSkill);
+                                  print(controller.selectedSkill);
                                   print(
                                       "object~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                                 },
@@ -443,7 +461,6 @@ class PersonalDetail extends StatelessWidget {
                               height: 40,
                             ),
                             Label("Total Experience"),
-                
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: DropdownButton(
@@ -470,29 +487,31 @@ class PersonalDetail extends StatelessWidget {
                                         newValue!;
                                     print(newValue);
                                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                                  })
-                                  
-                                  ),
+                                  })),
                             ),
                           ],
                         )
                       : Column(
                           children: [
                             ProfilenameWidget(
-                                controller.companyName, "Company Name",
+                                controller.companyName,
+                                "Company Name",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter company name';
-                              } else {
-                                return null;
-                              }
-                            },
-                            TextInputType.text, 100,
-                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
-                                  (value){
-                              controller.changeVendoraddress(value);
-                              
-                            }),
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter company name';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                TextInputType.text,
+                                100,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeVendoraddress(value);
+                                }),
                             Label2("Account Group"),
                             ListTile(
                               visualDensity: const VisualDensity(
@@ -626,7 +645,8 @@ class PersonalDetail extends StatelessWidget {
                                 return null;
                               }
                             }, TextInputType.emailAddress, 50, [
-                              FilteringTextInputFormatter.singleLineFormatter,FilteringTextInputFormatter.deny('  ')
+                              FilteringTextInputFormatter.singleLineFormatter,
+                              FilteringTextInputFormatter.deny('  ')
                             ]),
                             const SizedBox(
                               height: 15,
@@ -703,8 +723,10 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 6,
-                                [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
+                            }, TextInputType.number, 6, [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.deny('  ')
+                            ]),
                             persnolDetailTextField(
                                 controller.companyPhone, "Phone Number",
                                 (value) {
@@ -713,8 +735,10 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 10,
-                                [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
+                            }, TextInputType.number, 10, [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.deny('  ')
+                            ]),
                             persnolDetailTextField(controller.autualTurnover,
                                 "Actual Turnover (in Cr)", (value) {
                               if (value == null || value.isEmpty) {
@@ -760,49 +784,63 @@ class PersonalDetail extends StatelessWidget {
                               height: 15,
                             ),
                             Label("Vendor Contact Information"),
-                            ProfilenameWidget(controller.contactFirstname,
-                                "Contact First Name", (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter first name';
-                              } else {
-                                return null;
-                              }
-                            }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
-                                 (value){
-                              controller.changeCardName(value);
-                              
-                            }
-                                ),
                             ProfilenameWidget(
-                                controller.contactLastname, "Contact Last Name",
+                                controller.contactFirstname,
+                                "Contact First Name",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter last name';
-                              } else {
-                                return null;
-                              }
-                            }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
-                                  (value){
-                              controller.changeCardLastname(value);
-                            }
-                                
-                                ),
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter first name';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                TextInputType.text,
+                                50,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardName(value);
+                                }),
                             ProfilenameWidget(
-                                controller.contactPosition, "Contact Position",
+                                controller.contactLastname,
+                                "Contact Last Name",
                                 (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your Designation/Position';
-                              } else {
-                                return null;
-                              }
-                            }, TextInputType.text, 50,
-                                [UpperCaseTextFormatter(),FilteringTextInputFormatter.deny('  ')],
-                                 (value){
-                              controller.changeCardProfile(value);
-                            }
-                                ),
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter last name';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                TextInputType.text,
+                                50,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardLastname(value);
+                                }),
+                            ProfilenameWidget(
+                                controller.contactPosition,
+                                "Contact Position",
+                                (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your Designation/Position';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                TextInputType.text,
+                                50,
+                                [
+                                  UpperCaseTextFormatter(),
+                                  FilteringTextInputFormatter.deny('  ')
+                                ],
+                                (value) {
+                                  controller.changeCardProfile(value);
+                                }),
                             persnolDetailTextField(
                                 controller.contactPhonenumber,
                                 "Contact Phone Number", (value) {
@@ -811,8 +849,10 @@ class PersonalDetail extends StatelessWidget {
                               } else {
                                 return null;
                               }
-                            }, TextInputType.number, 10,
-                                [FilteringTextInputFormatter.digitsOnly,FilteringTextInputFormatter.deny('  ')]),
+                            }, TextInputType.number, 10, [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.deny('  ')
+                            ]),
                           ],
                         )
                 ],

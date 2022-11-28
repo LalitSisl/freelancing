@@ -123,32 +123,39 @@ class _profile_copyState extends State<profile_copy> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                             '${controller.name} ${controller.lastName}' ,
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2.1,
+                                child: Text(
+                                  '${controller.name} ${controller.lastName}',
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               Container(),
-                              Text(
-                                 controller.profile,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2.1,
+                                child: Text(controller.profile,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
                               const SizedBox(height: 5),
-                              Text(loginNumber,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              FittedBox(
+                                child: Text(loginNumber,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
                               const SizedBox(height: 5),
                               SizedBox(
                                 height: 60,
                                 width: MediaQuery.of(context).size.width / 2.1,
                                 child: AutoSizeText(controller.address,
-                                maxLines: 3,
+                                    maxLines: 3,
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
@@ -188,18 +195,26 @@ class _profile_copyState extends State<profile_copy> {
                           }
 
                           //   controller.add_Personal_Details();
-                        } else if ( controller.activeCurrentStep == 1&&controller.businessformKey.currentState!
-                                .validate() ) {
+                        } else if (controller.activeCurrentStep == 1 &&
+                            controller.businessformKey.currentState!
+                                .validate()) {
+                          if (controller.gst == null) {
+                            Get.snackbar("Error", "Please Upload gst proof ",
+                                snackPosition: SnackPosition.BOTTOM);
+                          } else {
+                            controller.add_Business_Details();
+                          }
+
                           // print("==================================================6666666");
-                          controller.add_Business_Details();
-                        } else if(controller.bankdetails == true ){
-                            controller.add_Bank_Details();
-                            Get.to(() =>const  Conditions());
+
+                        } else if (controller.bankdetails == true) {
+                          controller.add_Bank_Details();
+                          Get.to(() => const Conditions());
+                        } else if (controller.activeCurrentStep == 2 &&
+                            controller.bankformKey.currentState!.validate()) {
+                          controller.add_Bank_Details();
+                          Get.to(() => const Conditions());
                         }
-                        else if( controller.activeCurrentStep==2 && controller.bankformKey.currentState!.validate()){
-                           controller.add_Bank_Details();
-                            Get.to(() => const Conditions());}
-                        
                       },
                       onStepCancel: () {
                         controller.activeCurrentStep == 0

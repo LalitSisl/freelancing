@@ -439,8 +439,8 @@ class SWANWidget {
       );
 }
 
-Widget ProfilenameWidget(
-    _controller, label, validator, inputType, maxLength, inputFormatters,onchange) {
+Widget ProfilenameWidget(_controller, label, validator, inputType, maxLength,
+    inputFormatters, onchange) {
   profile_controller controller = Get.find();
   return Padding(
     padding: const EdgeInsets.all(5.0),

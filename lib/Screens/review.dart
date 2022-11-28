@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:freelancing/Utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
 
 class Review extends StatefulWidget {
@@ -18,7 +18,6 @@ class Review extends StatefulWidget {
 
 class _ReviewState extends State<Review> {
   File? pic;
-
   var name = "[Name]";
   var profile = "[Profile]";
   var phone_no = "[Phone Number]";
@@ -32,13 +31,17 @@ class _ReviewState extends State<Review> {
         body: Column(children: [
           Expanded(
             child: Center(
-              child: Image.asset(
-                'assets/images/review.png',
-                //height: MediaQuery.of(context).size.height / 1.7,
-                fit: BoxFit.fill,
-              ),
-            ),
-          )
+                child: Lottie.network(
+                    'https://assets4.lottiefiles.com/packages/lf20_vpu1ue0i.json')),
+          ),
+          const Text("Please Wait Your Profile is in Review",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.deepOrange,
+                  fontFamily: FFamily.avenir)),
+          const SizedBox(
+            height: 40,
+          ),
         ]),
       ),
     );
