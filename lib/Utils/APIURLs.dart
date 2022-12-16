@@ -5,7 +5,6 @@ class APIUrls {
   static const String ADD_PERSONAL_DETAILS = "${BASE_URL}add_personal_details";
   static const String ADD_VENDOR_DETAILS = "${BASE_URL}add_vendor_details";
   static const String BASE_URL = "http://52.172.214.245/index.php/api/";
-
   static const String BASE_URL_IMAGE = "http://52.172.214.245/"; //Testing
   static const String DOMAIN = "52.172.214.245";
   static const String GET_BANK = "/index.php/api/bank_master";

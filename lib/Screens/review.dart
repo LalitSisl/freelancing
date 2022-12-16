@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelancing/Dashboard/dashboard.dart';
 
 import '../Utils/constant.dart';
 
@@ -29,21 +30,28 @@ class _ReviewState extends State<Review> {
       child: Scaffold(
         backgroundColor: ColorPalette.white,
         body: Column(children: [
+          const SizedBox(
+            height: 30,
+          ),
+           const Text("Please Wait Your Profile is in Review",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.deepOrange,
+                  fontFamily: FFamily.avenir, fontWeight: FontWeight.bold)),
           Expanded(
             child: Center(
                 child: Lottie.network(
                     'https://assets4.lottiefiles.com/packages/lf20_vpu1ue0i.json')),
           ),
-          const Text("Please Wait Your Profile is in Review",
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.deepOrange,
-                  fontFamily: FFamily.avenir)),
-          const SizedBox(
-            height: 40,
-          ),
         ]),
+
+        floatingActionButton: FloatingActionButton( 
+          child:const Icon(Icons.arrow_forward_ios),
+          onPressed: (){
+          Get.to(const Dashboard());
+        }),
       ),
+      
     );
   }
 }

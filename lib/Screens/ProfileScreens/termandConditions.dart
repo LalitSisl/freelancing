@@ -20,7 +20,7 @@ class _ConditionsState extends State<Conditions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red.shade100,
+      // backgroundColor: Colors.red.shade100,
       body: AlertDialog(
         title: const Text("Terms & Conditions"),
         content: Container(

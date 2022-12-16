@@ -13,7 +13,17 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          useMaterial3: true, primarySwatch: Colors.red, fontFamily: "Ubuntu"),
+          useMaterial3: true,
+        
+          cardColor: Colors.white,
+          primaryColor: Colors.red,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.red,
+            backgroundColor: Colors.white
+          ),
+          // cardTheme: CardTheme(color: Colors.white),
+         
+           primarySwatch: Colors.red, fontFamily: "Ubuntu"),
       home: const Welcome(),
     );
   }

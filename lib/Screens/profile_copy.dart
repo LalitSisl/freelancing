@@ -198,7 +198,7 @@ class _profile_copyState extends State<profile_copy> {
                         } else if (controller.activeCurrentStep == 1 &&
                             controller.businessformKey.currentState!
                                 .validate()) {
-                          if (controller.gst == null) {
+                          if (controller.checkbox==true && controller.gst == null) {
                             Get.snackbar("Error", "Please Upload gst proof ",
                                 snackPosition: SnackPosition.BOTTOM);
                           } else {

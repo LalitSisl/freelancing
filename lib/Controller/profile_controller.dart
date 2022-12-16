@@ -1091,7 +1091,7 @@ class profile_controller extends GetxController {
           var convertJson = jsonDecode(response.body);
           print(convertJson);
           if (convertJson["status"]) {
-            Get.snackbar("Bank Details ", convertJson['success_msg'],
+            Get.snackbar("Term And Conditions ", convertJson['success_msg'],
                 duration: const Duration(seconds: 1),
                 snackPosition: SnackPosition.BOTTOM);
             // Get.to(const Review());
