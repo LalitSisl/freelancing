@@ -33,6 +33,7 @@ import 'package:intl/intl.dart';
 class profile_controller extends GetxController {
   // registerController controllerRegister = Get.put(registerController());
   int activeCurrentStep = 0;
+  var messageOtp = "".obs;
   final formKey = GlobalKey<FormState>();
   final businessformKey = GlobalKey<FormState>();
   final bankformKey = GlobalKey<FormState>();

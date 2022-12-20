@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:freelancing/Controller/profile_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:freelancing/Authentication/register.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../Utils/APIURLs.dart';
 
@@ -23,6 +25,7 @@ class Otp extends StatefulWidget {
 
 class _OtpState extends State<Otp> {
   TextEditingController _otpController = TextEditingController();
+    profile_controller Profilecontroller = Get.put(profile_controller());
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
@@ -38,6 +41,7 @@ class _OtpState extends State<Otp> {
 
   @override
   void initState() {
+   _listenCode();
     super.initState();
     startTimer();
   }
@@ -243,7 +247,22 @@ class _OtpState extends State<Otp> {
                             child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 30),
-                                child: PinCodeTextField(
+                                child:
+                                
+                            //  Obx(() =>PinFieldAutoFill(codeLength: 6,
+                                
+                            //     keyboardType: TextInputType.number,
+                            //     controller: _otpController,
+                            //     currentCode: Profilecontroller.messageOtp.value,
+                            //     onCodeChanged: (value) {
+                            //       Profilecontroller.messageOtp.value = value!;
+                            //       print(value);
+                            //     },
+                                
+                            //     ), )   
+                            //     )
+                                
+                                 PinCodeTextField(
                                   appContext: context,
                                   // pastedTextStyle: TextStyle(
                                   //   color: Colors.green.shade600,
@@ -301,6 +320,8 @@ class _OtpState extends State<Otp> {
                                     return true;
                                   },
                                 )),
+                          
+                          
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -356,6 +377,10 @@ class _OtpState extends State<Otp> {
       ),
     ));
   }
+
+void _listenCode()async{
+ await SmsAutoFill().listenForCode();
+}
 
   Future<void> resendOTP() async {
     try {

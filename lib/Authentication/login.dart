@@ -8,6 +8,7 @@ import 'package:freelancing/Screens/profile_copy.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import '../Utils/APIURLs.dart';
 import 'otp.dart';
 import 'package:country_pickers/country_pickers.dart';
@@ -286,7 +287,9 @@ class _LoginState extends State<Login> {
                                   : Align(
                                       alignment: Alignment.bottomRight,
                                       child: ElevatedButton(
-                                        onPressed: () {
+                                        onPressed: ()async {
+                                          final appSign = await SmsAutoFill().getAppSignature;
+                                          print(appSign);
                                           if (_formKey.currentState!
                                               .validate()) {
                                             sendOTP(phoneController.text);

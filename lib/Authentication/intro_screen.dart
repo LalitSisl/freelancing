@@ -172,6 +172,7 @@ class _Intro_screensState extends State<Intro_screens> {
                                       const Text(
                                         "SWAN",
                                         style: TextStyle(
+                                          
                                             fontSize: 40,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: .8,
