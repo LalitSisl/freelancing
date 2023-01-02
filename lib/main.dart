@@ -14,16 +14,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           useMaterial3: true,
-        
-          cardColor: Colors.white,
+
+          // cardColor: Colors.white,
+          // cardTheme: CardTheme(color: Colors.white , shadowColor: Colors.white),
           primaryColor: Colors.red,
           colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.red,
-            backgroundColor: Colors.white
-          ),
+              primarySwatch: Colors.red, backgroundColor: Colors.white),
           // cardTheme: CardTheme(color: Colors.white),
-         
-           primarySwatch: Colors.red, fontFamily: "Ubuntu"),
+
+          primarySwatch: Colors.red,
+          fontFamily: "Ubuntu"),
       home: const Welcome(),
     );
   }

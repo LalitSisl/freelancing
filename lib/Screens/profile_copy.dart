@@ -198,7 +198,8 @@ class _profile_copyState extends State<profile_copy> {
                         } else if (controller.activeCurrentStep == 1 &&
                             controller.businessformKey.currentState!
                                 .validate()) {
-                          if (controller.checkbox==true && controller.gst == null) {
+                          if (controller.checkbox == true &&
+                              controller.gst == null) {
                             Get.snackbar("Error", "Please Upload gst proof ",
                                 snackPosition: SnackPosition.BOTTOM);
                           } else {
@@ -206,7 +207,6 @@ class _profile_copyState extends State<profile_copy> {
                           }
 
                           // print("==================================================6666666");
-
                         } else if (controller.bankdetails == true) {
                           controller.add_Bank_Details();
                           Get.to(() => const Conditions());

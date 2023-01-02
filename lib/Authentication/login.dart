@@ -287,8 +287,9 @@ class _LoginState extends State<Login> {
                                   : Align(
                                       alignment: Alignment.bottomRight,
                                       child: ElevatedButton(
-                                        onPressed: ()async {
-                                          final appSign = await SmsAutoFill().getAppSignature;
+                                        onPressed: () async {
+                                          final appSign = await SmsAutoFill()
+                                              .getAppSignature;
                                           print(appSign);
                                           if (_formKey.currentState!
                                               .validate()) {

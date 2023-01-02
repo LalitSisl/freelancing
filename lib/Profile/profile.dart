@@ -4552,7 +4552,6 @@ class _ProfileState extends State<Profile> {
                             accHolderName.text,
                             check);
                         //_activeCurrentStep += 1;
-
                       }
                     });
                   }
